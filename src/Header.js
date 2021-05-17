@@ -111,7 +111,8 @@ const Secondbar = styled.div`
 `
 
 const Rowtext = styled.div`
-    // position: absolute;
+    position: absolute;
+    height: 58%;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -188,7 +189,9 @@ const Button2 = styled.div`
 
 const Bottom = styled.div`
     width: 100%;
-    height: 215px;
+    position: absolute;
+    height: 42%;
+    top: 58%;
     display: flex;
     flex-direction: row;
 `
