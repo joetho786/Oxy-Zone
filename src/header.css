@@ -1,0 +1,101 @@
+.c2{
+    background-color: #0055a0;
+    height: 60px;
+    width: 145px;
+}
+
+.c1{
+    /* background-color: rgb(37, 39, 40); */
+    height: 60px;
+    width: 175px;
+}
+
+.c{
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 10px;
+    z-index: 5;
+}
+
+.c1:hover{
+    background-color: transparent;
+    color: #ffc107;
+}
+
+.c2:hover{
+    background-color: transparent;
+    color: #0055a0;
+}
+
+#blank{
+    width:80%;
+    height:400px;
+}
+
+.fill {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    filter: brightness(70%);
+}
+
+.search{
+    position: absolute;
+    border-radius: 20px !important;
+    /* right: 0; */
+    /* width: 400px; */
+    background-color: #F1F1F1;
+    height: 50px;
+    padding-left: 10px;
+    font-size: 25px;
+    width: 390px;
+    /* padding-left:30px; */
+    margin-right :15px;
+    margin-top: -75px;
+}
+
+#map{
+    height: 215px;
+    width: 315px;
+}
+
+.MuiInputBase-root {
+    width: 332px !important;
+    font-size: 21px !important;
+}
+
+.MuiPaper-root{
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: #F1F1F1 !important;
+}
+
+.MuiInputBase-input {
+    text-align: center !important;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+    font-size: 21px;
+ }
+ 
+ :-moz-placeholder { /* Firefox 18- */
+    text-align: center;  
+    font-size: 21px;
+ }
+ 
+ ::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;  
+    font-size: 21px;
+ }
+ 
+ :-ms-input-placeholder {  
+    text-align: center; 
+    font-size: 21px;
+ }
+
+.over{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    bottom: -1px;
+}
