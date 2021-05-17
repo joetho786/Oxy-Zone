@@ -24,7 +24,8 @@
 
 .c2:hover{
     background-color: transparent;
-    color: #0055a0;
+    border-color: #eff6fd;
+    color: #eff6fd;
 }
 
 #blank{
