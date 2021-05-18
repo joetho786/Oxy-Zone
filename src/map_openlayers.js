@@ -103,7 +103,7 @@ const Maplayers = () => {
             {/* <input id = 'in' ref={textInput}/>
             <button id = 'but' onClick={handleClick} /> */}
 
-            {/* <form id = 'form' className = 'search'>
+            <form id = 'form' className = 'search'>
                 <div id = 'inmat'>
                     <input id = 'inp' placeholder = 'Search Oxygen Donors' ref={textInput} />
                 </div>
@@ -114,9 +114,9 @@ const Maplayers = () => {
                         </svg>
                     </span>
                 </button>
-            </form> */}
+            </form>
 
-            <Paper component="form"
+            {/* <Paper component="form"
                 className='search'
             >
                 <InputBase
@@ -131,7 +131,7 @@ const Maplayers = () => {
                     aria-label="search">
                     <SearchIcon />
                 </IconButton>
-            </Paper>
+            </Paper> */}
 
         </>
     )
