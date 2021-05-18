@@ -8,8 +8,6 @@ import frame from './Frame 1.png';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-// import SearchIcon from '@material-ui/icons/Search';
-// import { SearchIcon } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
 
 export const Header = () => {
