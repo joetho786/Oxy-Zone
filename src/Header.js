@@ -5,18 +5,37 @@ import bg from './bg.png';
 import map from './map.png';
 import frame from './Frame 1.png';
 
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
+import { useHistory } from "react-router-dom";
+
+// import Paper from '@material-ui/core/Paper';
+// import InputBase from '@material-ui/core/InputBase';
+// import IconButton from '@material-ui/core/IconButton';
+// import SearchIcon from '@material-ui/icons/Search';
+
+let textInput = React.createRef();
+
+function handleClick(event, hist) {
+    console.log(event)
+    event.preventDefault()
+    event.stopPropagation()
+    if (!(textInput.current.value == '')) {
+        console.log('urs: ')
+        console.log(textInput.current.value)
+        hist.push("/map/" + textInput.current.value);
+    }
+}
 
 export const Header = () => {
+
+    const history = useHistory();
+
+
     return (
         <>
             <Topbar>
-                <img class='fill' src={ bg } alt='bg' />
+                <img class='fill' src={bg} alt='bg' />
                 {/* <White/> */}
-                <img class = 'over' src = { frame } alt = 'over' />
+                <img class='over' src={frame} alt='over' />
             </Topbar>
             {/* <Secondbar/> */}
             <Rowtext>
@@ -32,7 +51,7 @@ export const Header = () => {
                     {/* <input id = 'search' placeholder = 'Search Oxygen' >
                     
                     </input> */}
-                    <Paper component="form" 
+                    {/* <Paper component="form" 
                     className= 'search'
                     >
                         <InputBase
@@ -45,11 +64,25 @@ export const Header = () => {
                          aria-label="search">
                             <SearchIcon />
                         </IconButton>
-                    </Paper>
+                    </Paper> */}
+
+                    <form id='form' className='search'>
+                        <div id='inmat'>
+                            <input id='inp' placeholder='Search Oxygen Donors' ref={textInput} />
+                        </div>
+                        <button id='butinp' tabIndex='0' type='submit' aria-label='search' onClick={(e) => handleClick(e, history)}>
+                            <span id='span'>
+                                <svg id='svg' focusable='false' viewBox='0 0 24 24' aria-hidden='true' >
+                                    <path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+                                </svg>
+                            </span>
+                        </button>
+                    </form>
+
                 </Half>
                 <Half2>
                     <MapBut>
-                        <img id = 'map' src = { map }/>
+                        <img id='map' src={map} />
                     </MapBut>
                 </Half2>
             </Bottom>

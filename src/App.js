@@ -1,6 +1,5 @@
 import { React, useState } from 'react'
 import Header from './Header'
-import MapContainer from './Map';
 import Mapbox from './react_map'
 import Maplayers from './map_openlayers'
 
@@ -19,14 +18,14 @@ const App = () => {
           <Header />
         </Route>
         <Route path="/map/:loc">
-          <MapContainer />
+          <Maplayers />
         </Route>
         <Route path="/new">
           <Mapbox />
         </Route>
-        <Route path="/mapnew">
+        {/* <Route path="/mapnew">
           <Maplayers />
-        </Route>
+        </Route> */}
       </Switch>
     </Router>
   )
