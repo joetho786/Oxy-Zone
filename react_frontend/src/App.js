@@ -2,6 +2,8 @@ import { React, useState } from 'react'
 import Header from './Header'
 import Mapbox from './react_map'
 import Maplayers from './map_openlayers'
+import MapContainer from './Map'
+import Sellerlogin from './sellerlogin'
 
 import {
   BrowserRouter as Router,
@@ -20,8 +22,14 @@ const App = () => {
         <Route path="/map/:loc">
           <Maplayers />
         </Route>
-        <Route path="/new">
+        <Route path="/mapbox">
           <Mapbox />
+        </Route>
+        <Route path="/googlemap">
+          <MapContainer />
+        </Route>
+        <Route path="/seller">
+          <Sellerlogin />
         </Route>
         {/* <Route path="/mapnew">
           <Maplayers />

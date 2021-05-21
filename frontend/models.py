@@ -16,4 +16,4 @@ class Places(models.Model):
     seller = models.TextField()
 
     def _str_(self):
-        return self.location, self.lattitude, self.longitude, self.seller
+        return self.location

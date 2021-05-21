@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './new.css'
 
+import axios from "axios";
+
 import { ReactBingmaps } from 'react-bingmaps';
 
 // import Paper from '@material-ui/core/Paper';
@@ -63,6 +65,16 @@ const Maplayers = () => {
                 if (!(res == '')) {
                     setonloadloc({ 'lat': res[0].lat, 'lon': res[0].lon })
                     settitle(loc)
+
+                    axios
+                        .post("/api/places/", {
+                            location: loc.toString(),
+                            lattitude: parseFloat(res[0].lat),
+                            longitude: parseFloat(res[0].lon),
+                            seller: 'vinu'
+                        })
+                        .then(res => console.log('result'));
+
                 } else {
                     alert('Error! place not found')
                 }
@@ -74,12 +86,15 @@ const Maplayers = () => {
 
     console.log(loc)
 
+    const call = () => {console.log('hehe')}
+
     return (
         <>
             <ReactBingmaps
                 bingmapKey="Aue53CqMhv_oforhu3pP6L5EpDqyDwfwptjqrsQdfA_SLBwzPiseBuhSTuAnlB41"
-                center={[parseInt(onloadloc.lat),parseInt(onloadloc.lon)]}
-                // mapTypeId = {"canvasDark"}
+                center={[parseFloat(onloadloc.lat), parseFloat(onloadloc.lon)]}
+                // mapTypeId = {"aerial"}
+                mapTypeId = {"canvasDark"}
                 // zoom = {5}
                 // pushPins = {
                 //     [
@@ -103,40 +118,36 @@ const Maplayers = () => {
                 //     ]
                 //   }
 
-                navigationBarMode={"square"}
+                // navigationBarMode={"square"}
 
-                infoboxesWithPushPins={[
-                    // {
-                    //     "location": [13.0827, 80.2707],
-                    //     "addHandler": "mouseover", //on mouseover the pushpin, infobox shown
-                    //     "infoboxOption": { title: 'Infobox Title', description: 'Infobox' },
-                    //     "pushPinOption": { title: 'Pushpin Title', description: 'Pushpin' },
-                    //     "infoboxAddHandler": { "type": "click", callback: function () { console.log('hello') } },
-                    //     "pushPinAddHandler": { "type": "click", callback: function () { console.log('hi') } }
-                    // },
-                    {
-                        "location": [parseInt(onloadloc.lat),parseInt(onloadloc.lon)],
-                        "addHandler": "mouseover", //on mouseover the pushpin, infobox shown
-                        "infoboxOption": { title: title, description: 'Infobox' },
-                        "pushPinOption": { title: title, description: 'Pushpin' },
-                        "infoboxAddHandler": { "type": "click", callback: function () { console.log('hello') } },
-                        "pushPinAddHandler": { "type": "click", callback: function () { console.log('hi') } }
-                    },
-                ]
-                }
-
-                navigationBarMode={"minified"}
-                supportedMapTypes={["road", "canvasDark", "ariel", "canvasLight"]}
-
+                // infoboxesWithPushPins={[
+                //     // {
+                //     //     "location": [13.0827, 80.2707],
+                //     //     "addHandler": "mouseover", //on mouseover the pushpin, infobox shown
+                //     //     "infoboxOption": { title: 'Infobox Title', description: 'Infobox' },
+                //     //     "pushPinOption": { title: 'Pushpin Title', description: 'Pushpin' },
+                //     //     "infoboxAddHandler": { "type": "click", callback: function () { console.log('hello') } },
+                //     //     "pushPinAddHandler": { "type": "click", callback: function () { console.log('hi') } }
+                //     // },
+                //     {
+                //         "location": [parseFloat(onloadloc.lat), parseFloat(onloadloc.lon)],
+                //         "addHandler": "mouseover", //on mouseover the pushpin, infobox shown
+                //         "infoboxOption": { title: title, description: 'Infobox' },
+                //         "pushPinOption": { title: title, description: 'Pushpin' },
+                //         "infoboxAddHandler": { "type": "click", callback: function () { console.log('hello') } },
+                //         "pushPinAddHandler": { "type": "click", callback: function () { console.log('hi') } }
+                //     },
+                // ]
+                // }
                 getLocation={
-                    { addHandler: "click", callback: function(lo) { console.log('hi') } }
+                    { addHandler: "click", callback: function (e) { console.log(e) } }
                 }
+                // navigationBarMode={"minified"}
+                // supportedMapTypes={["road", "canvasDark", "ariel", "canvasLight"]}
 
             >
             </ReactBingmaps>
 
-            {/* <input id = 'in' ref={textInput}/>
-            <button id = 'but' onClick={handleClick} /> */}
 
             <form id='form' className='search2'>
                 <div id='inmat'>
