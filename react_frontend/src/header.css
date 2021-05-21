@@ -144,6 +144,10 @@
     text-align: center;
 }
 
+#inp input::placeholder {
+    text-align: center;
+}  
+
 #inp:focus{
     outline: 0;
 }

@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --dark: rgb(36, 37, 37);
 }
 
@@ -161,7 +161,7 @@ body, html {
     height: 100%;
     background-color: var(--dark);
     color: white;
-    /* border-radius: 20px; */
+    border-radius: 20px; 
     display: flex;
     flex-direction: row;
 }
@@ -178,11 +178,11 @@ body, html {
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    /* margin-top: 15px;
-    margin-bottom: 15px; */
+     margin-top: 15px;
+    margin-bottom: 15px;
     width: 90%;
     height: 100%;
-    /* background-color: rgb(36, 37, 37); */
+     background-color: rgb(36, 37, 37);
     text-transform: uppercase; 
 
 }
@@ -190,17 +190,17 @@ body, html {
 #theme{
     width: 10%;
     height: 100%;
-    /* background-image: url('dark_mode_black_24dp.svg'); */
+    background-image: url('dark_mode_black_24dp.svg');
 }
 
 #night{
-    /* color: #ff2983; */
+    color: #ff2983;
     fill: #ff2983;
     border-radius: 50%;
 }
 
 #night:hover{
-    /* fill: white; */
+    fill: white;
     fill: var(--dark);
     background-color: #ff2983;
 }
@@ -211,7 +211,7 @@ body, html {
 }
 
 #day:hover{
-    /* fill: white; */
+    fill: white; 
     fill: var(--dark);
     background-color: #ff2983;
 }
@@ -243,9 +243,9 @@ body, html {
 }
 
 #names{
-    /* padding: 5px; */
-    /* border-radius: 10px; */
-    /* margin-left: 10px; */
+     padding: 5px;
+    border-radius: 10px;
+     margin-left: 10px;
     width: 20%;
     height: 100%;
     background-color: var(--dark);
@@ -256,7 +256,7 @@ body, html {
 
 #chatpage{
     padding: 5px;
-    /* border-radius: 10px; */
+    border-radius: 10px;
     margin-left: 10px;
     width: 75%;
     height: 86%;
@@ -264,11 +264,11 @@ body, html {
 }
 
 .userbox{
-    /* margin-top: 15px; */
+     margin-top: 15px; 
     width: 100%;
     height: 90px;
     background-color: var(--dark);
-    /* border-radius: 10px; */
+     border-radius: 10px; 
     display: flex;
     flex-direction: column;
 }
@@ -293,7 +293,7 @@ body, html {
     /* padding: 3px;
     padding-left: 10px;
     white-space: nowrap;
-    text-overflow: ellipsis; */
+    text-overflow: ellipsis; 
     opacity: 0.6;
 }
 
@@ -346,7 +346,7 @@ p{
     margin: 0;
     padding: 0;
     opacity: 0.4;
-}
+} */
 
 
 
@@ -363,18 +363,19 @@ p{
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
-body,
+/* body,
 input {
   font-family: "Poppins", sans-serif;
-}
+} */
 
 #container {
+  font-family: "Poppins", sans-serif;
   position: relative;
   width: 100%;
   background-color: #fff;
@@ -382,7 +383,7 @@ input {
   overflow: hidden;
 }
 
-.forms-container {
+.frms-container {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -402,7 +403,7 @@ input {
   z-index: 5;
 }
 
-form {
+frm {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -414,12 +415,12 @@ form {
   grid-row: 1 / 2;
 }
 
-form.sign-up-form {
+frm.sign-up-frm {
   opacity: 0;
   z-index: 1;
 }
 
-form.sign-in-form {
+frm.sign-in-frm {
   z-index: 2;
 }
 
@@ -496,7 +497,7 @@ form.sign-in-form {
   border-color: #4481eb;
 }
 
-.btn {
+.butn {
   width: 150px;
   background-color: #5995fd;
   border: none;
@@ -512,7 +513,7 @@ form.sign-in-form {
   margin-top: 10px;
 }
 
-.btn:hover {
+.butn:hover {
   background-color: #4d84e2;
 }
 .panels-container {
@@ -582,7 +583,7 @@ form.sign-in-form {
   padding: 0.7rem 0;
 }
 
-.btn.transparent {
+.butn.transparent {
   margin: 0;
   background: none;
   border: 2px solid #fff;
@@ -614,12 +615,12 @@ form.sign-in-form {
   left: 25%;
 }
 
-#container.sign-up-mode form.sign-up-form {
+#container.sign-up-mode frm.sign-up-frm {
   opacity: 1;
   z-index: 2;
 }
 
-#container.sign-up-mode form.sign-in-form {
+#container.sign-up-mode frm.sign-in-frm {
   opacity: 0;
   z-index: 1;
 }
@@ -696,7 +697,7 @@ form.sign-in-form {
     padding: 0.5rem 0;
   }
 
-  .btn.transparent {
+  .butn.transparent {
     width: 110px;
     height: 35px;
     font-size: 0.7rem;
@@ -741,7 +742,7 @@ form.sign-in-form {
 }
 
 @media (max-width: 570px) {
-  form {
+  frm {
     padding: 0 1.5rem;
   }
 
@@ -766,10 +767,10 @@ form.sign-in-form {
   }
 }
 
-h2{
+.title{
     font-weight: 700;
 }
 
-.fa-user:before {
+/* .fa-user:before {
     content: "\f007";
-}
+} */

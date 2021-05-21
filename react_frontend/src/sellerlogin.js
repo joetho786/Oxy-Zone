@@ -68,9 +68,9 @@ const Sellerlogin = () => {
 
   return (
     <div id="container" className={style}>
-      <div class="forms-container">
+      <div class="frms-container">
         <div class="signin-signup">
-          <form action="" class="sign-in-form">
+          <frm action="" class="sign-in-frm">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user" aria-hidden = 'true'></i>
@@ -82,11 +82,11 @@ const Sellerlogin = () => {
             </div>
             <Router>
             <Link to="/chat">
-              <input type="submit" value="Login" class="btn solid" onClick={Login} />
+              <input type="submit" value="Login" class="butn solid" onClick={Login} />
             </Link>
             </Router>
-          </form>
-          <form action="" class="sign-up-form">
+          </frm>
+          <frm action="" class="sign-up-frm">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user" aria-hidden = 'true'></i>
@@ -104,8 +104,8 @@ const Sellerlogin = () => {
               <i class="fas fa-lock" aria-hidden = 'true'></i>
               <input id='inputpassword2' type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} />
             </div>
-            <input type="submit" class="btn" value="Sign up" onClick={Signup} />
-          </form>
+            <input type="submit" class="butn" value="Sign up" onClick={Signup} />
+          </frm>
         </div>
       </div>
 
@@ -113,7 +113,7 @@ const Sellerlogin = () => {
         <div class="panel left-panel">
           <div class="content">
             <h3>New here ?</h3>
-            <button class="btn transparent" id="sign-up-btn" onClick={() => {
+            <button class="butn transparent" id="sign-up-butn" onClick={() => {
               setStyle('sign-up-mode')
             }}>
               Sign up
@@ -124,7 +124,7 @@ const Sellerlogin = () => {
         <div class="panel right-panel">
           <div class="content">
             <h3>One of us ?</h3>
-            <button class="btn transparent" id="sign-in-btn" onClick={() => {
+            <button class="butn transparent" id="sign-in-butn" onClick={() => {
               setStyle('')
             }}>
               Sign in
