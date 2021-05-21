@@ -26,6 +26,14 @@ function handleClick(event, hist) {
     }
 }
 
+function handlesellerClick(event, hist) {
+    console.log(event)
+    event.preventDefault()
+    event.stopPropagation()
+    hist.push("/seller");
+}
+
+
 export const Header = () => {
 
     const history = useHistory();
@@ -59,7 +67,7 @@ export const Header = () => {
                     {/* <Texthead>Want to buy Oxygen?</Texthead> */}
                 </Textcontent>
                 <button type="button" class="btn btn-warning c1 c">Vaccinations list</button>
-                <button type="button" class="btn btn-secondary c2 c">Sell oxygens</button>
+                <button type="button" class="btn btn-secondary c2 c" onClick = {(e) => handlesellerClick(e, history)}>Sell oxygens</button>
             </Rowtext>
             <Bottom>
                 <Half>
