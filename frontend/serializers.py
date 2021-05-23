@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Seller, Places
+from .models import Sellers, Places
 
-class SellerSerializer(serializers.ModelSerializer):
+class SellersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Seller
-        fields = ('id', 'name', 'email', 'password', 'selldetails')
+        model = Sellers
+        fields = ('id', 'name', 'email', 'password', 'condition')
 
 class PlacesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Places
-        fields = ('id', 'location', 'lattitude', 'longitude', 'seller')
+        fields = ('foreign_id', 'location', 'phno', 'oxygenpricepercontainer')

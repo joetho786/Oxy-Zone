@@ -21,10 +21,11 @@ from rest_framework import routers
 from frontend import views
 
 router = routers.DefaultRouter()
-router.register(r'seller', views.SellerView, 'seller')
-router.register(r'places', views.PlacesView, 'places')
+# router.register(r'sellers', views.SellerView, 'seller')
+router.register(r'place', views.PlacesView, 'places')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/sellers/', views.SellersView.as_view()),
 ]

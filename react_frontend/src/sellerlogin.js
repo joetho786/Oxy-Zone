@@ -2,6 +2,27 @@ import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from 'react-router-dom'
 import './sellerlogin.css'
+import axios from "axios";
+
+// const process = (data) => {
+
+//   console.log(data)
+//   let keys = Object.keys(data)
+//   for (let i = 0; i < keys.length; i++) {
+//     console.log('here comes')
+//     console.log(data[i])
+//     console.log(data[i].name)
+//     console.log(data[i].email)
+//     console.log(data[i].password)
+
+//     if (username == data[i].name && password == data[i].password) {
+//       console.log('true')
+
+//     }
+//   }
+
+// }
+
 
 const Sellerlogin = () => {
   const [style, setStyle] = useState('')
@@ -18,13 +39,24 @@ const Sellerlogin = () => {
 
     if (!(password == '' && email == '')) {
 
+      console.log('login true')
 
+      axios.post('api/sellers/', {
+
+        name : username,
+        email: email,
+        password: password,
+        condition: 'login'
+
+      })
+      .then((res) => process(res))
+      .catch((err) => console.log(err));
 
     } else {
 
-        alert('Not matching passwords')
-        setEmail('')
-        setPassword('')
+      alert('Not matching passwords')
+      setEmail('')
+      setPassword('')
 
     }
 
@@ -42,15 +74,24 @@ const Sellerlogin = () => {
     if ((!(username === '')) && (!(email === '')) && (!(password === '')) && (!(password2 === ''))) {
 
       if (password === password2) {
-        
 
+        console.log('sigining up')
+
+        axios
+          .post("/api/sellers/", {
+            name : username,
+            email: email,
+            password: password,
+            condition: 'signup'
+          })
+          .then((res) => console.log(res))
 
       } else {
         alert('Not matching passwords')
         setPassword('')
         setPassword2('')
       }
-    
+
     } else {
       alert('Fill out the page!')
     }
@@ -73,35 +114,35 @@ const Sellerlogin = () => {
           <frm action="" class="sign-in-frm">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
-              <i class="fas fa-user" aria-hidden = 'true'></i>
+              <i class="fas fa-user" aria-hidden='true'></i>
               <input id='loginemail' type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div class="input-field">
-              <i class="fas fa-lock"  aria-hidden = 'true'></i>
+              <i class="fas fa-lock" aria-hidden='true'></i>
               <input id='loginpwd' type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <Router>
-            <Link to="/chat">
-              <input type="submit" value="Login" class="butn solid" onClick={Login} />
-            </Link>
+              <Link to="/chat">
+                <input type="submit" value="Login" class="butn solid" onClick={Login} />
+              </Link>
             </Router>
           </frm>
           <frm action="" class="sign-up-frm">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
-              <i class="fas fa-user" aria-hidden = 'true'></i>
+              <i class="fas fa-user" aria-hidden='true'></i>
               <input id='inputuser' type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
             </div>
             <div class="input-field">
-              <i class="fas fa-envelope" aria-hidden = 'true'></i>
+              <i class="fas fa-envelope" aria-hidden='true'></i>
               <input id='inputemail' type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div class="input-field">
-              <i class="fas fa-lock" aria-hidden = 'true'></i>
+              <i class="fas fa-lock" aria-hidden='true'></i>
               <input id='inputpassword' type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <div class="input-field">
-              <i class="fas fa-lock" aria-hidden = 'true'></i>
+              <i class="fas fa-lock" aria-hidden='true'></i>
               <input id='inputpassword2' type="password" placeholder="Confirm Password" value={password2} onChange={e => setPassword2(e.target.value)} />
             </div>
             <input type="submit" class="butn" value="Sign up" onClick={Signup} />
