@@ -4,7 +4,7 @@ import Mapbox from './react_map'
 import Maplayers from './map_openlayers'
 import MapContainer from './Map'
 import Sellerlogin from './sellerlogin'
-
+import Vaccinationlisting from './vaccinationlist'
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,6 +30,9 @@ const App = () => {
         </Route>
         <Route path="/seller">
           <Sellerlogin />
+        </Route>
+        <Route path="/vaccinationlist">
+          <Vaccinationlisting/>
         </Route>
         {/* <Route path="/mapnew">
           <Maplayers />
