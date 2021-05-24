@@ -15,6 +15,7 @@ const Sellerlogin = () => {
 
     if (data.status == 201){
       setStyle('')
+      console.log('yay! Login successful')
       return true
     } else if (data.status == 226) {
       alert('Nope! Try some other value')
@@ -30,6 +31,7 @@ const Sellerlogin = () => {
 
     if (data.status == 201){
       setStyle('')
+      console.log('Yay! Signup successfull')
       return true
     } else if (data.status == 226) {
       alert('These credentials are false! Are you a hacker?')
@@ -59,7 +61,7 @@ const Sellerlogin = () => {
         condition: 'signin'
 
       })
-      .then((res) => console.log(res))
+      .then((res) => signinprocess(res))
       .catch((err) => console.log(err));
 
     } else {
@@ -97,6 +99,7 @@ const Sellerlogin = () => {
           
           })
           .then((res) => signupprocess(res))
+          .catch((err) => console.log(err));
 
       } else {
         alert('Not matching passwords')

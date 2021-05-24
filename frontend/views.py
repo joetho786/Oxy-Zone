@@ -84,7 +84,7 @@ class SellersSignupView(APIView):
             print('valid')
             print(nam, emai, pwd, condition)
             # host = self.request.session.session_key
-            signupqueryset = Sellers.objects.filter(email = emai, name = nam)
+            signupqueryset = Sellers.objects.filter(email = emai)
 
                 
             if signupqueryset.exists():
