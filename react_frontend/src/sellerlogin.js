@@ -41,15 +41,15 @@ const Sellerlogin = () => {
 
       console.log('login true')
 
-      axios.post('api/sellers/', {
+      axios.post('api/sellers/login/', {
 
-        name : username,
+        // name : username,
         email: email,
         password: password,
-        condition: 'login'
+        condition: 'signin'
 
       })
-      .then((res) => process(res))
+      .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
     } else {
@@ -78,11 +78,13 @@ const Sellerlogin = () => {
         console.log('sigining up')
 
         axios
-          .post("/api/sellers/", {
+          .post("/api/sellers/signup/", {
+
             name : username,
             email: email,
             password: password,
             condition: 'signup'
+          
           })
           .then((res) => console.log(res))
 

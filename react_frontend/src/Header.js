@@ -34,7 +34,7 @@ function handlesellerClick(event, hist) {
 }
 
 
-export const Header = () => {
+const Header = () => {
 
     const history = useHistory();
 
