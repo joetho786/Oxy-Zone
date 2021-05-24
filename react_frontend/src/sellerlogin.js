@@ -4,32 +4,42 @@ import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory }
 import './sellerlogin.css'
 import axios from "axios";
 
-// const process = (data) => {
-
-//   console.log(data)
-//   let keys = Object.keys(data)
-//   for (let i = 0; i < keys.length; i++) {
-//     console.log('here comes')
-//     console.log(data[i])
-//     console.log(data[i].name)
-//     console.log(data[i].email)
-//     console.log(data[i].password)
-
-//     if (username == data[i].name && password == data[i].password) {
-//       console.log('true')
-
-//     }
-//   }
-
-// }
-
-
 const Sellerlogin = () => {
   const [style, setStyle] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [username, setUsername] = useState('')
+
+  const signupprocess = (data) => {
+
+    if (data.status == 201){
+      setStyle('')
+      return true
+    } else if (data.status == 226) {
+      alert('Nope! Try some other value')
+      return false
+    } else {
+      alert('Error occured! Try again')
+      console.log('something else')
+    }
+  
+  }
+
+  const signinprocess = (data) => {
+
+    if (data.status == 201){
+      setStyle('')
+      return true
+    } else if (data.status == 226) {
+      alert('These credentials are false! Are you a hacker?')
+      return false
+    } else {
+      alert('Error occured! Try again')
+      console.log('something else')
+    }
+  
+  }
 
   const Login = (e) => {
     e.preventDefault();
@@ -86,7 +96,7 @@ const Sellerlogin = () => {
             condition: 'signup'
           
           })
-          .then((res) => console.log(res))
+          .then((res) => signupprocess(res))
 
       } else {
         alert('Not matching passwords')
