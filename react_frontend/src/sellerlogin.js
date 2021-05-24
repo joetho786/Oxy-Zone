@@ -1,10 +1,13 @@
-import { ContactSupportOutlined } from '@material-ui/icons';
+import { ContactSupportOutlined, LaptopWindows } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from 'react-router-dom'
 import './sellerlogin.css'
 import axios from "axios";
 
 const Sellerlogin = () => {
+
+  const history = useHistory();
+
   const [style, setStyle] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,8 +18,12 @@ const Sellerlogin = () => {
 
     if (data.status == 201){
       setStyle('')
-      console.log('yay! Login successful')
+      console.log('yay! Signup successful')
+
+      // localStorage.setItem("det", "data.data");
+
       return true
+    
     } else if (data.status == 226) {
       alert('Nope! Try some other value')
       return false
@@ -27,12 +34,24 @@ const Sellerlogin = () => {
   
   }
 
-  const signinprocess = (data) => {
+  const signinprocess = (data, hist) => {
 
     if (data.status == 201){
       setStyle('')
-      console.log('Yay! Signup successfull')
+      console.log('Yay! Login successfull')
+      console.log(data.data)
+
+      localStorage.setItem("det", [data.data.id, data.data.name, data.data.email, data.data.password]);
+      
+      window.location.reload()
+
+      // hist.push("seller/home")
+
+      
       return true
+
+
+
     } else if (data.status == 226) {
       alert('These credentials are false! Are you a hacker?')
       return false
@@ -53,7 +72,7 @@ const Sellerlogin = () => {
 
       console.log('login true')
 
-      axios.post('api/sellers/login/', {
+      axios.post('/api/sellers/login/', {
 
         // name : username,
         email: email,
@@ -61,7 +80,7 @@ const Sellerlogin = () => {
         condition: 'signin'
 
       })
-      .then((res) => signinprocess(res))
+      .then((res) => signinprocess(res, history))
       .catch((err) => console.log(err));
 
     } else {

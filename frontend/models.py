@@ -12,7 +12,7 @@ class Sellers(models.Model):
         return self.name
 
 class Places(models.Model):
-    foreign_id = models.ForeignKey(Sellers, on_delete=models.CASCADE, null = False)
+    foreign_seller = models.ForeignKey(Sellers, on_delete=models.CASCADE, null = False)
     location = models.TextField()
     phno = models.IntegerField()
     oxygenpricepercontainer = models.FloatField()

@@ -22,11 +22,12 @@ from frontend import views
 
 router = routers.DefaultRouter()
 router.register(r'sellers', views.SellersView, 'sellers')
-router.register(r'place', views.PlacesView, 'places')
+router.register(r'places', views.PlacesView, 'places')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('details/', include(router.urls)),
     path('api/sellers/login/', views.SellersLoginView.as_view()),
     path('api/sellers/signup/', views.SellersSignupView.as_view()),
+    path('api/sellers/details/', views.SellersdetailsView.as_view())
 ]

@@ -1,3 +1,4 @@
+from django.db.models import fields
 from rest_framework import serializers
 from .models import Sellers, Places
 
@@ -26,4 +27,12 @@ class SellersSignupSerializer(serializers.ModelSerializer):
 class PlacesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Places
-        fields = ('foreign_id', 'location', 'phno', 'oxygenpricepercontainer')
+        fields = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
+
+class SellersDetailsSerializer(serializers.ModelSerializer):
+
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Sellers
+        fields = ('id', 'name')
