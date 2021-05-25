@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -57,7 +58,7 @@ const SellerHome = () => {
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
                 console.log(data.data.Data[i].foreign_seller)
-                newlist.push([data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
             }
             console.log('newlist: ' + newlist)
 
@@ -85,19 +86,27 @@ const SellerHome = () => {
 
     }, [])
 
+    const handleplusclick = () => {
+
+        let listt = ['edit', '', '', '']
+
+        setlis(...listt, ...lis)
+
+    }
+
     return (
         <>
-        <Logout >
+            <Logout >
 
-        <button type="button" class="btn btn-warning c1 c" onClick = {handleclick} >Logout <ExitToAppIcon /> </button>
+                <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button>
 
-        </Logout>
+            </Logout>
             <Title >
                 <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
             </Title >
             < Hr />
             <Listview>
-                <Plus >
+                <Plus onClick={handleplusclick}>
                     <AddCircleIcon />
                 </Plus>
 
@@ -108,33 +117,53 @@ const SellerHome = () => {
 
                             console.log(element)
 
-                            return (
-                                <Grid item xs={12}>
-                                    {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
-                                    <Card className={classes.root} id='makeme'>
-                                        <CardContent>
-                                            {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
-                                            {/* {element[0]} */}
-                                            {/* </Typography> */}
-                                            <Typography variant="h5" component="h2">
-                                                {/* be{bull}nev{bull}o{bull}lent */}
-                                                {element[0]}
-                                            </Typography>
-                                            {/* <Typography className={classes.pos} color="textSecondary"> */}
-                                            {/* adjective */}
-                                            {/* </Typography> */}
-                                            <Typography variant="body2" component="p">
-                                                {element[1]}
-                                                <br />
-                                                {element[2]}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions>
-                                            <Button size="small"> <EditIcon></EditIcon> </Button>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            )
+                            if (element[0] == 'noedit') {
+
+                                return (
+                                    <Grid item xs={12}>
+                                        <Card className={classes.root} id='makeme'>
+                                            {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
+                                            <CardContent>
+                                                {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
+                                                {/* {element[0]} */}
+                                                {/* </Typography> */}
+                                                <Typography variant="h5" component="h2">
+                                                    {/* be{bull}nev{bull}o{bull}lent */}
+                                                    {element[1]}
+                                                </Typography>
+                                                {/* <Typography className={classes.pos} color="textSecondary"> */}
+                                                {/* adjective */}
+                                                {/* </Typography> */}
+                                                <Typography variant="body2" component="p">
+                                                    {element[2]}
+                                                    <br />
+                                                    {element[3]}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Bottom>
+                                                <Button size="small" id = 'butstart'> <EditIcon /> </Button>
+                                                <Button size="small" id = 'butend'> <DeleteIcon /> </Button>
+                                                </Bottom>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+
+                                )
+
+                            } else if (element[0] == 'edit') {
+
+                                return(
+
+                                    <Grid item xs={12}>
+                                    
+
+
+                                    </Grid>
+
+                                )
+
+                            }
 
                         })
                     }
@@ -146,6 +175,15 @@ const SellerHome = () => {
         </>
     )
 }
+
+const Bottom = styled.div`
+
+display: flex;
+width: 100%;
+flex-direction: row;
+justify-content: space-between;
+
+`
 
 const Logout = styled.div`
 
