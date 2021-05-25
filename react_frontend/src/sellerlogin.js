@@ -4,6 +4,11 @@ import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory }
 import './sellerlogin.css'
 import axios from "axios";
 
+// const bcrypt = require('bcrypt');
+// const saltRounds = 10;
+// const myPlaintextPassword = 's0/\/\P4$$w0rD';
+// const someOtherPlaintextPassword = 'not_bacon';
+
 const Sellerlogin = () => {
 
   const history = useHistory();
@@ -13,6 +18,18 @@ const Sellerlogin = () => {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [username, setUsername] = useState('')
+
+  // const hashpwd = (pwd) => {
+  //   bcrypt.hash(pwd, saltRounds, function(err, hash) {
+  //     console.log('hash: ' + hash)
+  //   });
+  // }
+
+  // const comparepwd = (pwd, hash) => {
+  //   bcrypt.compare(pwd, hash, function(err, result) {
+  //     console.log('result: ' + result)
+  // });
+  // }
 
   const signupprocess = (data) => {
 
@@ -41,7 +58,7 @@ const Sellerlogin = () => {
       console.log('Yay! Login successfull')
       console.log(data.data)
 
-      localStorage.setItem("det", [data.data.id, data.data.name, data.data.email, data.data.password]);
+      localStorage.setItem("gid", [data.data.id]);
       
       window.location.reload()
 
@@ -133,12 +150,11 @@ const Sellerlogin = () => {
   }
 
   useEffect(() => {
-    // document.addEventListener('keydown', function (event) {
-    //   if ((event.key === 'Enter') && (!(document.getElementById('name') === ''))) {
-    //     // event.preventDefault()
-    //     routeChange()
-    //   }
-    // })
+    
+    // hashpwd(1)
+    //comparepwd(1)
+    //comparepwd(2)
+
   }, [])
 
   return (

@@ -35,4 +35,4 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name')
+        fields = ('id',)

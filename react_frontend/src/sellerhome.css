@@ -1,0 +1,8 @@
+#makeme{
+    width: 90% !important;
+    margin-left: 20px !important;
+}
+
+#makeme:hover{
+    cursor: default;
+}

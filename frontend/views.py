@@ -134,12 +134,12 @@ class SellersdetailsView(APIView):
 
         if serializer.is_valid():
             id = serializer.data.get('id')
-            nam = serializer.data.get('name')
+            #nam = serializer.data.get('name')
 
             print('valid inside deatils')
             print(id)
             # host = self.request.session.session_key
-            sellerqueryset = Sellers.objects.filter(id = id, name = nam)
+            sellerqueryset = Sellers.objects.filter(id = id)
 
             print('sellerqueryset : ', sellerqueryset)
 
@@ -148,11 +148,12 @@ class SellersdetailsView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
-                sellerquerydata = Sellers.objects.get(id = id, name = nam)
+                sellerquerydata = Sellers.objects.get(id = id)
 
                 print(sellerquerydata)
 
                 placedata = Places.objects.filter(foreign_seller = sellerquerydata)
+                print(placedata.values())
                 print('count: ', placedata.count())
                 count = placedata.count()
 
@@ -160,10 +161,12 @@ class SellersdetailsView(APIView):
 
                     print('data exists')
 
-                    getdata = Places.objects.get(foreign_seller = sellerquerydata)
-                    print(getdata)
+                    #getdata = Places.objects.get(foreign_seller = sellerquerydata)
+                    #print(getdata)
 
-                    return Response({'Data': SellersDetailsSerializer(placedata).data}, status= status.HTTP_200_OK)
+                    result_serializer = PlacesSerializer(placedata, many = True)
+
+                    return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
 
                 else:
                     print('data doesnt exists')

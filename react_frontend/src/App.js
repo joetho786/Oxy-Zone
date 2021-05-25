@@ -15,7 +15,7 @@ import {
 
 const App = () => {
 
-  const val = localStorage.getItem("det")
+  const val = localStorage.getItem("gid")
   console.log(val)
   
   return (
@@ -24,9 +24,9 @@ const App = () => {
         <Route exact path="/">
           <Header />
         </Route>
-        <Route exact path="/mapbox">
+        {/* <Route exact path="/mapbox">
           <Mapbox />
-        </Route>
+        </Route> */}
         <Route exact path="/googlemap">
           <MapContainer />
         </Route>
