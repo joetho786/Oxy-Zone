@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -33,6 +34,13 @@ const useStyles = makeStyles({
 });
 
 const SellerHome = () => {
+
+    const handleclick = () => {
+
+        localStorage.removeItem('gid')
+        window.location.reload()
+
+    }
 
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
@@ -79,6 +87,11 @@ const SellerHome = () => {
 
     return (
         <>
+        <Logout >
+
+        <button type="button" class="btn btn-warning c1 c" onClick = {handleclick} >Logout <ExitToAppIcon /> </button>
+
+        </Logout>
             <Title >
                 <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
             </Title >
@@ -133,6 +146,16 @@ const SellerHome = () => {
         </>
     )
 }
+
+const Logout = styled.div`
+
+position: absolute;
+top: 10px;
+right: 10px;
+
+`
+
+
 
 const Plus = styled.div`
 
