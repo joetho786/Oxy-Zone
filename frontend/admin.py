@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Seller, Places
+from .models import Sellers, Places
 
-class SellerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'password', 'selldetails')
+class SellersAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'password')
 
 class PlacesAdmin(admin.ModelAdmin):
-    list_display = ('location', 'lattitude', 'longitude', 'seller')
+    list_display = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
 
 # Register your models here.
 
-admin.site.register(Seller, SellerAdmin)
+admin.site.register(Sellers, SellersAdmin)
 admin.site.register(Places, PlacesAdmin)

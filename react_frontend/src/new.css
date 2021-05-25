@@ -12,17 +12,6 @@
     top: 80px;
 }
 
-/* .search{
-    position: absolute;
-    border-radius: 20px !important;
-    background-color: #F1F1F1;
-    height: 50px;
-    padding-left: 10px;
-    font-size: 25px;
-    width: 390px;
-    margin-top: -75px;
-} */
-
 .search2{
     position: absolute;
     border-radius: 20px !important;
@@ -142,3 +131,17 @@
 
     vertical-align: middle;
 }
+
+
+
+
+/* .search{
+    position: absolute;
+    border-radius: 20px !important;
+    background-color: #F1F1F1;
+    height: 50px;
+    padding-left: 10px;
+    font-size: 25px;
+    width: 390px;
+    margin-top: -75px;
+} */
