@@ -1,38 +1,12 @@
-from django.db.models import fields
 from rest_framework import serializers
-from .models import Sellers, Places
+from .models import Seller, Places
 
-class SellersSerializer(serializers.ModelSerializer):
-
+class SellerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sellers
-        fields = ('id', 'name', 'email', 'password')
-
-class SellersLoginSerializer(serializers.ModelSerializer):
-
-    condition = serializers.CharField(max_length=6)
-
-    class Meta:
-        model = Sellers
-        fields = ('email', 'password', 'condition')
-
-class SellersSignupSerializer(serializers.ModelSerializer):
-    
-    condition = serializers.CharField(max_length=6)
-
-    class Meta:
-        model = Sellers
-        fields = ('name', 'email', 'password', 'condition')
+        model = Seller
+        fields = ('id', 'name', 'email', 'password', 'selldetails')
 
 class PlacesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Places
-        fields = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
-
-class SellersDetailsSerializer(serializers.ModelSerializer):
-
-    id = serializers.IntegerField()
-
-    class Meta:
-        model = Sellers
-        fields = ('id',)
+        fields = ('id', 'location', 'lattitude', 'longitude', 'seller')

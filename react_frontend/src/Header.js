@@ -41,7 +41,7 @@ function handleVaccinationClick(event, hist) {
 }
 
 
-const Header = () => {
+export const Header = () => {
 
     const history = useHistory();
 
