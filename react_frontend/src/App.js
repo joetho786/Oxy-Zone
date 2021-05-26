@@ -12,6 +12,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Vaccinationlisting from './vaccinationlist'
 
 const App = () => {
 
@@ -38,6 +39,9 @@ const App = () => {
         {/* <Route path="/seller/home">
           <SellerHome />
         </Route> */}
+        <Route exact path="/vaccinationlist">
+          <Vaccinationlisting/>
+        </Route>
         <Route path="/map/:loc">
           <Maplayers />
         </Route>
