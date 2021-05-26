@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -16,6 +18,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import './sellerhome.css'
+
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles({
     root: {
@@ -58,7 +62,7 @@ const SellerHome = () => {
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
                 console.log(data.data.Data[i].foreign_seller)
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller.id])
             }
             console.log('newlist: ' + newlist)
 
@@ -88,9 +92,56 @@ const SellerHome = () => {
 
     const handleplusclick = () => {
 
-        let listt = ['edit', '', '', '']
+        let listt = ['edit', '', '', '', '', uuidv4()]
 
-        setlis(...listt, ...lis)
+        setlis([listt, ...lis])
+
+    }
+
+    const deleteclick = (id, cond) => {
+        if (type === 'edit') {
+            console.log('dont send to there lol')
+            for (let i = 0; i < lis.length; i++){
+
+                if (lis[i][5] === id) {
+                    
+                    console.log(lis[i])
+
+                    //let listt = ['noedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id]
+                    // listt = [...(lis[0 : i]), listt, ...lis(lis[i : ])]
+                    break;
+                }
+
+            }
+
+
+        } else if (type === 'noedit') {
+            axios.post('/api/sellers/delete', {
+                location: location,
+                addr: addr, 
+                phno: phno,
+                oxyprice: oxyprice,
+                id: id,
+            })
+            .then((res) => console.log(res))
+            .catch((err) => {console.log(err)})
+        }
+    }
+
+    const saveclick = (location, addr, phno, oxyprice, id, type) => {
+        axios.post('/api/sellers/save/', {
+            location: location,
+            addr: addr, 
+            phno: phno,
+            oxyprice: oxyprice,
+            id : id,
+            type: type,
+        })
+        .then((res) => {console.log(res)})
+        .catch((err) => {console.log(err)})
+    }
+
+    const editclick = (id) => {
 
     }
 
@@ -138,12 +189,14 @@ const SellerHome = () => {
                                                     {element[2]}
                                                     <br />
                                                     {element[3]}
+                                                    <br />
+                                                    {element[4]}
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
                                                 <Bottom>
-                                                <Button size="small" id = 'butstart'> <EditIcon /> </Button>
-                                                <Button size="small" id = 'butend'> <DeleteIcon /> </Button>
+                                                    <Button size="small" id='butstart' onClick = {() => {editclick(element[4])}} > <EditIcon /> </Button>
+                                                    <Button size="small" id='butend' onClick = {() => {deleteclick(element[4], 'edit')}}> <DeleteIcon /> </Button>
                                                 </Bottom>
                                             </CardActions>
                                         </Card>
@@ -153,11 +206,30 @@ const SellerHome = () => {
 
                             } else if (element[0] == 'edit') {
 
-                                return(
+                                return (
 
                                     <Grid item xs={12}>
-                                    
 
+                                        <Card className={classes.root} id='makeme'>
+                                            <CardContent>
+                                                <Typography variant="h5" component="h2">
+                                                    Location : {element[1]}
+                                                </Typography>
+                                                <Typography variant="body2" component="p">
+                                                    Num: {element[2]}
+                                                    <br />
+                                                    Addr : {element[3]}
+                                                    <br />
+                                                    OxyPrice : {element[3]}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Bottom>
+                                                    <Button size="small" id='butstart' onClick = {() => saveclick(element[4])} > <SaveIcon /> </Button>
+                                                    <Button size="small" id='butend' onClick = {() => deleteclick(element[4], 'noedit')}> <DeleteIcon /> </Button>
+                                                </Bottom>
+                                            </CardActions>
+                                        </Card>
 
                                     </Grid>
 

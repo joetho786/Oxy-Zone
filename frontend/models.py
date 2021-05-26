@@ -13,9 +13,10 @@ class Sellers(models.Model):
 
 class Places(models.Model):
     foreign_seller = models.ForeignKey(Sellers, on_delete=models.CASCADE, null = False)
-    location = models.TextField()
-    phno = models.IntegerField()
-    oxygenpricepercontainer = models.FloatField()
+    location = models.TextField(null=False)
+    addr = models.TextField(null=False)
+    phno = models.IntegerField(null=False)
+    oxyprice = models.FloatField(null=False)
     # noofcontainers = models.IntegerField()
     # seller = models.TextField()
 

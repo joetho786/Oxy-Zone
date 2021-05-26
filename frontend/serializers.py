@@ -6,7 +6,7 @@ class SellersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email', 'password')
+        fields = ('id', 'name', 'email')
 
 class SellersLoginSerializer(serializers.ModelSerializer):
 
@@ -27,7 +27,7 @@ class SellersSignupSerializer(serializers.ModelSerializer):
 class PlacesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Places
-        fields = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
+        fields = ('foreign_seller', 'location', 'addr', 'phno', 'oxyprice')
 
 class SellersDetailsSerializer(serializers.ModelSerializer):
 
@@ -36,3 +36,21 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sellers
         fields = ('id',)
+
+class PlacessaveSerializer(serializers.ModelSerializer):
+    
+    condition = serializers.CharField()
+    type = serializers.CharField()
+
+    class Meta:
+        model = Places
+        fields = ('location', 'addr', 'phno', 'oxyprice', 'id', 'type')
+
+class PlacesdeleteSerializer(serializers.ModelSerializer):
+    
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Places
+        fields = ('location', 'addr', 'phno', 'oxyprice', 'id' )
+
