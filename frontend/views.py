@@ -1,11 +1,13 @@
 from django.http.response import Http404
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, SellersdeleteSerializer, SellerssaveoldSerializer, SellerssavenewSerializer
+from .serializers import SellersDetailsSerializer, SellerswithpwdSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, PlacesdeleteSerializer, PlacessaveoldSerializer, PlacessavenewSerializer
 from .models import Sellers, Places
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+
+import bcrypt
 
 from frontend import serializers
 
@@ -53,7 +55,7 @@ class SellersLoginView(APIView):
                     room = Sellers.objects.get(email = emai, password = pwd)
                     print(room)
 
-                    return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
+                    return Response(SellerswithpwdSerializer(room).data, status=status.HTTP_201_CREATED)
 
                     #return Response({'Bad Request': 'it already exists...'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,23 +104,12 @@ class SellersSignupView(APIView):
                     room = Sellers(name = nam, email = emai, password = pwd)
                     room.save()
                     
-                    return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
-
-                    
-            # else:
-            #     room = Sellers(name = nam, email = emai, password = pwd)
-            #     room.save()
-
-            #     return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
+                    return Response({'Data' : 'succesfuly created'}, status=status.HTTP_201_CREATED)
 
         print('oops')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
 
-# class LoginView(viewsets.ModelViewSet):
-#     serializer_class = SellersSerializer
-#     queryset = Sellers.objects.all()
-#     def post(self, request):
-#         print(request.POST)
+
 
 class SellersdetailsView(APIView):
 
@@ -136,12 +127,15 @@ class SellersdetailsView(APIView):
 
         if serializer.is_valid():
             id = serializer.data.get('id')
-            #nam = serializer.data.get('name')
+            name = serializer.data.get('name')
+            email = serializer.data.get('email')
+            password = serializer.data.get('password')
+
 
             print('valid inside deatils')
             print(id)
             # host = self.request.session.session_key
-            sellerqueryset = Sellers.objects.filter(id = id)
+            sellerqueryset = Sellers.objects.filter(id = id, email = email, name = name, password = password)
 
             print('sellerqueryset : ', sellerqueryset)
 
@@ -150,7 +144,7 @@ class SellersdetailsView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
-                sellerquerydata = Sellers.objects.get(id = id)
+                sellerquerydata = Sellers.objects.get(id = id, email = email, name = name, password = password)
 
                 print(sellerquerydata)
 
@@ -182,7 +176,7 @@ class SellersdetailsView(APIView):
 
 class SellersdeleteView(APIView):
     
-    serializer_class = SellersdeleteSerializer
+    serializer_class = PlacesdeleteSerializer
 
     def post(self, request, format=None):
 
@@ -216,9 +210,13 @@ class SellersdeleteView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
-                placequerydata = Places.objects.filter(foreign_seller = sellerqueryset, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
+                sellerdata = Sellers.objects.get(id = id)
 
-                print(placequerydata.vaules)
+                print('sellerdata: ', sellerdata)
+
+                placequerydata = Places.objects.filter(foreign_seller = sellerdata, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
+
+                print(placequerydata.values())
 
                 print('count: ', placequerydata.count())
                 count = placequerydata.count()
@@ -244,7 +242,7 @@ class SellersdeleteView(APIView):
 
 class SellerssaveoldView(APIView):
     
-    serializer_class = SellerssaveoldSerializer
+    serializer_class = PlacessaveoldSerializer
 
     def post(self, request, format=None):
 
@@ -262,10 +260,10 @@ class SellerssaveoldView(APIView):
             addr = serializer.data.get('addr')
             phno = serializer.data.get('phno')
             oxyprice = serializer.data.get('oxyprice')
-            newlocation = serializer.data.get('newlocation')
-            newaddr = serializer.data.get('newaddr')
-            newphno = serializer.data.get('newphno')
-            newoxyprice = serializer.data.get('newoxyprice')
+            oldlocation = serializer.data.get('oldlocation')
+            oldaddr = serializer.data.get('oldaddr')
+            oldphno = serializer.data.get('oldphno')
+            oldoxyprice = serializer.data.get('oldoxyprice')
 
             print('valid inside deatils')
             print(id)
@@ -280,14 +278,16 @@ class SellerssaveoldView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
-                placequerydata = Places.objects.filter(foreign_seller = sellerqueryset)
+                sellerdata = Sellers.objects.get(id = id)
 
-                print(placequerydata)
+                placequerydata = Places.objects.filter(foreign_seller = sellerdata, location = oldlocation, addr = oldaddr, phno = oldphno, oxyprice = oldoxyprice)
 
-                placedata = Places.objects.filter(foreign_seller = sellerquerydata)
-                print(placedata.values())
-                print('count: ', placedata.count())
-                count = placedata.count()
+                print(placequerydata.values())
+
+                # placedata = Places.objects.filter(foreign_seller = sellerquerydata)
+                # print(placedata.values())
+                print('count: ', placequerydata.count())
+                count = placequerydata.count()
 
                 if count != 0:
 
@@ -296,7 +296,9 @@ class SellerssaveoldView(APIView):
                     #getdata = Places.objects.get(foreign_seller = sellerquerydata)
                     #print(getdata)
 
-                    result_serializer = PlacesSerializer(placedata, many = True)
+                    placequerydata.update(location = location, phno = phno, addr = addr, oxyprice = oxyprice)
+
+                    result_serializer = PlacesSerializer(placequerydata, many = True)
 
                     return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
 
@@ -312,7 +314,7 @@ class SellerssaveoldView(APIView):
 
 class SellerssavenewView(APIView):
     
-    serializer_class = SellerssavenewSerializer
+    serializer_class = PlacessavenewSerializer
 
     def post(self, request, format=None):
 
@@ -344,29 +346,31 @@ class SellerssavenewView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
-                placequerydata = Places.objects.filter(foreign_seller = sellerqueryset)
+                sellerdata = Sellers.objects.get(id = id)
 
-                print(placequerydata)
+                placequerydata = Places(foreign_seller = sellerdata, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
+                placequerydata.save()
+                # print(placequerydata)
 
-                placedata = Places.objects.filter(foreign_seller = sellerquerydata)
-                print(placedata.values())
-                print('count: ', placedata.count())
-                count = placedata.count()
+                # placedata = Places.objects.filter(foreign_seller = sellerquerydata)
+                # print(placedata.values())
+                # print('count: ', placedata.count())
+                # count = placedata.count()
 
-                if count != 0:
+                # if count != 0:
 
-                    print('data exists')
+                    # print('data exists')
 
-                    #getdata = Places.objects.get(foreign_seller = sellerquerydata)
-                    #print(getdata)
+                    # #getdata = Places.objects.get(foreign_seller = sellerquerydata)
+                    # #print(getdata)
 
-                    result_serializer = PlacesSerializer(placedata, many = True)
+                    # result_serializer = PlacesSerializer(placedata, many = True)
 
-                    return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
+                    # return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
 
-                else:
-                    print('data doesnt exists')
-                    return Response({'Data': 'No data'}, status = status.HTTP_226_IM_USED)
+                # else:
+                    # print('data doesnt exists')
+                return Response({'Data': 'Saved data'}, status = status.HTTP_226_IM_USED)
 
             print('id itself doesnt exists')
             return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)

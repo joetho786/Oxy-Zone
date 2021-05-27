@@ -58,7 +58,7 @@ const Sellerlogin = () => {
       console.log('Yay! Login successfull')
       console.log(data.data)
 
-      localStorage.setItem("gid", [data.data.id]);
+      localStorage.setItem("gid", [data.data.id, data.data.name, data.data.email, data.data.password]);
       
       window.location.reload()
 

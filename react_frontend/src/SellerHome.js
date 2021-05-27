@@ -20,7 +20,7 @@ import Typography from '@material-ui/core/Typography';
 
 import './sellerhome.css'
 
-import { v4 as uuidv4 } from 'uuid';
+import { parse, v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles({
     root: {
@@ -40,6 +40,19 @@ const useStyles = makeStyles({
 });
 
 const SellerHome = () => {
+
+    const refresh = () => {
+
+        const val = localStorage.getItem("gid").split(',')
+
+        axios.post('/api/sellers/details/', {
+            id: parseInt(val[0]),
+            name: val[1],
+            email: val[2],
+            password: val[3]
+        }).then((data) => process(data))
+
+    }
 
     const handleclick = () => {
 
@@ -61,10 +74,14 @@ const SellerHome = () => {
 
             console.log('data : ' + data.data.Data)
             let newlist = []
+            
             for (let i = 0; i < data.data.Data.length; i++) {
-                console.log(data.data.Data[i].foreign_seller)
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller.id])
+                console.log('comeon', data.data.Data[i].foreign_seller)
+                console.log(data.data.Data[i].oxyprice)
+                console.log(parseFloat(data.data.Data[i].oxyprice))
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller])
             }
+            
             console.log('newlist: ' + newlist)
 
             setlis(newlist)
@@ -80,27 +97,29 @@ const SellerHome = () => {
     useEffect(() => {
 
         const val = localStorage.getItem("gid").split(',')
-        console.log(val)
+        console.log('val:', val)
+
+        console.log(val[0])
 
         axios.post('/api/sellers/details/', {
             id: parseInt(val[0]),
-            // name: val[1],
-            // email: val[2],
-            // password: val[3]
+            name: val[1],
+            email: val[2],
+            password: val[3]
         }).then((data) => process(data))
 
     }, [])
 
     const handleplusclick = () => {
 
-        let listt = ['newedit', '', '', '', '', uuidv4(), '', '', '', '']
+        let listt = ['newedit', '', '', '', '', parseInt(localStorage.getItem("gid").split(',')[0]), '', '', '', '']
 
         setlis([listt, ...lis])
 
     }
 
-    const deleteclick = (id, cond) => {
-        if (type === 'edit') {
+    const deleteclick = (location, addr, phno, oxyprice ,id, cond) => {
+        if (cond === 'edit') {
             console.log('dont send to there lol')
             for (let i = 0; i < lis.length; i++){
 
@@ -109,11 +128,13 @@ const SellerHome = () => {
                     console.log(lis[i])
 
                     // let listt = ['noedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id]
-                    let listt = [...(lis.slice(0 , i)), ...lis(lis.slice((i+1) , (lis.length - 1)))]
+                    let listt = [...(lis.slice(0 , i)), ...lis(lis.slice((i+1) , (lis.length)))]
 
                     console.log(listt)
 
                     setlis(listt)
+
+                    refresh()
                     
                     break;
                 }
@@ -121,9 +142,9 @@ const SellerHome = () => {
             }
 
 
-        } else if (type === 'noedit') {
+        } else if (cond === 'noedit') {
             console.log('posting now')
-            axios.post('/api/sellers/delete', {
+            axios.post('/api/sellers/delete/', {
                 location: location,
                 addr: addr, 
                 phno: phno,
@@ -132,31 +153,37 @@ const SellerHome = () => {
             })
             .then((res) => console.log(res))
             .catch((err) => {console.log(err)})
+            .then(() => {refresh()})
         }
     }
 
     const saveclick = (location, addr, phno, oxyprice, id, type, newlocation, newaddr, newphno, newoxyprice) => {
 
+        console.log('type: ', type)
+
         if (type === 'oldedit'){
 
             console.log('oldedit')
 
-            axios.post('/api/sellers/save/old', {
+            console.log(location, addr, phno, oxyprice, id, type, newlocation, newaddr, newphno, newoxyprice)
+
+            axios.post('/api/sellers/save/old/', {
                 location: location,
                 addr: addr, 
                 phno: phno,
                 oxyprice: oxyprice,
                 id : id,
-                location: newlocation,
-                addr: newaddr, 
-                phno: newphno,
-                oxyprice: newoxyprice,
+                oldlocation: newlocation,
+                oldaddr: newaddr, 
+                oldphno: newphno,
+                oldoxyprice: newoxyprice,
             })
             .then((res) => {console.log(res)})
-            .catch((err) => {console.log(err)})    
+            .catch((err) => {console.log(err)})
+            .then(() => {refresh()})    
         } else {
             console.log('newedit')
-            axios.post('/api/sellers/save/new', {
+            axios.post('/api/sellers/save/new/', {
                 location: location,
                 addr: addr, 
                 phno: phno,
@@ -165,15 +192,19 @@ const SellerHome = () => {
             })
             .then((res) => {console.log(res)})
             .catch((err) => {console.log(err)})    
+            .then(() => {refresh()})   
         }
 
     }
 
     // lis => [ 'edit or noedit', 'location', 'addr', 'phno', 'oxyprice', 'id' ]
 
-    const editclick = (id) => {
+    const editclick = (location, addr, phno, oxyprice, id) => {
+
+        console.log('edit : ', id)
+
         for (let i = 0; i < lis.length; i++) {
-            if (id === lis[i][5]){
+            if (id === lis[i][5] && location === lis[i][1] && addr === lis[i][2] && phno === lis[i][3] && oxyprice === lis[i][4]){
 
                 console.log('inside')
 
@@ -181,7 +212,9 @@ const SellerHome = () => {
 
                 console.log(listt)
 
-                let newlist = [...lis.slice(0, i), listt, ...lis.slice((i+1), (lis.length-1))]
+                console.log(lis, i)
+
+                let newlist = [...lis.slice(0, i), listt, ...lis.slice((i+1), (lis.length))]
 
                 console.log(newlist)
 
@@ -210,7 +243,7 @@ const SellerHome = () => {
                 <Grid container spacing={3}>
 
                     {
-                        lis.map((element) => {
+                        lis.map((element, index) => {
 
                             console.log(element)
 
@@ -241,8 +274,8 @@ const SellerHome = () => {
                                             </CardContent>
                                             <CardActions>
                                                 <Bottom>
-                                                    <Button size="small" id='butstart' onClick = {() => {editclick(element[4])}} > <EditIcon /> </Button>
-                                                    <Button size="small" id='butend' onClick = {() => {deleteclick(element[4], 'noedit')}}> <DeleteIcon /> </Button>
+                                                    <Button size="small" id='butstart' onClick = {() => {editclick(element[1], element[2], element[3], element[4], element[5])}} > <EditIcon /> </Button>
+                                                    <Button size="small" id='butend' onClick = {() => {deleteclick(element[1], element[2], element[3], element[4], element[5], 'noedit')}}> <DeleteIcon /> </Button>
                                                 </Bottom>
                                             </CardActions>
                                         </Card>
@@ -250,7 +283,9 @@ const SellerHome = () => {
 
                                 )
 
-                            } else if (element[0] == 'edit') {
+                            } else if (element[0] === 'newedit' || element[0] === 'oldedit') {
+
+                                console.log(element)
 
                                 return (
 
@@ -258,21 +293,51 @@ const SellerHome = () => {
 
                                         <Card className={classes.root} id='makeme'>
                                             <CardContent>
-                                                <Typography variant="h5" component="h2">
-                                                    Location : <input onChange = {(e) => element[1] = e.target.value} > {element[1]} </input>
-                                                </Typography>
-                                                <Typography variant="body2" component="p">
-                                                    Num: <input onChange = {(e) => element[2] = e.target.value}> {element[2]} </input>
+                                                {/* <Typography variant="h5" component="h2"> */}
+
+                                                    Location : <input 
+                                                    type = 'text' 
+                                                    onChange = {(e) => setlis([...lis.slice(0, index), [element[0], e.target.value, element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9] ], ...lis.slice((index+1), lis.length) ] ) }  
+                                                    value = {element[1]}
+                                                     />  
+
+                                                {/* </Typography> */}
+                                                {/* <Typography variant="body2" component="p"> */}
+
+                                                    Addr: <input 
+                                                    type = 'text'  
+                                                    value = {element[2]} 
+                                                    onChange = {(e) => setlis([...lis.slice(0, index), [element[0], element[1], e.target.value, element[3], element[4], element[5], element[6], element[7], element[8], element[9] ], ...lis.slice((index+1), lis.length)])} 
+                                                    /> 
+                                                    
                                                     <br />
-                                                    Addr : <input onChange = {(e) => element[3] = e.target.value}> {element[3]} </input>
+                                                    
+                                                    Num : <input 
+                                                    type = 'number'  
+                                                    value = {element[3]}  
+                                                    onChange = {(e) => setlis([...lis.slice(0, index), [element[0], element[1], element[2], e.target.value, element[4], element[5], element[6], element[7], element[8], element[9] ], ...lis.slice((index+1), lis.length)])} 
+                                                    /> 
+                                                    
                                                     <br />
-                                                    OxyPrice : <input onChange = {(e) => element[4] = e.target.value}> {element[4]} </input>
-                                                </Typography>
+                                                    
+                                                    {/* {console.log(element[4])} */}
+                                                    {/* {console.log(parseFloat(element[4]))} */}
+                                                    
+                                                    OxyPrice : <input 
+                                                    onKeyPress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" 
+                                                    type = 'text'  
+                                                    value = {parseFloat(element[4])} 
+                                                    onChange = {(e) => setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], e.target.value, element[5], element[6], element[7], element[8], element[9] ], ...lis.slice((index+1), lis.length)])} 
+                                                    />  
+                                                
+                                                {/* </Typography> */}
                                             </CardContent>
                                             <CardActions>
                                                 <Bottom>
+
                                                     <Button size="small" id='butstart' onClick = {() => saveclick(element[1], element[2], element[3], element[4], element[5], element[0], element[6],element[7], element[8],element[9])} > <SaveIcon /> </Button>
-                                                    <Button size="small" id='butend' onClick = {() => deleteclick(element[4], 'edit')}> {element[6] === '' ? <DeleteIcon /> : <CancelIcon /> }</Button>
+                                                    <Button size="small" id='butend' onClick = {() => deleteclick(element[1], element[2], element[3], element[4], element[5], 'edit')}> {element[6] === '' ? <DeleteIcon /> : <CancelIcon /> }</Button>
+                                                
                                                 </Bottom>
                                             </CardActions>
                                         </Card>

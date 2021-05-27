@@ -8,6 +8,12 @@ class SellersSerializer(serializers.ModelSerializer):
         model = Sellers
         fields = ('id', 'name', 'email')
 
+class SellerswithpwdSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Sellers
+        fields = ('id', 'name', 'email', 'password')
+
 class SellersLoginSerializer(serializers.ModelSerializer):
 
     condition = serializers.CharField(max_length=6)
@@ -35,21 +41,29 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id',)
+        fields = ('id', 'name', 'email', 'password' )
 
 class PlacessaveoldSerializer(serializers.ModelSerializer):
     
-    condition = serializers.CharField()
-    type = serializers.CharField()
+    #condition = serializers.CharField()
+    #type = serializers.CharField()
+    oldlocation = serializers.CharField()
+    oldaddr = serializers.CharField()
+    oldphno = serializers.IntegerField()
+    oldoxyprice = serializers.FloatField()
+
+    id = serializers.IntegerField()
 
     class Meta:
         model = Places
-        fields = ('location', 'addr', 'phno', 'oxyprice', 'id', 'newlocation', 'newaddr', 'newphno', 'newoxyprice')
+        fields = ('location', 'addr', 'phno', 'oxyprice', 'id', 'oldlocation', 'oldaddr', 'oldphno', 'oldoxyprice')
 
 class PlacessavenewSerializer(serializers.ModelSerializer):
     
-    condition = serializers.CharField()
-    type = serializers.CharField()
+    #condition = serializers.CharField()
+    #type = serializers.CharField()
+
+    id = serializers.IntegerField()
 
     class Meta:
         model = Places
