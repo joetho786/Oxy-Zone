@@ -1,7 +1,7 @@
 from django.http.response import Http404
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, SellersdeleteSerializer, SellerssaveSerializer
+from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, SellersdeleteSerializer, SellerssaveoldSerializer, SellerssavenewSerializer
 from .models import Sellers, Places
 from rest_framework.views import APIView
 from rest_framework import status
@@ -242,9 +242,77 @@ class SellersdeleteView(APIView):
         print('oopsie')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
 
-class SellerssaveView(APIView):
+class SellerssaveoldView(APIView):
     
-    serializer_class = SellerssaveSerializer
+    serializer_class = SellerssaveoldSerializer
+
+    def post(self, request, format=None):
+
+        print('inside')
+        print(request.data)
+        print(type(request.data['id']))
+
+        serializer = self.serializer_class(data=request.data)
+
+        print(serializer)
+
+        if serializer.is_valid():
+            id = serializer.data.get('id')
+            location = serializer.data.get('location')
+            addr = serializer.data.get('addr')
+            phno = serializer.data.get('phno')
+            oxyprice = serializer.data.get('oxyprice')
+            newlocation = serializer.data.get('newlocation')
+            newaddr = serializer.data.get('newaddr')
+            newphno = serializer.data.get('newphno')
+            newoxyprice = serializer.data.get('newoxyprice')
+
+            print('valid inside deatils')
+            print(id)
+            # host = self.request.session.session_key
+
+
+            sellerqueryset = Sellers.objects.filter(id = id)
+
+            print('sellerqueryset : ', sellerqueryset.values())
+
+
+            if sellerqueryset.exists():
+                print('exists')
+
+                placequerydata = Places.objects.filter(foreign_seller = sellerqueryset)
+
+                print(placequerydata)
+
+                placedata = Places.objects.filter(foreign_seller = sellerquerydata)
+                print(placedata.values())
+                print('count: ', placedata.count())
+                count = placedata.count()
+
+                if count != 0:
+
+                    print('data exists')
+
+                    #getdata = Places.objects.get(foreign_seller = sellerquerydata)
+                    #print(getdata)
+
+                    result_serializer = PlacesSerializer(placedata, many = True)
+
+                    return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
+
+                else:
+                    print('data doesnt exists')
+                    return Response({'Data': 'No data'}, status = status.HTTP_226_IM_USED)
+
+            print('id itself doesnt exists')
+            return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
+
+        print('oopsie')
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
+
+class SellerssavenewView(APIView):
+    
+    serializer_class = SellerssavenewSerializer
 
     def post(self, request, format=None):
 

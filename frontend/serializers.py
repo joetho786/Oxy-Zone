@@ -37,14 +37,24 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
         model = Sellers
         fields = ('id',)
 
-class PlacessaveSerializer(serializers.ModelSerializer):
+class PlacessaveoldSerializer(serializers.ModelSerializer):
     
     condition = serializers.CharField()
     type = serializers.CharField()
 
     class Meta:
         model = Places
-        fields = ('location', 'addr', 'phno', 'oxyprice', 'id', 'type')
+        fields = ('location', 'addr', 'phno', 'oxyprice', 'id', 'newlocation', 'newaddr', 'newphno', 'newoxyprice')
+
+class PlacessavenewSerializer(serializers.ModelSerializer):
+    
+    condition = serializers.CharField()
+    type = serializers.CharField()
+
+    class Meta:
+        model = Places
+        fields = ('location', 'addr', 'phno', 'oxyprice', 'id' )
+
 
 class PlacesdeleteSerializer(serializers.ModelSerializer):
     
