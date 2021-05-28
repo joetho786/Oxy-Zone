@@ -1,66 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from 'react-router-dom';
 import axios from "axios";
-import { renderToNodeStream } from 'react-dom/server';
-import Card from 'react-bootstrap/Card';
-import CardDeck from 'react-bootstrap/CardDeck';
-import bg from './bg.png';
-import CardGroup from 'react-bootstrap/CardGroup';
+import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { Search } from '@material-ui/icons';
-import FormPage from './vaccinesearchform';
-import { MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
-function handlesellerClick(event,history) {
-    console.log(event)
-    event.preventDefault()
-    event.stopPropagation()
-    history.push("/seller");
-}
-
-/*const  Vaccinationlisting = () =>{
-    const [resp,setresp]=useState()
-    
-     axios
-        .get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=512&date=31-03-2021')
-        .then((res) => {
-            setresp(res.data)
-            console.log(res.data)
-        })
-        .catch((err) => console.log(err));
-        console.log(resp);
-    */
-
-      
-
-
-
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import {NavigationBar} from './components/Navigation';
+import { Form } from 'react-bootstrap';
+import { typeOf } from 'react-is';
+import {Layout} from './components/layout'
+import { Component } from 'react';
+import { render } from '@testing-library/react';
+import Card from 'react-bootstrap/Card';
+import CardDeck from 'react-bootstrap/CardDeck';
+import img from './components/cardimg.svg';
 
 const Vaccinationlisting =() =>{
+  const history = useHistory();
+  const [pincode,setpincode]=useState(0)
+  const [centerdata,setcenterdata]=useState([])
+  // useEffect(()=>{
+  
+  // },[])
+  // const [date,setdate]=useState('')
+  // const [pincode,setpincode] =useState('')
+  // const getVaccine = (event)=> {
+  //       setpincode(event.target.value)
+  //       var today = new Date()
+  //        setdate(today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate());
+        
+  //       console.log(pincode)
+  //       console.log(date)
+  //     // axios 
+  //     // .get('')
+  // }
+
+const handleClick =(event) =>{
+    event.preventDefault();
+    console.log('vaue'+event.target.value)
+    let url="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date=31-03-2021"
+    console.log(pincode)
+        
+      // console.log(textInput.current.value)
+      axios
+      .get(url)
+      .then((res)=>{setcenterdata(res.data.sessions)
+                    console.log(centerdata)})
+    
+}
+
 
 return(
   <>
-  <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#">Ozone</Navbar.Brand>
-    <Nav className="mr-auto">
-      <Nav.Link href="/">Home</Nav.Link>
-      <Nav.Link href="/seller" >Sell Oxygen</Nav.Link>
-    </Nav>
-  </Navbar>
+  <NavigationBar/>
+  <Layout>
+  <h1>Search vaccination centers</h1>
+  <Form>
+    <Form.Group controlId="State">
+      <Form.Label class="fhead">Enter Pin Code</Form.Label>
+      <Form.Control type ="number" placeholder="Pin Code" value={pincode} onChange={(e)=> setpincode(e.target.value)} >
+     
+           
+      </Form.Control>
+    </Form.Group>
 
- <MDBCol md="6">
-      <MDBFormInline className="md-form">
-        <MDBIcon icon="search" />
-        <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" />
-      </MDBFormInline>
-    </MDBCol>
+
+    <Button variant="primary" type="submit" block onClick={(e)=> handleClick(e)} >
+      Search
+    </Button>
+  </Form>
+  
+  
+    <CardDeck className="cdeck">
+      
+      { centerdata.map((center,index)=>
+  <Card key={index}>
+    <Card.Img variant="top" src={img}/>
+    <Card.ImgOverlay>
+    <Card.Title className="text-white" >Card title</Card.Title>
+    </Card.ImgOverlay>
+    <Card.Body>
+      
+      <Card.Text>
+        This is a wider card with supporting text below as a natural lead-in to
+        additional content. This content is a little bit longer.
+      </Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small className="text-muted">Last updated 3 mins ago</small>
+    </Card.Footer>
+  </Card>
+      )
+  }
+</CardDeck>
+  
+
+</Layout>
+
   
  </>
 )
 
+
 }
 
 
-export default Vaccinationlisting;
+export default Vaccinationlisting
