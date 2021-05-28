@@ -7,9 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
-
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -19,8 +16,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import './sellerhome.css'
-
-import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles({
     root: {
@@ -63,7 +58,7 @@ const SellerHome = () => {
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
                 console.log(data.data.Data[i].foreign_seller)
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller.id])
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
             }
             console.log('newlist: ' + newlist)
 
@@ -93,102 +88,10 @@ const SellerHome = () => {
 
     const handleplusclick = () => {
 
-        let listt = ['newedit', '', '', '', '', uuidv4(), '', '', '', '']
+        let listt = ['edit', '', '', '']
 
-        setlis([listt, ...lis])
+        setlis(...listt, ...lis)
 
-    }
-
-    const deleteclick = (id, cond) => {
-        if (type === 'edit') {
-            console.log('dont send to there lol')
-            for (let i = 0; i < lis.length; i++){
-
-                if (lis[i][5] === id) {
-                    
-                    console.log(lis[i])
-
-                    // let listt = ['noedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id]
-                    let listt = [...(lis.slice(0 , i)), ...lis(lis.slice((i+1) , (lis.length - 1)))]
-
-                    console.log(listt)
-
-                    setlis(listt)
-                    
-                    break;
-                }
-
-            }
-
-
-        } else if (type === 'noedit') {
-            console.log('posting now')
-            axios.post('/api/sellers/delete', {
-                location: location,
-                addr: addr, 
-                phno: phno,
-                oxyprice: oxyprice,
-                id: id,
-            })
-            .then((res) => console.log(res))
-            .catch((err) => {console.log(err)})
-        }
-    }
-
-    const saveclick = (location, addr, phno, oxyprice, id, type, newlocation, newaddr, newphno, newoxyprice) => {
-
-        if (type === 'oldedit'){
-
-            console.log('oldedit')
-
-            axios.post('/api/sellers/save/old', {
-                location: location,
-                addr: addr, 
-                phno: phno,
-                oxyprice: oxyprice,
-                id : id,
-                location: newlocation,
-                addr: newaddr, 
-                phno: newphno,
-                oxyprice: newoxyprice,
-            })
-            .then((res) => {console.log(res)})
-            .catch((err) => {console.log(err)})    
-        } else {
-            console.log('newedit')
-            axios.post('/api/sellers/save/new', {
-                location: location,
-                addr: addr, 
-                phno: phno,
-                oxyprice: oxyprice,
-                id : id,
-            })
-            .then((res) => {console.log(res)})
-            .catch((err) => {console.log(err)})    
-        }
-
-    }
-
-    // lis => [ 'edit or noedit', 'location', 'addr', 'phno', 'oxyprice', 'id' ]
-
-    const editclick = (id) => {
-        for (let i = 0; i < lis.length; i++) {
-            if (id === lis[i][5]){
-
-                console.log('inside')
-
-                let listt = [ 'oldedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id, lis[i][1], lis[i][2], lis[i][3], lis[i][4]]
-
-                console.log(listt)
-
-                let newlist = [...lis.slice(0, i), listt, ...lis.slice((i+1), (lis.length-1))]
-
-                console.log(newlist)
-
-                setlis(newlist)
-
-            }
-        }
     }
 
     return (
@@ -235,14 +138,12 @@ const SellerHome = () => {
                                                     {element[2]}
                                                     <br />
                                                     {element[3]}
-                                                    <br />
-                                                    {element[4]}
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
                                                 <Bottom>
-                                                    <Button size="small" id='butstart' onClick = {() => {editclick(element[4])}} > <EditIcon /> </Button>
-                                                    <Button size="small" id='butend' onClick = {() => {deleteclick(element[4], 'noedit')}}> <DeleteIcon /> </Button>
+                                                <Button size="small" id = 'butstart'> <EditIcon /> </Button>
+                                                <Button size="small" id = 'butend'> <DeleteIcon /> </Button>
                                                 </Bottom>
                                             </CardActions>
                                         </Card>
@@ -252,30 +153,11 @@ const SellerHome = () => {
 
                             } else if (element[0] == 'edit') {
 
-                                return (
+                                return(
 
                                     <Grid item xs={12}>
+                                    
 
-                                        <Card className={classes.root} id='makeme'>
-                                            <CardContent>
-                                                <Typography variant="h5" component="h2">
-                                                    Location : <input onChange = {(e) => element[1] = e.target.value} > {element[1]} </input>
-                                                </Typography>
-                                                <Typography variant="body2" component="p">
-                                                    Num: <input onChange = {(e) => element[2] = e.target.value}> {element[2]} </input>
-                                                    <br />
-                                                    Addr : <input onChange = {(e) => element[3] = e.target.value}> {element[3]} </input>
-                                                    <br />
-                                                    OxyPrice : <input onChange = {(e) => element[4] = e.target.value}> {element[4]} </input>
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Bottom>
-                                                    <Button size="small" id='butstart' onClick = {() => saveclick(element[1], element[2], element[3], element[4], element[5], element[0], element[6],element[7], element[8],element[9])} > <SaveIcon /> </Button>
-                                                    <Button size="small" id='butend' onClick = {() => deleteclick(element[4], 'edit')}> {element[6] === '' ? <DeleteIcon /> : <CancelIcon /> }</Button>
-                                                </Bottom>
-                                            </CardActions>
-                                        </Card>
 
                                     </Grid>
 

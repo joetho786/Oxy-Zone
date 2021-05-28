@@ -47,15 +47,15 @@ const Header = () => {
 
     useEffect(() => {
         
-        // axios
-        // .get("/details/sellers/")
-        // .then((res) => console.log(res.data))
-        // .catch((err) => console.log(err));
+        axios
+        .get("/api/seller/")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
-        // axios
-        // .get("/details/places/")
-        // .then((res) => console.log(res.data))
-        // .catch((err) => console.log(err));
+        axios
+        .get("/api/places/")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     }, [])
 
