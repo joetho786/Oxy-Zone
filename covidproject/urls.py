@@ -29,5 +29,9 @@ urlpatterns = [
     path('details/', include(router.urls)),
     path('api/sellers/login/', views.SellersLoginView.as_view()),
     path('api/sellers/signup/', views.SellersSignupView.as_view()),
-    path('api/sellers/details/', views.SellersdetailsView.as_view())
+    path('api/sellers/details/', views.SellersdetailsView.as_view()),
+    path('api/sellers/delete/', views.SellersdeleteView.as_view()),
+    path('api/sellers/save/new/', views.SellerssavenewView.as_view()),
+    path('api/sellers/save/old/', views.SellerssaveoldView.as_view()),
+
 ]
