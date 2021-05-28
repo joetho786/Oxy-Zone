@@ -15,7 +15,7 @@ import { render } from '@testing-library/react';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import img from './components/cardimg.svg';
-
+import {Clayout} from './components/cardlayout'
 const Vaccinationlisting =() =>{
   const history = useHistory();
   const [pincode,setpincode]=useState(0)
@@ -71,30 +71,35 @@ return(
     </Button>
   </Form>
   
-  
-    <CardDeck className="cdeck">
+ <Clayout>
+    {/* <CardDeck className="cdeck"> */}
+    
       
       { centerdata.map((center,index)=>
+  
   <Card key={index}>
     <Card.Img variant="top" src={img}/>
     <Card.ImgOverlay>
-    <Card.Title className="text-white" >Card title</Card.Title>
+    <Card.Title className="text-white" >{center.name}</Card.Title>
     </Card.ImgOverlay>
     <Card.Body>
       
       <Card.Text>
-        This is a wider card with supporting text below as a natural lead-in to
-        additional content. This content is a little bit longer.
+        <strong>Vaccine:</strong>  {center.vaccine}
+        <br/>
+        {center.address},{center.district_name},{center.state_name}
       </Card.Text>
     </Card.Body>
     <Card.Footer>
       <small className="text-muted">Last updated 3 mins ago</small>
     </Card.Footer>
   </Card>
+ 
       )
   }
-</CardDeck>
   
+{/* </CardDeck> */}
+ </Clayout>
 
 </Layout>
 
