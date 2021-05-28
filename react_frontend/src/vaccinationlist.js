@@ -39,7 +39,7 @@ const Vaccinationlisting =() =>{
 const handleClick =(event) =>{
     event.preventDefault();
     console.log('vaue'+event.target.value)
-    let url="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date=31-03-2021"
+    let url="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date=29-05-2021"
     console.log(pincode)
         
       // console.log(textInput.current.value)
@@ -87,7 +87,9 @@ return(
       <Card.Text>
         <strong>Vaccine:</strong>  {center.vaccine}
         <br/>
-        {center.address},{center.district_name},{center.state_name}
+        <strong>Address:</strong> {center.address}<br/>
+        <strong>District:</strong>{center.district_name}<br/>
+        <strong>State:</strong>{center.state_name}
       </Card.Text>
     </Card.Body>
     <Card.Footer>
