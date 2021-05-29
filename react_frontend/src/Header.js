@@ -33,6 +33,13 @@ function handlesellerClick(event, hist) {
     hist.push("/seller");
 }
 
+function handleVaccinationClick(event, hist) {
+    console.log(event)
+    event.preventDefault()
+    event.stopPropagation()
+    hist.push("/vaccinationlist");
+}
+
 
 const Header = () => {
 
@@ -40,15 +47,15 @@ const Header = () => {
 
     useEffect(() => {
         
-        // axios
-        // .get("/details/sellers/")
-        // .then((res) => console.log(res.data))
-        // .catch((err) => console.log(err));
+        axios
+        .get("/api/seller/")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
-        // axios
-        // .get("/details/places/")
-        // .then((res) => console.log(res.data))
-        // .catch((err) => console.log(err));
+        axios
+        .get("/api/places/")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     }, [])
 
@@ -66,7 +73,7 @@ const Header = () => {
                     <TitleHead>Welcome to O-Zone</TitleHead>
                     {/* <Texthead>Want to buy Oxygen?</Texthead> */}
                 </Textcontent>
-                <button type="button" class="btn btn-warning c1 c">Vaccinations list</button>
+                <button type="button" class="btn btn-warning c1 c" onClick = {(e) => handleVaccinationClick(e, history)}>Vaccinations list</button>
                 <button type="button" class="btn btn-secondary c2 c" onClick = {(e) => handlesellerClick(e, history)}>Sell oxygens</button>
             </Rowtext>
             <Bottom>

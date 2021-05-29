@@ -56,15 +56,9 @@ const Sellerlogin = () => {
     if (data.status == 201){
       setStyle('')
       console.log('Yay! Login successfull')
-<<<<<<< HEAD
-      console.log(data.data.Data)
-
-      localStorage.setItem("gid", [data.data.Data.id, data.data.Data.name, data.data.Data.email, data.data.Data.password]);
-=======
       console.log(data.data)
 
       localStorage.setItem("gid", [data.data.id, data.data.name, data.data.email, data.data.password]);
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
       
       window.location.reload()
 
