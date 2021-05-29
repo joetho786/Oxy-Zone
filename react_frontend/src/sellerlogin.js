@@ -1,35 +1,89 @@
-import { ContactSupportOutlined } from '@material-ui/icons';
+import { ContactSupportOutlined, LaptopWindows } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, useLocation, useHistory } from 'react-router-dom'
 import './sellerlogin.css'
 import axios from "axios";
 
-// const process = (data) => {
-
-//   console.log(data)
-//   let keys = Object.keys(data)
-//   for (let i = 0; i < keys.length; i++) {
-//     console.log('here comes')
-//     console.log(data[i])
-//     console.log(data[i].name)
-//     console.log(data[i].email)
-//     console.log(data[i].password)
-
-//     if (username == data[i].name && password == data[i].password) {
-//       console.log('true')
-
-//     }
-//   }
-
-// }
-
+// const bcrypt = require('bcrypt');
+// const saltRounds = 10;
+// const myPlaintextPassword = 's0/\/\P4$$w0rD';
+// const someOtherPlaintextPassword = 'not_bacon';
 
 const Sellerlogin = () => {
+
+  const history = useHistory();
+
   const [style, setStyle] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [username, setUsername] = useState('')
+
+  // const hashpwd = (pwd) => {
+  //   bcrypt.hash(pwd, saltRounds, function(err, hash) {
+  //     console.log('hash: ' + hash)
+  //   });
+  // }
+
+  // const comparepwd = (pwd, hash) => {
+  //   bcrypt.compare(pwd, hash, function(err, result) {
+  //     console.log('result: ' + result)
+  // });
+  // }
+
+  const signupprocess = (data) => {
+
+    if (data.status == 201){
+      setStyle('')
+      console.log('yay! Signup successful')
+
+      // localStorage.setItem("det", "data.data");
+
+      return true
+    
+    } else if (data.status == 226) {
+      alert('Nope! Try some other value')
+      return false
+    } else {
+      alert('Error occured! Try again')
+      console.log('something else')
+    }
+  
+  }
+
+  const signinprocess = (data, hist) => {
+
+    if (data.status == 201){
+      setStyle('')
+      console.log('Yay! Login successfull')
+<<<<<<< HEAD
+      console.log(data.data.Data)
+
+      localStorage.setItem("gid", [data.data.Data.id, data.data.Data.name, data.data.Data.email, data.data.Data.password]);
+=======
+      console.log(data.data)
+
+      localStorage.setItem("gid", [data.data.id, data.data.name, data.data.email, data.data.password]);
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
+      
+      window.location.reload()
+
+      // hist.push("seller/home")
+
+      
+      return true
+
+
+
+    } else if (data.status == 226) {
+      alert('These credentials are false! Are you a hacker?')
+      return false
+    } else {
+      alert('Error occured! Try again')
+      console.log('something else')
+    }
+  
+  }
 
   const Login = (e) => {
     e.preventDefault();
@@ -41,7 +95,7 @@ const Sellerlogin = () => {
 
       console.log('login true')
 
-      axios.post('api/sellers/login/', {
+      axios.post('/api/sellers/login/', {
 
         // name : username,
         email: email,
@@ -49,7 +103,7 @@ const Sellerlogin = () => {
         condition: 'signin'
 
       })
-      .then((res) => console.log(res))
+      .then((res) => signinprocess(res, history))
       .catch((err) => console.log(err));
 
     } else {
@@ -86,7 +140,8 @@ const Sellerlogin = () => {
             condition: 'signup'
           
           })
-          .then((res) => console.log(res))
+          .then((res) => signupprocess(res))
+          .catch((err) => console.log(err));
 
       } else {
         alert('Not matching passwords')
@@ -101,12 +156,11 @@ const Sellerlogin = () => {
   }
 
   useEffect(() => {
-    // document.addEventListener('keydown', function (event) {
-    //   if ((event.key === 'Enter') && (!(document.getElementById('name') === ''))) {
-    //     // event.preventDefault()
-    //     routeChange()
-    //   }
-    // })
+    
+    // hashpwd(1)
+    //comparepwd(1)
+    //comparepwd(2)
+
   }, [])
 
   return (
