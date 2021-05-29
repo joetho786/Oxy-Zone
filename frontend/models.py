@@ -4,7 +4,11 @@ from django.db.models.fields.related import ForeignKey
 class Sellers(models.Model):
     name = models.CharField(max_length=120)
     email = models.CharField(max_length=27)
-    password = models.CharField(max_length=20)
+<<<<<<< HEAD
+    password = models.CharField(max_length=200)
+=======
+    password = models.CharField()
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
     
     # selldetails = models.TextField()
 
