@@ -18,28 +18,32 @@ import img from './components/cardimg.svg';
 import {Clayout} from './components/cardlayout'
 const Vaccinationlisting =() =>{
   const history = useHistory();
-  const [pincode,setpincode]=useState(0)
+  const [pincode,setpincode]=useState('')
   const [centerdata,setcenterdata]=useState([])
+  const [date,setdate]=useState('')
   // useEffect(()=>{
   
   // },[])
-  // const [date,setdate]=useState('')
+  
   // const [pincode,setpincode] =useState('')
   // const getVaccine = (event)=> {
   //       setpincode(event.target.value)
-  //       var today = new Date()
-  //        setdate(today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate());
+        
         
   //       console.log(pincode)
   //       console.log(date)
   //     // axios 
   //     // .get('')
   // }
-
+ 
 const handleClick =(event) =>{
+  
+  var today = new Date()
+         setdate( today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear()) ;
+     console.log(date)
     event.preventDefault();
     console.log('vaue'+event.target.value)
-    let url="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date=29-05-2021"
+    let url="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode+"&date="+date
     console.log(pincode)
         
       // console.log(textInput.current.value)
