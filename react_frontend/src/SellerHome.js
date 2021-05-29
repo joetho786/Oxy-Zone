@@ -74,22 +74,14 @@ const SellerHome = () => {
 
             console.log('data : ' + data.data.Data)
             let newlist = []
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
             for (let i = 0; i < data.data.Data.length; i++) {
                 console.log('comeon', data.data.Data[i].foreign_seller)
                 console.log(data.data.Data[i].oxyprice)
                 console.log(parseFloat(data.data.Data[i].oxyprice))
                 newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller])
             }
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
             console.log('newlist: ' + newlist)
 
             setlis(newlist)
@@ -126,26 +118,6 @@ const SellerHome = () => {
 
     }
 
-<<<<<<< HEAD
-    const cancelnewclick = (location, addr, phno, oxyprice, id) => {
-
-            console.log('dont send to there lol')
-
-            for (let i = 0; i < lis.length; i++) {
-
-
-                console.log(lis[i])
-
-                if (lis[i][1] === location && lis[i][2] ===  addr && lis[i][3] ===  phno && lis[i][4] ===  oxyprice && lis[i][5] ===  id ) {
-
-
-                    let listt = [
-
-                        ...lis.slice(0, i),
-                        ...lis.slice((i + 1), (lis.length))
-                    
-                    ]
-=======
     const deleteclick = (location, addr, phno, oxyprice ,id, cond) => {
         if (cond === 'edit') {
             console.log('dont send to there lol')
@@ -157,105 +129,17 @@ const SellerHome = () => {
 
                     // let listt = ['noedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id]
                     let listt = [...(lis.slice(0 , i)), ...lis(lis.slice((i+1) , (lis.length)))]
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                     console.log(listt)
 
                     setlis(listt)
 
-<<<<<<< HEAD
-                    // refresh()
-
-=======
                     refresh()
                     
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
                     break;
                 }
 
             }
-<<<<<<< HEAD
-    } 
-
-    const canceloldclick = (location, addr, phno, oxyprice, id, newlocation, newaddr, newphno, newoxyprice ) => {
-
-        console.log('dont send to there lol')
-
-        for (let i = 0; i < lis.length; i++) {
-
-
-            console.log(lis[i])
-
-            if (lis[i][1] === location && lis[i][2] ===  addr && lis[i][3] ===  phno && lis[i][4] ===  oxyprice && lis[i][5] ===  id, lis[i][6] === newlocation && lis[i][7] ===  newaddr && lis[i][8] ===  newphno && lis[i][9] ===  newoxyprice ) {
-
-
-                let listt = [
-
-                    ...lis.slice(0, i),
-                    ['noedit', newlocation, newaddr, newphno, newoxyprice, id],
-                    ...lis.slice((i + 1), (lis.length))
-                
-                ]
-
-                console.log(listt)
-
-                setlis(listt)
-
-                // refresh()
-
-                break;
-            }
-
-        }
-
-
-    } 
-
-    const deleteclick = (location, addr, phno, oxyprice, id, cond) => {
-        
-            console.log('posting now')
-            axios.post('/api/sellers/delete/', {
-                location: location,
-                addr: addr,
-                phno: phno,
-                oxyprice: parseFloat(oxyprice),
-                id: id,
-            })
-                .then((res) =>  { 
-
-                    console.log(res)
-
-                        console.log(res.status)
-
-                        if (res.status === 200) {
-                            
-                            for (let i = 0; i < lis.length ; i++ ){
-
-                                console.log(lis[i])
-
-                                console.log(i)
-
-                                if (lis[i][1] === location && lis[i][2] ===  addr && lis[i][3] ===  phno && lis[i][4] ===  oxyprice && lis[i][5] ===  id ) {
-
-                                    console.log('lis :', lis)
-                                    console.log(['noedit', location, addr, phno, oxyprice, id])
-
-                                    setlis([
-                                        ...lis.slice(0, i),
-                                        ...lis.slice((i+1), lis.length)
-                                    ])
-
-                                }
-
-                            }
-
-                        } else {
-                            console.log(res.data.Data)
-                        }
-
-                 })
-        
-=======
 
 
         } else if (cond === 'noedit') {
@@ -271,14 +155,12 @@ const SellerHome = () => {
             .catch((err) => {console.log(err)})
             .then(() => {refresh()})
         }
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
     }
 
     const saveclick = (location, addr, phno, oxyprice, id, type, newlocation, newaddr, newphno, newoxyprice) => {
 
         console.log('type: ', type)
 
-<<<<<<< HEAD
         console.log(phno)
 
         if (phno.toString().length === 10) {
@@ -390,42 +272,6 @@ const SellerHome = () => {
 
 
 
-=======
-        if (type === 'oldedit'){
-
-            console.log('oldedit')
-
-            console.log(location, addr, phno, oxyprice, id, type, newlocation, newaddr, newphno, newoxyprice)
-
-            axios.post('/api/sellers/save/old/', {
-                location: location,
-                addr: addr, 
-                phno: phno,
-                oxyprice: oxyprice,
-                id : id,
-                oldlocation: newlocation,
-                oldaddr: newaddr, 
-                oldphno: newphno,
-                oldoxyprice: newoxyprice,
-            })
-            .then((res) => {console.log(res)})
-            .catch((err) => {console.log(err)})
-            .then(() => {refresh()})    
-        } else {
-            console.log('newedit')
-            axios.post('/api/sellers/save/new/', {
-                location: location,
-                addr: addr, 
-                phno: phno,
-                oxyprice: oxyprice,
-                id : id,
-            })
-            .then((res) => {console.log(res)})
-            .catch((err) => {console.log(err)})    
-            .then(() => {refresh()})   
-        }
-
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
     }
 
     // lis => [ 'edit or noedit', 'location', 'addr', 'phno', 'oxyprice', 'id' ]
@@ -435,29 +281,17 @@ const SellerHome = () => {
         console.log('edit : ', id)
 
         for (let i = 0; i < lis.length; i++) {
-<<<<<<< HEAD
-            if (id === lis[i][5] && location === lis[i][1] && addr === lis[i][2] && phno === lis[i][3] && oxyprice === lis[i][4]) {
-
-                console.log('inside')
-
-                let listt = ['oldedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id, lis[i][1], lis[i][2], lis[i][3], lis[i][4]]
-=======
             if (id === lis[i][5] && location === lis[i][1] && addr === lis[i][2] && phno === lis[i][3] && oxyprice === lis[i][4]){
 
                 console.log('inside')
 
                 let listt = [ 'oldedit', lis[i][1], lis[i][2], lis[i][3], lis[i][4], id, lis[i][1], lis[i][2], lis[i][3], lis[i][4]]
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                 console.log(listt)
 
                 console.log(lis, i)
 
-<<<<<<< HEAD
-                let newlist = [...lis.slice(0, i), listt, ...lis.slice((i + 1), (lis.length))]
-=======
                 let newlist = [...lis.slice(0, i), listt, ...lis.slice((i+1), (lis.length))]
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                 console.log(newlist)
 
@@ -478,15 +312,7 @@ const SellerHome = () => {
                 <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
             </Title >
             < Hr />
-<<<<<<< HEAD
-            
-            {
-                lis.length >= 1 ? 
-
-                <Listview>
-=======
             <Listview>
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
                 <Plus onClick={handleplusclick}>
                     <AddCircleIcon />
                 </Plus>
@@ -525,49 +351,8 @@ const SellerHome = () => {
                                             </CardContent>
                                             <CardActions>
                                                 <Bottom>
-<<<<<<< HEAD
-                                                    <Button size="small" id='butstart' onClick={() => { 
-                                                        
-                                                        editclick(
-
-                                                            element[1],
-                                                            element[2], 
-                                                            element[3], 
-                                                            element[4], 
-                                                            element[5]                                                
-                                                        
-                                                            )
-
-                                                            }} 
-                                                            > 
-                                                            
-                                                            <EditIcon /> 
-                                                            
-                                                            </Button>
-                                                    
-                                                    <Button size="small" id='butend' onClick={() => { 
-                                                    
-                                                    deleteclick(
-                                                        
-                                                        element[1],
-                                                        element[2],
-                                                        element[3],
-                                                        element[4], 
-                                                        element[5], 
-                                                        
-                                                        ) 
-                                                    
-                                                }}
-                                                        > 
-                                                        
-                                                        <DeleteIcon /> 
-                                                        
-                                                        </Button>
-                                                
-=======
                                                     <Button size="small" id='butstart' onClick = {() => {editclick(element[1], element[2], element[3], element[4], element[5])}} > <EditIcon /> </Button>
                                                     <Button size="small" id='butend' onClick = {() => {deleteclick(element[1], element[2], element[3], element[4], element[5], 'noedit')}}> <DeleteIcon /> </Button>
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
                                                 </Bottom>
                                             </CardActions>
                                         </Card>
@@ -587,160 +372,15 @@ const SellerHome = () => {
                                             <CardContent>
                                                 {/* <Typography variant="h5" component="h2"> */}
 
-<<<<<<< HEAD
-                                                    Location : <input
-                                                    type='text'
-                                                    onChange={(e) => setlis([...lis.slice(0, index), [element[0], e.target.value, element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])}
-                                                    value={element[1]}
-                                                />
-=======
                                                     Location : <input 
                                                     type = 'text' 
                                                     onChange = {(e) => setlis([...lis.slice(0, index), [element[0], e.target.value, element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9] ], ...lis.slice((index+1), lis.length) ] ) }  
                                                     value = {element[1]}
                                                      />  
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                                                 {/* </Typography> */}
                                                 {/* <Typography variant="body2" component="p"> */}
 
-<<<<<<< HEAD
-                                                    Addr: <input
-                                                    type='text'
-                                                    value={element[2]}
-                                                    onChange={(e) =>
-                                                        setlis([...lis.slice(0, index), [element[0], element[1], e.target.value, element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-                                                    }
-                                                />
-
-                                                <br />
-
-                                                    Num : <input
-                                                    type='number'
-                                                    value={element[3]}
-                                                    onChange={(e) =>
-                                                        e.target.value.length <= 10 ?
-                                                            setlis([...lis.slice(0, index), [element[0], element[1], element[2], parseInt(e.target.value), element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-                                                            :
-                                                            console.log('not allowed')
-                                                    }
-                                                />
-
-                                                <br />
-
-                                                {/* {console.log(element[4])} */}
-                                                {/* {console.log(parseFloat(element[4]))} */}
-
-                                                    OxyPrice : <input
-                                                    type='text'
-                                                    value={(element[4])}
-                                                    onChange={(e) => {
-
-                                                        console.log('me: ', e.target.value)
-
-                                                        if (e.target.value === '') {
-
-                                                            setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-
-                                                        } 
-                                                        else if ((['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'].includes(e.target.value[(e.target.value.length - 1)]))) {
-
-                                                            if (e.target.value.includes('.')) {
-
-                                                                if (e.target.value.split('.').length === 2) {
-
-                                                                    setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-
-                                                                }
-
-
-                                                            } else {
-
-                                                                setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-
-                                                            }
-
-                                                        }
-                                                    }
-
-                                                    }
-
-                                                />
-
-                                                {/* </Typography> */}
-                                            </CardContent>
-                                            <CardActions>
-                                                <Bottom>
-
-                                                    <Button size="small" id='butstart' onClick={() => {
-                                                    
-                                                    if(!(element[1] === '' || element[2] === '' || element[3] === '' || element[4] === '')){
-
-                                                        {
-                                                            saveclick(
-                                                                element[1], 
-                                                                element[2], 
-                                                                element[3],
-                                                                element[4], 
-                                                                element[5], 
-                                                                element[0], 
-                                                                element[6], 
-                                                                element[7], 
-                                                                element[8], 
-                                                                element[9]
-                                                                )
-                                                            
-                                                            }
-
-                                                    } else {
-
-                                                        console.log('fill the values')
-
-                                                    }
-
-                                                    } } >
-                                                         <SaveIcon /> 
-                                                    </Button>
-                                                    
-                                                    <Button 
-                                                    size="small" 
-                                                    id='butend' 
-                                                    onClick={() => 
-                                                    
-                                                        element[0] === 'newedit' ?
-
-                                                        cancelnewclick(
-
-                                                        element[1], 
-                                                        element[2], 
-                                                        element[3], 
-                                                        element[4], 
-                                                        element[5], 
-
-                                                        ) :
-
-                                                    canceloldclick(
-                                                    
-                                                        element[1], 
-                                                        element[2], 
-                                                        element[3], 
-                                                        element[4], 
-                                                        element[5], 
-                                                        element[6], 
-                                                        element[7], 
-                                                        element[8], 
-                                                        element[9], 
-                                                    
-                                                    )}> 
-                                                    
-                                                    
-                                                    <CancelIcon />
-                                                    
-                                                    
-                                                    </Button>
-
-
-=======
                                                     Addr: <input 
                                                     type = 'text'  
                                                     value = {element[2]} 
@@ -775,7 +415,6 @@ const SellerHome = () => {
                                                     <Button size="small" id='butstart' onClick = {() => saveclick(element[1], element[2], element[3], element[4], element[5], element[0], element[6],element[7], element[8],element[9])} > <SaveIcon /> </Button>
                                                     <Button size="small" id='butend' onClick = {() => deleteclick(element[1], element[2], element[3], element[4], element[5], 'edit')}> {element[6] === '' ? <DeleteIcon /> : <CancelIcon /> }</Button>
                                                 
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
                                                 </Bottom>
                                             </CardActions>
                                         </Card>
@@ -793,17 +432,6 @@ const SellerHome = () => {
                 </Grid>
 
             </Listview>
-<<<<<<< HEAD
-
-            :
-
-                    <p>Loading....</p>
-
-            }
-            
-            
-=======
->>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
         </>
     )
 }
