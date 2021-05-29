@@ -87,9 +87,11 @@ return(
       <Card.Text>
         <strong>Vaccine:</strong>  {center.vaccine}
         <br/>
-        <strong>Address:</strong> {center.address}<br/>
-        <strong>District:</strong>{center.district_name}<br/>
-        <strong>State:</strong>{center.state_name}
+        <strong>Address: </strong> {center.address}<br/>
+        <strong>District: </strong>{center.district_name}<br/>
+        <strong>State:</strong> {center.state_name}<br/>
+        <strong>Available 1st dose:  </strong>{center.available_capacity_dose1}<br/>
+        <strong>Available 2nd dose:</strong> {center.available_capacity_dose2}
       </Card.Text>
     </Card.Body>
     <Card.Footer>
