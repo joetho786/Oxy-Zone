@@ -45,18 +45,22 @@ class SellersLoginView(APIView):
 
             print('valid')
             print(emai, pwd, condition)
+<<<<<<< HEAD
 
             # pwd = pwd.encode('utf-8')
             # print('pwd : ', pwd)
             # hashed = str(bcrypt.hashpw(pwd, bcrypt.gensalt()))
             # print('hased :', hashed)
             
+=======
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
             # host = self.request.session.session_key
             loginqueryset = Sellers.objects.filter(email = emai, password = pwd)
 
             if loginqueryset.exists():
 
                     print('loginexists')
+<<<<<<< HEAD
                     print(loginqueryset.values())
                     room = Sellers.objects.get(email = emai, password = pwd)
                     print(room)
@@ -72,6 +76,13 @@ class SellersLoginView(APIView):
                     d['password'] = hashed
 
                     return Response({'Data': d}, status=status.HTTP_201_CREATED)
+=======
+                    print(loginqueryset)
+                    room = Sellers.objects.get(email = emai, password = pwd)
+                    print(room)
+
+                    return Response(SellerswithpwdSerializer(room).data, status=status.HTTP_201_CREATED)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                     #return Response({'Bad Request': 'it already exists...'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -112,6 +123,7 @@ class SellersSignupView(APIView):
                 
             if signupqueryset.exists():
                     
+<<<<<<< HEAD
                 print('exists')
                 return Response({'msg': 'It already exists.'}, status=status.HTTP_226_IM_USED)
 
@@ -128,6 +140,17 @@ class SellersSignupView(APIView):
                 room.save()
                 
                 return Response({'Data' : 'succesfuly created'}, status=status.HTTP_201_CREATED)
+=======
+                    print('exists')
+                    return Response({'msg': 'It already exists.'}, status=status.HTTP_226_IM_USED)
+
+            else:
+                    print('creating')
+                    room = Sellers(name = nam, email = emai, password = pwd)
+                    room.save()
+                    
+                    return Response({'Data' : 'succesfuly created'}, status=status.HTTP_201_CREATED)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
         print('oops')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
@@ -154,13 +177,20 @@ class SellersdetailsView(APIView):
             email = serializer.data.get('email')
             password = serializer.data.get('password')
 
+<<<<<<< HEAD
             print('pwd: ', password)
 
+=======
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
             print('valid inside deatils')
             print(id)
             # host = self.request.session.session_key
+<<<<<<< HEAD
             sellerqueryset = Sellers.objects.filter(id = id, email = email, name = name)
+=======
+            sellerqueryset = Sellers.objects.filter(id = id, email = email, name = name, password = password)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
             print('sellerqueryset : ', sellerqueryset)
 
@@ -169,6 +199,7 @@ class SellersdetailsView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
+<<<<<<< HEAD
                 sellerquerydata = Sellers.objects.get(id = id, email = email, name = name)
 
                 print('here i am')
@@ -177,6 +208,11 @@ class SellersdetailsView(APIView):
 
                 if bcrypt.checkpw(sellerquerydata.password.encode('utf-8'), password.encode('utf-8')):
                     print("It Matches!")
+=======
+                sellerquerydata = Sellers.objects.get(id = id, email = email, name = name, password = password)
+
+                print(sellerquerydata)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                 placedata = Places.objects.filter(foreign_seller = sellerquerydata)
                 print(placedata.values())
@@ -330,7 +366,11 @@ class SellerssaveoldView(APIView):
 
                     result_serializer = PlacesSerializer(placequerydata, many = True)
 
+<<<<<<< HEAD
                     return Response({'Data': 'Saved data'}, status= status.HTTP_200_OK)
+=======
+                    return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
                 else:
                     print('data doesnt exists')
@@ -380,8 +420,32 @@ class SellerssavenewView(APIView):
 
                 placequerydata = Places(foreign_seller = sellerdata, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
                 placequerydata.save()
+<<<<<<< HEAD
 
                 return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+=======
+                # print(placequerydata)
+
+                # placedata = Places.objects.filter(foreign_seller = sellerquerydata)
+                # print(placedata.values())
+                # print('count: ', placedata.count())
+                # count = placedata.count()
+
+                # if count != 0:
+
+                    # print('data exists')
+
+                    # #getdata = Places.objects.get(foreign_seller = sellerquerydata)
+                    # #print(getdata)
+
+                    # result_serializer = PlacesSerializer(placedata, many = True)
+
+                    # return Response({'Data': result_serializer.data}, status= status.HTTP_200_OK)
+
+                # else:
+                    # print('data doesnt exists')
+                return Response({'Data': 'Saved data'}, status = status.HTTP_226_IM_USED)
+>>>>>>> 7b7050530243453cebdde8579c52ba196a4eb98d
 
             print('id itself doesnt exists')
             return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
