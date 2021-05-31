@@ -32,6 +32,7 @@ urlpatterns = [
     path('details/', include(router.urls)),
     path('api/sellers/login/', views.SellersLoginView.as_view()),
     path('api/sellers/signup/', views.SellersSignupView.as_view()),
+<<<<<<< HEAD
     path('api/sellers/details/', views.SellersdetailsView.as_view()),
     path('api/sellers/delete/', views.SellersdeleteView.as_view()),
     path('api/sellers/save/new/', views.SellerssavenewView.as_view()),
@@ -42,3 +43,7 @@ urlpatterns = [
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
                               document_root=settings.MEDIA_ROOT)
+=======
+    path('api/sellers/details/', views.SellersdetailsView.as_view())
+]
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488

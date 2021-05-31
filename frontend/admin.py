@@ -5,7 +5,7 @@ class SellersAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'password', 'profilephoto')
 
 class PlacesAdmin(admin.ModelAdmin):
-    list_display = ('foreign_seller', 'location', 'addr', 'phno', 'oxyprice')
+    list_display = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
 
 # Register your models here.
 

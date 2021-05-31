@@ -1,13 +1,11 @@
 from django.http.response import Http404
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import SellersDetailsSerializer, SellerswithpwdSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, PlacesdeleteSerializer, PlacessaveoldSerializer, PlacessavenewSerializer
+from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer
 from .models import Sellers, Places
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-
-import bcrypt
 
 from frontend import serializers
 
@@ -16,12 +14,15 @@ from frontend import serializers
 class PlacesView(viewsets.ModelViewSet):
     serializer_class = PlacesSerializer
     queryset = Places.objects.all()
-    print(queryset)
 
 class SellersView(viewsets.ModelViewSet):
     serializer_class = SellersSerializer
+<<<<<<< HEAD
     print(Sellers.objects.only('id', 'name', 'email' ))
     queryset = Sellers.objects.only('id', 'name', 'email' )
+=======
+    queryset = Sellers.objects.all()
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
 class SellersLoginView(APIView):
     serializer_class = SellersLoginSerializer
@@ -46,18 +47,22 @@ class SellersLoginView(APIView):
 
             print('valid')
             print(emai, pwd, condition)
+<<<<<<< HEAD
 
             # pwd = pwd.encode('utf-8')
             # print('pwd : ', pwd)
             # hashed = str(bcrypt.hashpw(pwd, bcrypt.gensalt()))
             # print('hased :', hashed)
             
+=======
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
             # host = self.request.session.session_key
             loginqueryset = Sellers.objects.filter(email = emai, password = pwd)
 
             if loginqueryset.exists():
 
                     print('loginexists')
+<<<<<<< HEAD
                     print(loginqueryset.values())
                     room = Sellers.objects.get(email = emai, password = pwd)
                     print(room)
@@ -73,6 +78,13 @@ class SellersLoginView(APIView):
                     d['password'] = hashed
 
                     return Response({'Data': d}, status=status.HTTP_201_CREATED)
+=======
+                    print(loginqueryset)
+                    room = Sellers.objects.get(email = emai, password = pwd)
+                    print(room)
+
+                    return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
                     #return Response({'Bad Request': 'it already exists...'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -113,6 +125,7 @@ class SellersSignupView(APIView):
                 
             if signupqueryset.exists():
                     
+<<<<<<< HEAD
                 print('exists')
                 return Response({'msg': 'It already exists.'}, status=status.HTTP_226_IM_USED)
 
@@ -129,11 +142,33 @@ class SellersSignupView(APIView):
                 room.save()
                 
                 return Response({'Data' : 'succesfuly created'}, status=status.HTTP_201_CREATED)
+=======
+                    print('exists')
+                    return Response({'msg': 'It already exists.'}, status=status.HTTP_226_IM_USED)
+
+            else:
+                    print('creating')
+                    room = Sellers(name = nam, email = emai, password = pwd)
+                    room.save()
+                    
+                    return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
+
+                    
+            # else:
+            #     room = Sellers(name = nam, email = emai, password = pwd)
+            #     room.save()
+
+            #     return Response(SellersSerializer(room).data, status=status.HTTP_201_CREATED)
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
         print('oops')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
 
-
+# class LoginView(viewsets.ModelViewSet):
+#     serializer_class = SellersSerializer
+#     queryset = Sellers.objects.all()
+#     def post(self, request):
+#         print(request.POST)
 
 class SellersdetailsView(APIView):
 
@@ -151,17 +186,25 @@ class SellersdetailsView(APIView):
 
         if serializer.is_valid():
             id = serializer.data.get('id')
+<<<<<<< HEAD
             name = serializer.data.get('name')
             email = serializer.data.get('email')
             password = serializer.data.get('password')
 
             print('pwd: ', password)
 
+=======
+            #nam = serializer.data.get('name')
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
             print('valid inside deatils')
             print(id)
             # host = self.request.session.session_key
+<<<<<<< HEAD
             sellerqueryset = Sellers.objects.filter(id = id, email = email, name = name)
+=======
+            sellerqueryset = Sellers.objects.filter(id = id)
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
             print('sellerqueryset : ', sellerqueryset)
 
@@ -170,6 +213,7 @@ class SellersdetailsView(APIView):
             if sellerqueryset.exists():
                 print('exists')
 
+<<<<<<< HEAD
                 sellerquerydata = Sellers.objects.get(id = id, email = email, name = name)
 
                 print('here i am')
@@ -180,6 +224,11 @@ class SellersdetailsView(APIView):
 
                 if bcrypt.checkpw(sellerquerydata.password.encode('utf-8'), password.encode('utf-8')):
                     print("It Matches!")
+=======
+                sellerquerydata = Sellers.objects.get(id = id)
+
+                print(sellerquerydata)
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
                 placedata = Places.objects.filter(foreign_seller = sellerquerydata)
                 print(placedata.values())
@@ -208,6 +257,7 @@ class SellersdetailsView(APIView):
             return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
 
         print('oopsie')
+<<<<<<< HEAD
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
 
 class SellersdeleteView(APIView):
@@ -395,3 +445,6 @@ class SellerssavenewView(APIView):
         print('oopsie')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
 
+=======
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488

@@ -7,9 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
-
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -20,8 +17,11 @@ import Typography from '@material-ui/core/Typography';
 
 import './sellerhome.css'
 
+<<<<<<< HEAD
 // import { parse, v4 as uuidv4 } from 'uuid';
 
+=======
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -40,19 +40,6 @@ const useStyles = makeStyles({
 });
 
 const SellerHome = () => {
-
-    const refresh = () => {
-
-        const val = localStorage.getItem("gid").split(',')
-
-        axios.post('/api/sellers/details/', {
-            id: parseInt(val[0]),
-            name: val[1],
-            email: val[2],
-            password: val[3]
-        }).then((data) => process(data))
-
-    }
 
     const handleclick = () => {
 
@@ -76,10 +63,8 @@ const SellerHome = () => {
             console.log('data : ' + data.data.Data)
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
-                console.log('comeon', data.data.Data[i].foreign_seller)
-                console.log(data.data.Data[i].oxyprice)
-                console.log(parseFloat(data.data.Data[i].oxyprice))
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller])
+                console.log(data.data.Data[i].foreign_seller)
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
             }
             console.log('newlist: ' + newlist)
 
@@ -99,21 +84,20 @@ const SellerHome = () => {
     useEffect(() => {
 
         const val = localStorage.getItem("gid").split(',')
-        console.log('val:', val)
-
-        console.log(val[0])
+        console.log(val)
 
         axios.post('/api/sellers/details/', {
             id: parseInt(val[0]),
-            name: val[1],
-            email: val[2],
-            password: val[3]
+            // name: val[1],
+            // email: val[2],
+            // password: val[3]
         }).then((data) => process(data))
 
     }, [])
 
     const handleplusclick = () => {
 
+<<<<<<< HEAD
         setloading(true)
 
         let listt = ['newedit', '', '', '', '', parseInt(localStorage.getItem("gid").split(',')[0]), '', '', '', '']
@@ -377,6 +361,12 @@ const SellerHome = () => {
 
             }
         }
+=======
+        let listt = ['edit', '', '', '']
+
+        setlis(...listt, ...lis)
+
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
     }
 
     return (
@@ -390,12 +380,16 @@ const SellerHome = () => {
                 <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
             </Title >
             < Hr />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
             <Listview>
                 <Plus onClick={handleplusclick}>
                     <AddCircleIcon />
                 </Plus>
 
+<<<<<<< HEAD
                 {/* {
                     console.log(loading, lis.length >= 1, loading && lis.length >= 1)
                 } */}
@@ -570,6 +564,60 @@ const SellerHome = () => {
                                                     </CardContent>
                                                     <CardActions>
                                                         <Bottom>
+=======
+                <Grid container spacing={3}>
+
+                    {
+                        lis.map((element) => {
+
+                            console.log(element)
+
+                            if (element[0] == 'noedit') {
+
+                                return (
+                                    <Grid item xs={12}>
+                                        <Card className={classes.root} id='makeme'>
+                                            {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
+                                            <CardContent>
+                                                {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
+                                                {/* {element[0]} */}
+                                                {/* </Typography> */}
+                                                <Typography variant="h5" component="h2">
+                                                    {/* be{bull}nev{bull}o{bull}lent */}
+                                                    {element[1]}
+                                                </Typography>
+                                                {/* <Typography className={classes.pos} color="textSecondary"> */}
+                                                {/* adjective */}
+                                                {/* </Typography> */}
+                                                <Typography variant="body2" component="p">
+                                                    {element[2]}
+                                                    <br />
+                                                    {element[3]}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Bottom>
+                                                <Button size="small" id = 'butstart'> <EditIcon /> </Button>
+                                                <Button size="small" id = 'butend'> <DeleteIcon /> </Button>
+                                                </Bottom>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+
+                                )
+
+                            } else if (element[0] == 'edit') {
+
+                                return(
+
+                                    <Grid item xs={12}>
+                                    
+
+
+                                    </Grid>
+
+                                )
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 
                                                             <Button size="small" id='butstart' onClick={() => {
 
@@ -656,6 +704,7 @@ const SellerHome = () => {
                         </Grid>
 
 
+<<<<<<< HEAD
                         : loading ?
 
                         <p>Loading....</p> :
@@ -666,6 +715,9 @@ const SellerHome = () => {
             </Listview>
 
 
+=======
+            </Listview>
+>>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
         </>
     )
 }

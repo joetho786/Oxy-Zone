@@ -5,13 +5,16 @@ import Maplayers from './map_openlayers'
 import MapContainer from './Map'
 import Sellerlogin from './sellerlogin'
 import SellerHome from './SellerHome'
-
+import { Layout } from './components/layout';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import Vaccinationlisting from './vaccinationlist';
+
 
 const App = () => {
 
@@ -41,6 +44,13 @@ const App = () => {
         <Route path="/map/:loc">
           <Maplayers />
         </Route>
+        
+        
+        <Route exact path="/vaccinationlist">
+          <Vaccinationlisting/>
+        </Route>
+        
+        
         {/* <Route path="/mapnew">
           <Maplayers />
         </Route> */}
