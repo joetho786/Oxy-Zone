@@ -20,6 +20,9 @@ from django.urls import path, include
 from rest_framework import routers
 from frontend import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 router = routers.DefaultRouter()
 router.register(r'sellers', views.SellersView, 'sellers')
 router.register(r'places', views.PlacesView, 'places')
@@ -35,3 +38,7 @@ urlpatterns = [
     path('api/sellers/save/old/', views.SellerssaveoldView.as_view()),
 
 ]
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
