@@ -6,13 +6,7 @@ class SellersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email')
-
-class SellerswithpwdSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Sellers
-        fields = ('id', 'name', 'email', 'password')
+        fields = ('id', 'name', 'email' )
 
 class SellersLoginSerializer(serializers.ModelSerializer):
 
@@ -21,6 +15,14 @@ class SellersLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sellers
         fields = ('email', 'password', 'condition')
+
+class SellersLoginwithimgandpwdSerializer(serializers.ModelSerializer):
+    
+    #condition = serializers.CharField(max_length=6)
+
+    class Meta:
+        model = Sellers
+        fields = ('id', 'name', 'email', 'password', 'profilephoto')
 
 class SellersSignupSerializer(serializers.ModelSerializer):
     
@@ -41,7 +43,13 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email', 'password' )
+        fields = ('id', 'name', 'email', 'password', 'profilephoto' )
+
+class SellersupdatedetailsSerializer(serializers. ModelSerializer):
+
+    class Meta:
+        models = Sellers
+        fields = ('id', 'name', 'email', 'password', 'profilephoto' )
 
 class PlacessaveoldSerializer(serializers.ModelSerializer):
     
