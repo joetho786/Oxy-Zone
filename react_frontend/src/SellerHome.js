@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import CancelIcon from '@material-ui/icons/Cancel';
+import SaveIcon from '@material-ui/icons/Save';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,13 +17,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import { useHistory } from "react-router-dom";
+
 import './sellerhome.css'
 
-<<<<<<< HEAD
 // import { parse, v4 as uuidv4 } from 'uuid';
 
-=======
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -41,6 +42,8 @@ const useStyles = makeStyles({
 
 const SellerHome = () => {
 
+    const history = useHistory();
+
     const handleclick = () => {
 
         localStorage.removeItem('gid')
@@ -53,6 +56,8 @@ const SellerHome = () => {
 
     const [lis, setlis] = useState([])
     const [loading, setloading] = useState(true)
+
+    const [update, setupdate] = useState(false)
 
     const process = (data) => {
 
@@ -81,23 +86,26 @@ const SellerHome = () => {
 
     }
 
+    const [det, setdet] = useState([])
+
     useEffect(() => {
 
         const val = localStorage.getItem("gid").split(',')
         console.log(val)
 
+        setdet([val[0], val[1], val[2], val[3], val[4]])
+
         axios.post('/api/sellers/details/', {
             id: parseInt(val[0]),
-            // name: val[1],
-            // email: val[2],
-            // password: val[3]
+            name: val[1],
+            email: val[2],
+            password: val[3]
         }).then((data) => process(data))
 
     }, [])
 
     const handleplusclick = () => {
 
-<<<<<<< HEAD
         setloading(true)
 
         let listt = ['newedit', '', '', '', '', parseInt(localStorage.getItem("gid").split(',')[0]), '', '', '', '']
@@ -361,363 +369,327 @@ const SellerHome = () => {
 
             }
         }
-=======
-        let listt = ['edit', '', '', '']
+    }
 
-        setlis(...listt, ...lis)
+    const handleprofile = () => {
 
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
+        // hist.push("/update");
+
+        setupdate(true)
+
     }
 
     return (
         <>
-            <Logout >
 
-                <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button>
+            {
+                update ?
 
-            </Logout>
-            <Title >
-                <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
-            </Title >
-            < Hr />
-<<<<<<< HEAD
+                    det ?
 
-=======
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
-            <Listview>
-                <Plus onClick={handleplusclick}>
-                    <AddCircleIcon />
-                </Plus>
+                        <>
+                            <button onClick={() => {setupdate(false)} } />
+                            <p>{det[0]}</p>
+                            <p>{det[1]}</p>
+                            <p>{det[2]}</p>
+                            <p>{det[3]}</p>
+                            <img src={det[4]} ></img>
+                        </>
 
-<<<<<<< HEAD
-                {/* {
+                        :
+
+                        <p>Please wait till we get the data</p>
+
+                    :
+
+                    <>
+                        <Logout >
+
+                            <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button>
+                            <button type="button" class="btn btn-warning c1 c" onClick={handleprofile} >Update Profile <EditIcon /> </button>
+
+                        </Logout>
+                        <Title >
+                            <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
+                        </Title >
+                        < Hr />
+                        <Listview>
+                            <Plus onClick={handleplusclick}>
+                                <AddCircleIcon />
+                            </Plus>
+
+                            {/* {
                     console.log(loading, lis.length >= 1, loading && lis.length >= 1)
                 } */}
 
-                {
-                    ((lis.length >= 1) && (loading)) ?
-
-
-                        <Grid container spacing={3}>
-
                             {
-                                lis.map((element, index) => {
+                                ((lis.length >= 1) && (loading)) ?
 
-                                    console.log(element)
 
-                                    if (element[0] == 'noedit') {
+                                    <Grid container spacing={3}>
 
-                                        return (
-                                            <Grid item xs={12}>
-                                                <Card className={classes.root} id='makeme'>
-                                                    {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
-                                                    <CardContent>
-                                                        {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
-                                                        {/* {element[0]} */}
-                                                        {/* </Typography> */}
-                                                        <Typography variant="h5" component="h2">
-                                                            {/* be{bull}nev{bull}o{bull}lent */}
-                                                            {element[1]}
-                                                        </Typography>
-                                                        {/* <Typography className={classes.pos} color="textSecondary"> */}
-                                                        {/* adjective */}
-                                                        {/* </Typography> */}
-                                                        <Typography variant="body2" component="p">
-                                                            {element[2]}
-                                                            <br />
-                                                            {element[3]}
-                                                            <br />
-                                                            {element[4]}
-                                                        </Typography>
-                                                    </CardContent>
-                                                    <CardActions>
-                                                        <Bottom>
-                                                            <Button size="small" id='butstart' onClick={() => {
+                                        {
+                                            lis.map((element, index) => {
 
-                                                                editclick(
+                                                console.log(element)
 
-                                                                    element[1],
-                                                                    element[2],
-                                                                    element[3],
-                                                                    element[4],
-                                                                    element[5]
+                                                if (element[0] == 'noedit') {
 
-                                                                )
+                                                    return (
+                                                        <Grid item xs={12}>
+                                                            <Card className={classes.root} id='makeme'>
+                                                                {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
+                                                                <CardContent>
+                                                                    {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
+                                                                    {/* {element[0]} */}
+                                                                    {/* </Typography> */}
+                                                                    <Typography variant="h5" component="h2">
+                                                                        {/* be{bull}nev{bull}o{bull}lent */}
+                                                                        {element[1]}
+                                                                    </Typography>
+                                                                    {/* <Typography className={classes.pos} color="textSecondary"> */}
+                                                                    {/* adjective */}
+                                                                    {/* </Typography> */}
+                                                                    <Typography variant="body2" component="p">
+                                                                        {element[2]}
+                                                                        <br />
+                                                                        {element[3]}
+                                                                        <br />
+                                                                        {element[4]}
+                                                                    </Typography>
+                                                                </CardContent>
+                                                                <CardActions>
+                                                                    <Bottom>
+                                                                        <Button size="small" id='butstart' onClick={() => {
 
-                                                            }}
-                                                            >
+                                                                            editclick(
 
-                                                                <EditIcon />
+                                                                                element[1],
+                                                                                element[2],
+                                                                                element[3],
+                                                                                element[4],
+                                                                                element[5]
 
-                                                            </Button>
+                                                                            )
 
-                                                            <Button size="small" id='butend' onClick={() => {
+                                                                        }}
+                                                                        >
 
-                                                                deleteclick(
+                                                                            <EditIcon />
 
-                                                                    element[1],
-                                                                    element[2],
-                                                                    element[3],
-                                                                    element[4],
-                                                                    element[5],
+                                                                        </Button>
 
-                                                                )
+                                                                        <Button size="small" id='butend' onClick={() => {
 
-                                                            }}
-                                                            >
+                                                                            deleteclick(
 
-                                                                <DeleteIcon />
+                                                                                element[1],
+                                                                                element[2],
+                                                                                element[3],
+                                                                                element[4],
+                                                                                element[5],
 
-                                                            </Button>
+                                                                            )
 
-                                                        </Bottom>
-                                                    </CardActions>
-                                                </Card>
-                                            </Grid>
+                                                                        }}
+                                                                        >
 
-                                        )
+                                                                            <DeleteIcon />
 
-                                    } else if (element[0] === 'newedit' || element[0] === 'oldedit') {
+                                                                        </Button>
 
-                                        console.log(element)
+                                                                    </Bottom>
+                                                                </CardActions>
+                                                            </Card>
+                                                        </Grid>
 
-                                        return (
+                                                    )
 
-                                            <Grid item xs={12}>
+                                                } else if (element[0] === 'newedit' || element[0] === 'oldedit') {
 
-                                                <Card className={classes.root} id='makeme'>
-                                                    <CardContent>
-                                                        {/* <Typography variant="h5" component="h2"> */}
+                                                    console.log(element)
+
+                                                    return (
+
+                                                        <Grid item xs={12}>
+
+                                                            <Card className={classes.root} id='makeme'>
+                                                                <CardContent>
+                                                                    {/* <Typography variant="h5" component="h2"> */}
 
                                                     Location : <input
-                                                            type='text'
-                                                            onChange={(e) => setlis([...lis.slice(0, index), [element[0], e.target.value, element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])}
-                                                            value={element[1]}
-                                                        />
+                                                                        type='text'
+                                                                        onChange={(e) => setlis([...lis.slice(0, index), [element[0], e.target.value, element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])}
+                                                                        value={element[1]}
+                                                                    />
 
-                                                        {/* </Typography> */}
-                                                        {/* <Typography variant="body2" component="p"> */}
+                                                                    {/* </Typography> */}
+                                                                    {/* <Typography variant="body2" component="p"> */}
 
                                                     Addr: <input
-                                                            type='text'
-                                                            value={element[2]}
-                                                            onChange={(e) =>
-                                                                setlis([...lis.slice(0, index), [element[0], element[1], e.target.value, element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-                                                            }
-                                                        />
+                                                                        type='text'
+                                                                        value={element[2]}
+                                                                        onChange={(e) =>
+                                                                            setlis([...lis.slice(0, index), [element[0], element[1], e.target.value, element[3], element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+                                                                        }
+                                                                    />
 
-                                                        <br />
+                                                                    <br />
 
                                                     Num : <input
-                                                            type='number'
-                                                            value={element[3]}
-                                                            onChange={(e) =>
-                                                                e.target.value.length <= 10 ?
-                                                                    setlis([...lis.slice(0, index), [element[0], element[1], element[2], parseInt(e.target.value), element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
-                                                                    :
-                                                                    console.log('not allowed')
-                                                            }
-                                                        />
+                                                                        type='number'
+                                                                        value={element[3]}
+                                                                        onChange={(e) =>
+                                                                            e.target.value.length <= 10 ?
+                                                                                setlis([...lis.slice(0, index), [element[0], element[1], element[2], parseInt(e.target.value), element[4], element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+                                                                                :
+                                                                                console.log('not allowed')
+                                                                        }
+                                                                    />
 
-                                                        <br />
+                                                                    <br />
 
-                                                        {/* {console.log(element[4])} */}
-                                                        {/* {console.log(parseFloat(element[4]))} */}
+                                                                    {/* {console.log(element[4])} */}
+                                                                    {/* {console.log(parseFloat(element[4]))} */}
 
                                                     OxyPrice : <input
-                                                            type='text'
-                                                            value={(element[4])}
-                                                            onChange={(e) => {
+                                                                        type='text'
+                                                                        value={(element[4])}
+                                                                        onChange={(e) => {
 
-                                                                console.log('me: ', e.target.value)
+                                                                            console.log('me: ', e.target.value)
 
-                                                                if (e.target.value === '') {
+                                                                            if (e.target.value === '') {
 
-                                                                    setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+                                                                                setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
 
-                                                                }
-                                                                else if ((['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'].includes(e.target.value[(e.target.value.length - 1)]))) {
+                                                                            }
+                                                                            else if ((['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'].includes(e.target.value[(e.target.value.length - 1)]))) {
 
-                                                                    if (e.target.value.includes('.')) {
+                                                                                if (e.target.value.includes('.')) {
 
-                                                                        if (e.target.value.split('.').length === 2) {
+                                                                                    if (e.target.value.split('.').length === 2) {
 
-                                                                            setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+                                                                                        setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+
+                                                                                    }
+
+
+                                                                                } else {
+
+                                                                                    setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+
+                                                                                }
+
+                                                                            }
+                                                                        }
 
                                                                         }
 
+                                                                    />
 
-                                                                    } else {
+                                                                    {/* </Typography> */}
+                                                                </CardContent>
+                                                                <CardActions>
+                                                                    <Bottom>
 
-                                                                        setlis([...lis.slice(0, index), [element[0], element[1], element[2], element[3], (e.target.value), element[5], element[6], element[7], element[8], element[9]], ...lis.slice((index + 1), lis.length)])
+                                                                        <Button size="small" id='butstart' onClick={() => {
 
-                                                                    }
+                                                                            if (!(element[1] === '' || element[2] === '' || element[3] === '' || element[4] === '')) {
 
-                                                                }
-                                                            }
+                                                                                {
+                                                                                    saveclick(
+                                                                                        element[1],
+                                                                                        element[2],
+                                                                                        element[3],
+                                                                                        element[4],
+                                                                                        element[5],
+                                                                                        element[0],
+                                                                                        element[6],
+                                                                                        element[7],
+                                                                                        element[8],
+                                                                                        element[9]
+                                                                                    )
 
-                                                            }
+                                                                                }
 
-                                                        />
+                                                                            } else {
 
-                                                        {/* </Typography> */}
-                                                    </CardContent>
-                                                    <CardActions>
-                                                        <Bottom>
-=======
-                <Grid container spacing={3}>
+                                                                                console.log('fill the values')
 
-                    {
-                        lis.map((element) => {
+                                                                            }
 
-                            console.log(element)
+                                                                        }} >
+                                                                            <SaveIcon />
+                                                                        </Button>
 
-                            if (element[0] == 'noedit') {
+                                                                        <Button
+                                                                            size="small"
+                                                                            id='butend'
+                                                                            onClick={() =>
 
-                                return (
-                                    <Grid item xs={12}>
-                                        <Card className={classes.root} id='makeme'>
-                                            {/* <p>{element[0]} - {element[1]} - {element[2]}</p> */}
-                                            <CardContent>
-                                                {/* <Typography className={classes.title} color="textSecondary" gutterBottom> */}
-                                                {/* {element[0]} */}
-                                                {/* </Typography> */}
-                                                <Typography variant="h5" component="h2">
-                                                    {/* be{bull}nev{bull}o{bull}lent */}
-                                                    {element[1]}
-                                                </Typography>
-                                                {/* <Typography className={classes.pos} color="textSecondary"> */}
-                                                {/* adjective */}
-                                                {/* </Typography> */}
-                                                <Typography variant="body2" component="p">
-                                                    {element[2]}
-                                                    <br />
-                                                    {element[3]}
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Bottom>
-                                                <Button size="small" id = 'butstart'> <EditIcon /> </Button>
-                                                <Button size="small" id = 'butend'> <DeleteIcon /> </Button>
-                                                </Bottom>
-                                            </CardActions>
-                                        </Card>
+                                                                                element[0] === 'newedit' ?
+
+                                                                                    cancelnewclick(
+
+                                                                                        element[1],
+                                                                                        element[2],
+                                                                                        element[3],
+                                                                                        element[4],
+                                                                                        element[5],
+
+                                                                                    ) :
+
+                                                                                    canceloldclick(
+
+                                                                                        element[1],
+                                                                                        element[2],
+                                                                                        element[3],
+                                                                                        element[4],
+                                                                                        element[5],
+                                                                                        element[6],
+                                                                                        element[7],
+                                                                                        element[8],
+                                                                                        element[9],
+
+                                                                                    )}>
+
+
+                                                                            <CancelIcon />
+
+
+                                                                        </Button>
+
+
+                                                                    </Bottom>
+                                                                </CardActions>
+                                                            </Card>
+
+                                                        </Grid>
+
+                                                    )
+
+                                                }
+
+                                            })
+                                        }
+
+
                                     </Grid>
 
-                                )
 
-                            } else if (element[0] == 'edit') {
+                                    : loading ?
 
-                                return(
+                                        <p>Loading....</p> :
 
-                                    <Grid item xs={12}>
-                                    
+                                        <p>No data. Click plus symbol to create one</p>
 
-
-                                    </Grid>
-
-                                )
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
-
-                                                            <Button size="small" id='butstart' onClick={() => {
-
-                                                                if (!(element[1] === '' || element[2] === '' || element[3] === '' || element[4] === '')) {
-
-                                                                    {
-                                                                        saveclick(
-                                                                            element[1],
-                                                                            element[2],
-                                                                            element[3],
-                                                                            element[4],
-                                                                            element[5],
-                                                                            element[0],
-                                                                            element[6],
-                                                                            element[7],
-                                                                            element[8],
-                                                                            element[9]
-                                                                        )
-
-                                                                    }
-
-                                                                } else {
-
-                                                                    console.log('fill the values')
-
-                                                                }
-
-                                                            }} >
-                                                                <SaveIcon />
-                                                            </Button>
-
-                                                            <Button
-                                                                size="small"
-                                                                id='butend'
-                                                                onClick={() =>
-
-                                                                    element[0] === 'newedit' ?
-
-                                                                        cancelnewclick(
-
-                                                                            element[1],
-                                                                            element[2],
-                                                                            element[3],
-                                                                            element[4],
-                                                                            element[5],
-
-                                                                        ) :
-
-                                                                        canceloldclick(
-
-                                                                            element[1],
-                                                                            element[2],
-                                                                            element[3],
-                                                                            element[4],
-                                                                            element[5],
-                                                                            element[6],
-                                                                            element[7],
-                                                                            element[8],
-                                                                            element[9],
-
-                                                                        )}>
-
-
-                                                                <CancelIcon />
-
-
-                                                            </Button>
-
-
-                                                        </Bottom>
-                                                    </CardActions>
-                                                </Card>
-
-                                            </Grid>
-
-                                        )
-
-                                    }
-
-                                })
                             }
+                        </Listview>
 
+                    </>
 
-                        </Grid>
-
-
-<<<<<<< HEAD
-                        : loading ?
-
-                        <p>Loading....</p> :
-
-                        <p></p>
-
-                }
-            </Listview>
-
-
-=======
-            </Listview>
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
+            }
         </>
     )
 }

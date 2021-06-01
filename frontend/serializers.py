@@ -6,7 +6,7 @@ class SellersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email', 'password')
+        fields = ('id', 'name', 'email' )
 
 class SellersLoginSerializer(serializers.ModelSerializer):
 
@@ -15,6 +15,14 @@ class SellersLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sellers
         fields = ('email', 'password', 'condition')
+
+class SellersLoginwithimgandpwdSerializer(serializers.ModelSerializer):
+    
+    #condition = serializers.CharField(max_length=6)
+
+    class Meta:
+        model = Sellers
+        fields = ('id', 'name', 'email', 'password', 'profilephoto')
 
 class SellersSignupSerializer(serializers.ModelSerializer):
     
@@ -27,7 +35,7 @@ class SellersSignupSerializer(serializers.ModelSerializer):
 class PlacesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Places
-        fields = ('foreign_seller', 'location', 'phno', 'oxygenpricepercontainer')
+        fields = ('foreign_seller', 'location', 'addr', 'phno', 'oxyprice')
 
 class SellersDetailsSerializer(serializers.ModelSerializer):
 
@@ -35,7 +43,6 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-<<<<<<< HEAD
         fields = ('id', 'name', 'email', 'password', 'profilephoto' )
 
 class SellersupdatedetailsSerializer(serializers. ModelSerializer):
@@ -79,6 +86,3 @@ class PlacesdeleteSerializer(serializers.ModelSerializer):
         model = Places
         fields = ('location', 'addr', 'phno', 'oxyprice', 'id' )
 
-=======
-        fields = ('id',)
->>>>>>> 8f77ce9696471abc4552aa6d5a280cd2439b5488
