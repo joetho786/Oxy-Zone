@@ -2,7 +2,7 @@ from django.db.models import query
 from django.http.response import Http404
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, PlacessavenewSerializer, PlacessaveoldSerializer, PlacesdeleteSerializer, SellersLoginwithimgandpwdSerializer
+from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, PlacessavenewSerializer, PlacessaveoldSerializer, PlacesdeleteSerializer, SellersLoginwithimgandpwdSerializer, SellersupdatedetailsSerializer
 from .models import Sellers, Places
 from rest_framework.views import APIView
 from rest_framework import status
@@ -376,6 +376,58 @@ class SellerssavenewView(APIView):
             addr = serializer.data.get('addr')
             phno = serializer.data.get('phno')
             oxyprice = serializer.data.get('oxyprice')
+
+            print('valid inside deatils')
+            print(id)
+            # host = self.request.session.session_key
+
+
+            sellerqueryset = Sellers.objects.filter(id = id)
+
+            print('sellerqueryset : ', sellerqueryset.values())
+
+
+            if sellerqueryset.exists():
+                print('exists')
+
+                sellerdata = Sellers.objects.get(id = id)
+
+                placequerydata = Places(foreign_seller = sellerdata, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
+                placequerydata.save()
+
+                return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+            print('id itself doesnt exists')
+            return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
+
+        print('oopsie')
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)  
+
+
+class SellersUpdateView(APIView):
+    
+    serializer_class = SellersupdatedetailsSerializer
+
+    def post(self, request, format=None):
+
+        print('inside')
+        print(request.data)
+        print(type(request.data['id']))
+
+        serializer = self.serializer_class(data=request.data)
+
+        print(serializer)
+
+        if serializer.is_valid():
+            id = serializer.data.get('id')
+            name = serializer.data.get('name')
+            email = serializer.data.get('email')
+            oldname = serializer.data.get('oldname')
+            oldemail = serializer.data.get('oldemail')
+            cond = serializer.data.get('cond')
+            oldp = serializer.data.get('oldpassword')
+            newp = serializer.data.get('newpassword')
+            photo = serializer.data.get('profilephoto')
 
             print('valid inside deatils')
             print(id)

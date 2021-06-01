@@ -49,7 +49,7 @@ class SellersupdatedetailsSerializer(serializers. ModelSerializer):
 
     class Meta:
         models = Sellers
-        fields = ('id', 'name', 'email', 'password', 'profilephoto' )
+        fields = ('id', 'name', 'email', 'oldname', 'oldemail', 'cond', 'oldpassword', 'newpassword', 'profilephoto' )
 
 class PlacessaveoldSerializer(serializers.ModelSerializer):
     

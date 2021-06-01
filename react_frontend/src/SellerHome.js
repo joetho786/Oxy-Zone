@@ -12,12 +12,15 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
+import Update from './Update'
 
 import { useHistory } from "react-router-dom";
 
@@ -92,13 +95,19 @@ const SellerHome = () => {
     }
 
     const [det, setdet] = useState([])
+    const [prof, setprof] = useState([])
+
 
     useEffect(() => {
 
         const val = localStorage.getItem("gid").split(',')
         console.log(val)
 
+        //id, name, email, pwd, imgloc
         setdet([val[0], val[1], val[2], val[3], val[4]])
+
+        //id, name, email, pwd, imgloc, name, email, pwd, imgloc
+        setprof([val[0], val[1], val[2], val[3], val[4], val[1], val[2], val[3], val[4]])
 
         axios.post('/api/sellers/details/', {
             id: parseInt(val[0]),
@@ -140,6 +149,13 @@ const SellerHome = () => {
 
                 console.log(listt)
 
+                
+                if (listt === []){
+                    
+                    setloading(false)
+                    
+                }
+
                 setlis(listt)
 
                 // refresh()
@@ -171,6 +187,12 @@ const SellerHome = () => {
                 ]
 
                 console.log(listt)
+
+                if (listt === []){
+                    
+                    setloading(false)
+                    
+                }
 
                 setlis(listt)
 
@@ -387,6 +409,63 @@ const SellerHome = () => {
 
     }
 
+    const [img, setimg] = useState(det[4])
+
+    const handlesubmit = (e) => {
+
+        e.preventDefault()
+    
+        console.log('in')
+    
+        let nam = e.target[0].value
+        let emai = e.target[1].value
+        let oldp = e.target[2].value
+        let newp = e.target[3].value
+        let retp = e.target[4].value
+
+        const upl = new FormData()
+        upl.append('check1', 'check2')
+        upl.append('title', img.name)
+        upl.append('image', img)
+        upl.append('image', img, img.name)
+
+        console.log(img)
+
+        console.log('upl', upl)
+    
+    
+        //need desc and image
+    
+        
+        //id, name, email, pwd, imgloc
+        //setprof([val[0], val[1], val[2], val[3], val[4]])
+    
+        if (newp === '' || oldp === '' || retp === '') {
+    
+            if (!(nam === prof[1] && emai === prof[2])){
+    
+                // axios.post('/api/update/', {
+                    
+                //     id: prof[0],
+                //     name: nam,
+                //     email: emai,
+                //     oldname: prof[1],
+                //     oldemail: prof[2],
+                //     cond: 'nopwd',
+                //     oldpassword: '',
+                //     newpassword: '',
+                //     profilephoto: '',
+    
+                // })
+                // .then((res) => console.log(res))
+                
+    
+            }
+    
+        }
+    
+    }
+
     return (
         <Full>
 
@@ -418,7 +497,7 @@ const SellerHome = () => {
 
                                             <Nav.Item>
                                                 <Nav.Link>
-                                                    <div onClick={() => {setupdate(false)}} >Go Back</div>
+                                                    <div onClick={() => { setupdate(false) }} >Go Back</div>
                                                 </Nav.Link>
                                             </Nav.Item>
 
@@ -427,11 +506,100 @@ const SellerHome = () => {
                                 </Navbar>
                             </Styles >
 
-                            <p>{det[0]}</p>
-                            <p>{det[1]}</p>
-                            <p>{det[2]}</p>
-                            <p>{det[3]}</p>
-                            <img src={det[4]} ></img>
+                            {/* <p>{det[0]}</p> */}
+
+                            <FirstHalf>
+
+                                <LeftHalf>
+
+                                    <Round>
+
+                                        <input type='file' id='imageupload' style={{ display: 'none' }} accept="image/*"
+                                            onChange={(e) => {
+
+                                                // let reader = FileReader();
+
+                                                //reader.onload = function () {
+                                                //    document.getElementById('#blah')
+                                                //        .attr('src', e.target.result)
+                                                //        .width(150)
+                                                //        .height(200);
+                                                //};
+
+                                                console.log(e.target.files[0])
+
+                                                setimg(e.target.files[0])
+
+                                                // reader.readAsDataURL(input.files[0]);
+
+                                            }}
+                                        />
+                                        <Roundimg src={det[4]} onClick={() => {
+
+                                            document.getElementById('imageupload').click()
+
+                                        }} />
+                                    </Round>
+
+                                </LeftHalf>
+
+                                <RightHalf>
+
+                                    <form onSubmit={(e) => { handlesubmit(e) }} >
+
+                                        <div class="input-group mb-3">
+                                            <span style={{ width: '65px' }} class="input-group-text" id="inputGroup-sizing-default">Name</span>
+                                            <input value={prof[1]} onChange={(e) => {
+                                                setprof(prof[0], e.target.value, prof[2], prof[3], prof[4], prof[5], prof[6], prof[7], prof[8])
+                                            }} type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <span style={{ width: '65px' }} class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                                            <input value={prof[2]}
+                                                onChange={(e) => {
+                                                    setprof(prof[0], prof[1], e.target.value, prof[3], prof[4], prof[5], prof[6], prof[7], prof[8])
+                                                }}
+                                                type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Old  Password</span>
+                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">New Password</span>
+                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Retype Password</span>
+                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+
+                                        <input id='hid' type='submit' style={{ display: 'none' }} />
+
+                                        <Save>
+                                            <SaveIcon fontSize="large" style={{ color: 'white' }} onClick={() => { document.getElementById('hid').click() }} />
+                                        </Save>
+
+                                    </form>
+
+                                </RightHalf>
+
+                            </FirstHalf>
+
+                            <SecondHalf>
+
+                                <h2> About You: </h2>
+                                <Textarea />
+
+                            </SecondHalf>
+
+
+                            {/* <p>{det[3]}</p> */}
+
                         </>
 
                         :
@@ -487,9 +655,9 @@ const SellerHome = () => {
                                 <AddIcon style={{ color: 'white' }} />
                             </Plus>
 
-                            {/* {
+                            {
                     console.log(loading, lis.length >= 1, loading && lis.length >= 1)
-                } */}
+                }
 
                             {
                                 ((lis.length >= 1) && (loading)) ?
@@ -856,6 +1024,93 @@ a, .navbar-brand, .navbar-nav .nav-link {
     
     }
 }
+
+`
+
+const FirstHalf = styled.div`
+
+height: 50%;
+width: 100%;
+display: flex;
+flex-direction: row;
+
+`
+
+const LeftHalf = styled.div`
+
+height: 100%;
+width: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+
+`
+
+const RightHalf = styled.div`
+
+height: 100%;
+width: 400px;
+display: flex;
+flex-direction: column;
+justify-content: center
+
+`
+
+const Round = styled.div`
+
+height: 200px;
+width: 200px;
+border-radius: 50%;
+
+&: hover {
+    cursor: pointer;
+}
+
+`
+
+const Roundimg = styled.img`
+
+width: 100%;
+height: 100%;
+border-radius: 50%;
+border: 1px solid black;
+
+`
+
+const Save = styled.div`
+
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background-color: #1685F1;
+display: flex;
+justify-content: center;
+align-items: center;
+position: absolute;
+bottom: 10px;
+right: 10px;
+
+&: hover {
+    cursor: pointer;
+}
+
+`
+
+const SecondHalf = styled.div`
+
+width: 100%;
+padding: 15px;
+height: ${window.innerHeight / 2 - 56}px;
+display: flex;
+justify-content: center;
+flex-direction: column;
+
+`
+
+const Textarea = styled.textarea`
+
+height: 90%;
+width: 90%;
 
 `
 

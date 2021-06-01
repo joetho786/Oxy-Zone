@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/sellers/delete/', views.SellersdeleteView.as_view()),
     path('api/sellers/save/new/', views.SellerssavenewView.as_view()),
     path('api/sellers/save/old/', views.SellerssaveoldView.as_view()),
+    path('api/sellers/update/', views.SellersUpdateView.as_view()),
+
 
 ]
 
