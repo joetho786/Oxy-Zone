@@ -388,7 +388,7 @@ const SellerHome = () => {
                     det ?
 
                         <>
-                            <button onClick={() => {setupdate(false)} } />
+                            <button onClick={() => {setupdate(false)} } > Back </button>
                             <p>{det[0]}</p>
                             <p>{det[1]}</p>
                             <p>{det[2]}</p>
