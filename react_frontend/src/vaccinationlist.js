@@ -6,7 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import {NavigationBar} from './components/Navigation';
+
+import NavigationBar from './components/Navigation';
 import { Form } from 'react-bootstrap';
 import { typeOf } from 'react-is';
 import {Layout} from './components/layout'
@@ -16,6 +17,7 @@ import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import img from './components/cardimg.svg';
 import {Clayout} from './components/cardlayout'
+
 const Vaccinationlisting =() =>{
   const history = useHistory();
   const [pincode,setpincode]=useState('')
@@ -57,7 +59,9 @@ const handleClick =(event) =>{
 
 return(
   <>
-  <NavigationBar/>
+
+  <NavigationBar props = {[['Home', '/'], ['Sell Oxygen', '/seller'], ['Contact', '/contact'] ]} />
+  
   <Layout>
   <h1>Search vaccination centers</h1>
   <Form>

@@ -1,12 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Nav, Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 import CancelIcon from '@material-ui/icons/Cancel';
 import SaveIcon from '@material-ui/icons/Save';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -20,6 +22,9 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 
 import './sellerhome.css'
+
+import NavigationBar from './components/Navigation'
+import { FlashAutoOutlined } from '@material-ui/icons';
 
 // import { parse, v4 as uuidv4 } from 'uuid';
 
@@ -69,7 +74,7 @@ const SellerHome = () => {
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
                 console.log(data.data.Data[i].foreign_seller)
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller])
             }
             console.log('newlist: ' + newlist)
 
@@ -182,6 +187,9 @@ const SellerHome = () => {
     const deleteclick = (location, addr, phno, oxyprice, id, cond) => {
 
         console.log('posting now')
+
+        console.log(id, cond)
+
         axios.post('/api/sellers/delete/', {
             location: location,
             addr: addr,
@@ -380,7 +388,7 @@ const SellerHome = () => {
     }
 
     return (
-        <>
+        <Full>
 
             {
                 update ?
@@ -388,7 +396,37 @@ const SellerHome = () => {
                     det ?
 
                         <>
-                            <button onClick={() => {setupdate(false)} } > Back </button>
+
+                            <Styles>
+                                <Navbar expand="lg">
+                                    <Navbar.Brand href="/">Ozone</Navbar.Brand>
+                                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                                    <Navbar.Collapse id="basic-navbar-nav">
+                                        <Nav className="ml-auto">
+
+                                            <Nav.Item>
+                                                <Nav.Link>
+                                                    <Link to="/vaccinationlist">Vaccination List</Link>
+                                                </Nav.Link>
+                                            </Nav.Item>
+
+                                            <Nav.Item>
+                                                <Nav.Link>
+                                                    <div onClick={handleclick} >Log Out</div>
+                                                </Nav.Link>
+                                            </Nav.Item>
+
+                                            <Nav.Item>
+                                                <Nav.Link>
+                                                    <div onClick={() => {setupdate(false)}} >Go Back</div>
+                                                </Nav.Link>
+                                            </Nav.Item>
+
+                                        </Nav>
+                                    </Navbar.Collapse>
+                                </Navbar>
+                            </Styles >
+
                             <p>{det[0]}</p>
                             <p>{det[1]}</p>
                             <p>{det[2]}</p>
@@ -403,19 +441,50 @@ const SellerHome = () => {
                     :
 
                     <>
+
+                        <Styles>
+                            <Navbar expand="lg">
+                                <Navbar.Brand href="/">Ozone</Navbar.Brand>
+                                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                                <Navbar.Collapse id="basic-navbar-nav">
+                                    <Nav className="ml-auto">
+
+                                        <Nav.Item>
+                                            <Nav.Link>
+                                                <Link to="/vaccinationlist">Vaccination List</Link>
+                                            </Nav.Link>
+                                        </Nav.Item>
+
+                                        <Nav.Item>
+                                            <Nav.Link>
+                                                <div onClick={handleprofile} >Update Profile</div>
+                                            </Nav.Link>
+                                        </Nav.Item>
+
+                                        <Nav.Item>
+                                            <Nav.Link>
+                                                <div onClick={handleclick} >Log Out</div>
+                                            </Nav.Link>
+                                        </Nav.Item>
+
+                                    </Nav>
+                                </Navbar.Collapse>
+                            </Navbar>
+                        </Styles >
+
                         <Logout >
 
-                            <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button>
-                            <button type="button" class="btn btn-warning c1 c" onClick={handleprofile} >Update Profile <EditIcon /> </button>
+                            {/* <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button> */}
+                            {/* <button type="button" class="btn btn-warning c1 c" onClick={handleprofile} >Update Profile <EditIcon /> </button> */}
 
                         </Logout>
-                        <Title >
+                        {/* <Title >
                             <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
                         </Title >
-                        < Hr />
+                        < Hr /> */}
                         <Listview>
                             <Plus onClick={handleplusclick}>
-                                <AddCircleIcon />
+                                <AddIcon style={{ color: 'white' }} />
                             </Plus>
 
                             {/* {
@@ -690,9 +759,15 @@ const SellerHome = () => {
                     </>
 
             }
-        </>
+        </Full>
     )
 }
+
+const Full = styled.div`
+
+height: 100%;
+
+`
 
 const Bottom = styled.div`
 
@@ -715,10 +790,18 @@ right: 10px;
 
 const Plus = styled.div`
 
-width: 10px;
-margin-left: 20px;
-margin-top: 20px;
-margin-bottom: 20px;
+position: sticky;
+background-color: #1685F1;
+width: 40px;
+height: 40px;
+border-radius: 50%;
+top: 100px;
+// right: 50px;
+left: 95%;
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
 
 $hover: {
     cursor: pointer;
@@ -751,5 +834,29 @@ padding: 0;
 
 `
 
+const Styles = styled.div`
+
+position: sticky;
+top: 0;
+
+.navbar {
+
+    background-color: #222;
+
+}
+
+a, .navbar-brand, .navbar-nav .nav-link {
+
+    color: #bbb !important;
+
+    &:hover {
+
+        color: white !important;
+        text-decoration: none !important;
+    
+    }
+}
+
+`
 
 export default SellerHome

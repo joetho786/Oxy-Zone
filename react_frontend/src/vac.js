@@ -22,7 +22,9 @@ const Vaccinationlisting =() =>{
     
 return(
   <>
-  <NavigationBar/>
+  
+  <NavigationBar props = {[['Home', '/'], ['Sell Oxygen', '/seller'], ['Contact', '/contact'] ]} />
+
   <Layout>
   <h1>Search vaccination centers</h1>
   <Form>

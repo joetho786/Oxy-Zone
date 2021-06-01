@@ -50,9 +50,9 @@ const App = () => {
           <Vaccinationlisting/>
         </Route>
         
-        <Route exact path="/seller/update">
+        {/* <Route exact path="/seller/update">
           <Update />
-        </Route>
+        </Route> */}
 
         <Route exact path="/seller">
           
