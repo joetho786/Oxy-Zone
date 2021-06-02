@@ -2,7 +2,7 @@ from django.db.models import query
 from django.http.response import Http404
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import SellersDetailsSerializer, SellersSerializer, PlacesSerializer, SellersLoginSerializer, SellersSignupSerializer, PlacessavenewSerializer, PlacessaveoldSerializer, PlacesdeleteSerializer, SellersLoginwithimgandpwdSerializer, SellersupdatedetailsSerializer
+from .serializers import *
 from .models import Sellers, Places
 from rest_framework.views import APIView
 from rest_framework import status
@@ -403,16 +403,15 @@ class SellerssavenewView(APIView):
         print('oopsie')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)  
 
-
-class SellersUpdateView(APIView):
+     
+class Sellersdetailsbyid(APIView):
     
-    serializer_class = SellersupdatedetailsSerializer
+    serializer_class = SellersidSerializer
 
     def post(self, request, format=None):
 
         print('inside')
         print(request.data)
-        print(type(request.data['id']))
 
         serializer = self.serializer_class(data=request.data)
 
@@ -420,16 +419,7 @@ class SellersUpdateView(APIView):
 
         if serializer.is_valid():
             id = serializer.data.get('id')
-            name = serializer.data.get('name')
-            email = serializer.data.get('email')
-            oldname = serializer.data.get('oldname')
-            oldemail = serializer.data.get('oldemail')
-            cond = serializer.data.get('cond')
-            oldp = serializer.data.get('oldpassword')
-            newp = serializer.data.get('newpassword')
-            photo = serializer.data.get('profilephoto')
 
-            print('valid inside deatils')
             print(id)
             # host = self.request.session.session_key
 
@@ -444,14 +434,167 @@ class SellersUpdateView(APIView):
 
                 sellerdata = Sellers.objects.get(id = id)
 
-                placequerydata = Places(foreign_seller = sellerdata, location = location, addr = addr, phno = phno, oxyprice = oxyprice)
-                placequerydata.save()
+                returnserializer = SellersnameemailSerializer(sellerdata)
 
-                return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+                print(returnserializer.data)
+
+                return Response(returnserializer.data, status = status.HTTP_200_OK)
 
             print('id itself doesnt exists')
             return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
 
         print('oopsie')
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)  
+
+
+class SellersUpdateView(APIView):
+    
+    serializer_class = SellersupdatedetailsSerializer
+    #serializer_class2 = Sellersupdatedetails2Serializer
+    #serializer_class3 = Sellersupdatedetails3Serializer
+
+    def post(self, request, format=None):
+
+        print('inside')
+        print(request.data)
+        print(request.data['name'])
+
+        print(
+            request.data['id'], 
+            request.data['name'], 
+            request.data['email'], 
+            request.data['oldname'], 
+            request.data['oldemail'],
+            request.data['cond'], 
+            request.data['cond2'], 
+            request.data['oldpassword'], 
+            request.data['newpassword'], 
+            request.data['profilephoto'],
+            request.data['desc'],
+        )
+
+        serializer = self.serializer_class(data=request.data)
+        #serializer2 = self.serializer_class2(data=request.data)
+        #serializer3 = self.serializer_class3(data=request.data)
+
+        print(serializer.is_valid())
+        #print(serializer2.is_valid())
+        #print(serializer3.is_valid())
+
+        print(serializer)
+
+        if serializer.is_valid():
+            id = serializer.data.get('id')
+            name = serializer.data.get('name')
+            email = serializer.data.get('email')
+            oldname = serializer.data.get('oldname')
+            oldemail = serializer.data.get('oldemail')
+            cond = serializer.data.get('cond')
+            cond2 = serializer.data.get('cond2')
+            oldp = serializer.data.get('oldpassword')
+            newp = serializer.data.get('newpassword')
+            photo = serializer.data.get('profilephoto')
+            desc = serializer.data.get('desc')
+
+            print('valid inside deatils')
+            print(id)
+            # host = self.request.session.session_key
+
+            if cond == 'yes':
+                
+                sellerqueryset = Sellers.objects.filter(id = id, name = oldname, email = oldemail, password = oldp)
+
+                print('sellerqueryset : ', sellerqueryset.values())
+
+                if sellerqueryset.exists():
+                    print('cond: yes -> exists')
+
+                    if cond2 == 'yes':
+
+                        sellerqueryset.update(name = name, email = email, password = newp, desc = desc, profilephoto = photo)
+                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+                    else: 
+
+                        sellerqueryset.update(name = name, email = email, password = newp, desc = desc)
+                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+                else:
+                    print('id itself doesnt exists')
+                    return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
+
+
+
+            elif cond == 'no':
+
+                sellerqueryset = Sellers.objects.filter(id = id, name = oldname, email = oldemail)
+
+                print('sellerqueryset : ', sellerqueryset.values())
+
+                if sellerqueryset.exists():
+                    print('cond: no -> exists')
+
+                    if cond2 == 'yes':
+
+                        sellerqueryset.update(name = name, email = email, desc = desc, profilephoto = photo)
+                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+                    else:
+
+                        sellerqueryset.update(name = name, email = email, desc = desc)
+                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+                else:
+                    print('id itself doesnt exists')
+                    return Response({'Data': 'Id itself is wrong'}, status = status.HTTP_226_IM_USED)
+
+            else:
+                print('condtion type wrong')
+                return Response({'Data': 'condtion type wrong'}, status = status.HTTP_226_IM_USED)
+
+        print('oopsie')
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)      
 
+    
+# class SellerstryView(APIView):
+    
+#     serializer_class = SellerstrySerializer
+#     serializer_class2 = Sellerstry2Serializer
+
+#     def post(self, request, format=None):
+
+#         print('in try')
+#         print(request.data)
+#         print((request.data['profilephoto']))
+#         print(type(request.data['profilephoto']))
+#         photo = request.data['profilephoto']
+#         print('now')
+#         print(request.FILES)
+#         print(request.FILES['profilephoto'])
+
+#         trydata = Sellers(name = 'hehe', email = 'vinu@gmail.com', password = '123456', desc = 'hello', profilephoto = photo)
+#         print(trydata)
+#         trydata.save()
+
+#         serializer = self.serializer_class(data=request.data)
+
+#         serializer2 = self.serializer_class2(data=request.data)
+
+#         print('1: ', serializer)
+#         print(serializer.is_valid())
+
+#         serializertype2 = self.serializer_class(data=request.FILES)
+
+#         print('2: ', serializertype2)
+#         print(serializertype2.is_valid())
+
+#         print('3: ', serializer2)
+#         print(serializer2.is_valid())
+
+#         if serializer.is_valid():
+#             print('valid')
+
+#             return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+
+#         else:
+#             print('false')
