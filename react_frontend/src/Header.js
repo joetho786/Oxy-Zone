@@ -5,7 +5,7 @@ import bg from './bg.png';
 import map from './map.png';
 import frame from './Frame 1.png';
 import axios from "axios";
-
+import Oxosearch from './oxosearch'
 import { useHistory } from "react-router-dom";
 
 // import Paper from '@material-ui/core/Paper';
@@ -22,8 +22,21 @@ function handleClick(event, hist) {
     if (!(textInput.current.value == '')) {
         console.log('urs: ')
         console.log(textInput.current.value)
-        hist.push("/map/" + textInput.current.value);
+        hist.push("/search/" + textInput.current.value);
+
+        return(
+            <Oxosearch>
+                {textInput.current.value}
+            </Oxosearch>
+        )
+        
     }
+
+    return (
+            <>
+            <Oxosearch/>
+            </>
+        )
 }
 
 function handlesellerClick(event, hist) {

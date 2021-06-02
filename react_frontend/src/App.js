@@ -6,6 +6,7 @@ import Sellerlogin from './sellerlogin'
 import SellerHome from './SellerHome'
 import Update from './Update'
 import Vaccinationlisting from './vaccinationlist';
+import Oxosearch from './oxosearch';
 import Mapbox from './react_map'
 import { Layout } from './components/layout';
 
@@ -43,6 +44,10 @@ const App = () => {
         </Route> */}
         <Route path="/map/:loc">
           <Maplayers />
+        </Route>
+        
+         <Route exact path="/search/:place">
+          <Oxosearch/>
         </Route>
         
         
