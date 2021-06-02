@@ -1,6 +1,9 @@
 from django.db.models import fields
 from rest_framework import serializers
 from .models import Sellers, Places
+from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import IntegerField
+
 
 class SellersSerializer(serializers.ModelSerializer):
 
@@ -86,3 +89,19 @@ class PlacesdeleteSerializer(serializers.ModelSerializer):
         model = Places
         fields = ('location', 'addr', 'phno', 'oxyprice', 'id' )
 
+class SellersidSerializer(serializers.ModelSerializer):
+    
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Sellers
+        fields = ('id', )
+
+
+class SellersnameemailSerializer(serializers.ModelSerializer):
+    
+    #name = serializers.CharField()
+
+    class Meta:
+        model = Sellers
+        fields = ('name', 'email')

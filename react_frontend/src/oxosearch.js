@@ -24,9 +24,12 @@ import {
     useParams
 } from "react-router-dom";
 
-const Oxosearch =(place) =>{
+
+const Oxosearch =() =>{
+    const [place,setplace]=useState(useParams())
     const [sellerdetails,setsellerdetails] = useState([])
     const [selleridlookup,setselleridlookup]=useState([])
+    let searchresult =[];
     const [dropdown_name,setdropdown_name]=useState('Filters')
     useEffect(()=>{
        console.log(place)
@@ -39,6 +42,33 @@ const Oxosearch =(place) =>{
        console.log(sellerdetails)
     },[])
     console.log(dropdown_name)
+    
+    //let {place} =useParams();
+    sellerdetails.forEach((e)=>{
+
+        
+        if (e.location === place){
+            let name ='';
+            axios
+            .post('/api/getseller/',{'id': e.foreign_seller})
+            .then((res)=>{
+                    name=res.data.name
+                    console.log('name:'+name);
+
+                    searchresult.push({
+                'name': name,
+                'address':e.addr,
+                'phno':e.phno,
+                'oprice':e.oxyprice,
+                'location':e.location
+            }
+            )
+
+            })
+            
+        }
+    })
+    console.log(searchresult)
 
     return (
         <>
@@ -47,18 +77,11 @@ const Oxosearch =(place) =>{
             
 
            <Form >
-               <InputGroup hasValidation>
-        <InputGroup.Prepend>
-            <DropdownButton variant="secondary" id="dropdown-basic-button" title={dropdown_name}>
-            <Dropdown.Item onClick={()=>setdropdown_name('Ascending')}>Ascending</Dropdown.Item>
-            <Dropdown.Item onClick={()=>setdropdown_name('Descending')}>Descending</Dropdown.Item>
-            <Dropdown.Item onClick={()=>setdropdown_name('Nearest first')}>Nearest first</Dropdown.Item>
-            </DropdownButton>
-        </InputGroup.Prepend>
-        
-        <Form.Control type="text" required isInvalid />
+               <InputGroup >
+            
+        <Form.Control type="text" placeholder="Enter location" />
          <InputGroup.Append >
-        <Button variant="primary" type='submit'>Search</Button>
+        <Button variant="primary" type='submit' onClick={(e)=>setplace(e.target.value)}>Search</Button>
         </InputGroup.Append>
         <Form.Control.Feedback type="invalid">
             Please enter Location
@@ -66,6 +89,15 @@ const Oxosearch =(place) =>{
        
         </InputGroup>
             </Form>
+            <br/>
+         <DropdownButton variant="secondary" id="dropdown-basic-button" title={dropdown_name}>
+            <Dropdown.Item onClick={()=>setdropdown_name('Ascending')}>Ascending</Dropdown.Item>
+            <Dropdown.Item onClick={()=>setdropdown_name('Descending')}>Descending</Dropdown.Item>
+            <Dropdown.Item onClick={()=>setdropdown_name('Nearest first')}>Nearest first</Dropdown.Item>
+            </DropdownButton>
+
+        
+
         </Layout>
         </>
     )
