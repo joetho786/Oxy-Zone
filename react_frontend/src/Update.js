@@ -51,7 +51,7 @@ const Update = () => {
 
     const history = useHistory();
 
-    //const [update, setupdate] = useState(false)
+    const [changedtext, setchangedtext] = useState(false)
     const [prof, setprof] = useState([])
     const [img, setimg] = useState('')
     const [textbox, settextbox] = useState('')
@@ -90,7 +90,7 @@ const Update = () => {
 
             const uploadData = new FormData();
 
-            if (!(nam === prof[6] && emai === prof[7])) {
+            if ((!(nam === prof[6] && emai === prof[7])) || urlav || changedtext ) {
 
 
                 if (urlav) {
@@ -123,27 +123,12 @@ const Update = () => {
 
                 }
 
-                // axios.post('/api/update/', {
-
-                //     id: prof[0],
-                //     name: nam,
-                //     email: emai,
-                //     oldname: prof[6],
-                //     oldemail: prof[7],
-                //     cond: 'no',
-                //     oldpassword: '',
-                //     newpassword: '',
-                //     profilephoto: img,
-                //     desc: textbox,
-
-                // })
-                //     .then((res) => console.log(res))
-
                 axios.post('/api/sellers/update/', 
                      uploadData
                 )
                     .then(res => {
                         if (res.status === 200) {
+
                             console.log(res.data.Data[0])
                             setimg('/media/' + res.data.Data[0])
                             seturlav(false)
@@ -152,56 +137,79 @@ const Update = () => {
                             console.log(prof[3], res.data.Data[1])
                             console.log([prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox])
                             localStorage.setItem("gid", [prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox]);
-                            //window.location.reload()
+                            
+                            //id, name, email, pwd, imgloc, desc, name, email, pwd, imgloc
+                            setprof([prof[0], prof[1], prof[2], prof[3], prof[4], prof[5], prof[1], prof[2], prof[3],prof[4]])
+
+                            alert('Details updated successfuly!')
+
+                        } else if (res.status === 226){
+
+                            alert('This email is already taken by someone! Please try some other email!')
+    
                         } else {
+
                             alert('something wrong! try again')
+
                         }
                     })
                     .catch(error => console.log(error))
 
 
-            } else {
+             }
+            // else {
 
-                if (urlav) {
+            //     if (urlav) {
 
-                    uploadData.append('id', prof[0])
-                    uploadData.append('name', nam)
-                    uploadData.append('email', emai)
-                    uploadData.append('oldname', prof[6])
-                    uploadData.append('oldemail', prof[7])
-                    uploadData.append('cond', 'no')
-                    uploadData.append('cond2', 'yes')
-                    uploadData.append('oldpassword', '')
-                    uploadData.append('newpassword', '')
-                    uploadData.append('profilephoto', img, img.name)
-                    uploadData.append('desc', textbox)
+            //         uploadData.append('id', prof[0])
+            //         uploadData.append('name', nam)
+            //         uploadData.append('email', emai)
+            //         uploadData.append('oldname', prof[6])
+            //         uploadData.append('oldemail', prof[7])
+            //         uploadData.append('cond', 'no')
+            //         uploadData.append('cond2', 'yes')
+            //         uploadData.append('oldpassword', '')
+            //         uploadData.append('newpassword', '')
+            //         uploadData.append('profilephoto', img, img.name)
+            //         uploadData.append('desc', textbox)
 
-                    axios.post('/api/sellers/update/', 
-                        uploadData
-                    )
-                        .then(res => {
-                            if (res.status === 200) {
-                                console.log(res.data.Data[0])
-                                setimg('/media/' + res.data.Data[0])
-                                seturlav(false)
-                                seturl(false)
-                                localStorage.removeItem('gid')
-                                console.log(prof[3], res.data.Data[1])
-                                console.log([prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox])
-                                localStorage.setItem("gid", [prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox]);
-                                //window.location.reload()
-                            } else {
-                                alert('something wrong! try again')
-                            }
-                        })
-                        .catch(error => console.log(error))
+            //         axios.post('/api/sellers/update/', 
+            //             uploadData
+            //         )
+            //             .then(res => {
+            //                 if (res.status === 200) {
+            //                     console.log(res.data.Data[0])
+            //                     setimg('/media/' + res.data.Data[0])
+            //                     seturlav(false)
+            //                     seturl(false)
+            //                     localStorage.removeItem('gid')
+            //                     console.log(prof[3], res.data.Data[1])
+            //                     console.log([prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox])
+            //                     localStorage.setItem("gid", [prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox]);
+            //                     //window.location.reload()
+            //                 } else if (res.status === 226){
 
-                } else {
+            //                     alert('This email is taken by someone! Please try some other email!')
+        
+            //                 } else {
 
-                    alert('You didnt change any details')
-                }
+            //                     alert('something wrong! try again')
 
-            }
+            //                 }
+            //             })
+            //             .catch(error => console.log(error))
+
+            //     } else if (changedtext) {
+
+
+
+            //     } else {
+                    
+            //         alert('You didnt change any details')
+
+            //     }
+
+            // }
 
         } else if (newp === retp) {
 
@@ -236,27 +244,12 @@ const Update = () => {
                 uploadData.append('desc', textbox)
             }
 
-            // axios.post('/api/update/', {
-
-            //     id: prof[0],
-            //     name: nam,
-            //     email: emai,
-            //     oldname: prof[6],
-            //     oldemail: prof[7],
-            //     cond: 'yes',
-            //     oldpassword: oldp,
-            //     newpassword: newp,
-            //     profilephoto: img,
-            //     desc: textbox,
-
-            // })
-            //     .then((res) => console.log(res))
-
             axios.post('/api/sellers/update/', uploadData
             )
                 .then(res => {
 
                     if (res.status === 200) {
+
                         console.log(res.data.Data[0])
                         setimg('/media/' +res.data.Data[0])
                         seturlav(false)
@@ -265,7 +258,16 @@ const Update = () => {
                         console.log(prof[3], res.data.Data[1])
                         console.log([prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox])
                         localStorage.setItem("gid", [prof[0], prof[1], prof[2], res.data.Data[1], '/media/' + res.data.Data[0], textbox]);
-                        //window.location.reload()
+                        
+                        //id, name, email, pwd, imgloc, desc, name, email, pwd, imgloc
+                        setprof([prof[0], prof[1], prof[2], prof[3], prof[4], prof[5], prof[1], prof[2], prof[3], prof[4]])
+
+                        alert('Details updated successfuly!')
+
+                    } else if (res.status === 226){
+
+                        alert('This email is already taken by someone! Please try some other email!')
+
                     } else {
                         alert('Something wrong.. try again!')
                     }
@@ -405,7 +407,7 @@ const Update = () => {
                                 <input value={prof[1]}
                                     onChange={(e) => {
                                         console.log(e.target.value)
-                                        setprof([prof[0], e.target.value, prof[2], prof[3], prof[4], prof[5], prof[6], prof[7], prof[8]])
+                                        setprof([prof[0], e.target.value, prof[2], prof[3], prof[4], prof[5], prof[6], prof[7], prof[8], prof[9]])
                                     }} type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                             </div>
 
@@ -414,7 +416,7 @@ const Update = () => {
                                 <input value={prof[2]}
                                     onChange={(e) => {
                                         console.log(e.target.value)
-                                        setprof([prof[0], prof[1], e.target.value, prof[3], prof[4], prof[5], prof[6], prof[7], prof[8]])
+                                        setprof([prof[0], prof[1], e.target.value, prof[3], prof[4], prof[5], prof[6], prof[7], prof[8], prof[9]])
                                     }}
                                     type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                             </div>
@@ -449,7 +451,10 @@ const Update = () => {
                 <SecondHalf>
 
                     <h2> About You: </h2>
-                    <Textarea value={textbox} onChange={(e) => { settextbox(e.target.value) }} />
+                    <Textarea value={textbox} onChange={(e) => { 
+                        settextbox(e.target.value) 
+                        setchangedtext(true)
+                        }} />
 
                 </SecondHalf>
 
