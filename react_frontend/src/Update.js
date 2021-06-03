@@ -10,6 +10,9 @@ import styled from 'styled-components'
 import { Nav, Navbar } from 'react-bootstrap';
 
 import SaveIcon from '@material-ui/icons/Save';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+
 import axios from 'axios';
 
 const useStyles = makeStyles({
@@ -57,7 +60,9 @@ const Update = () => {
     const [textbox, settextbox] = useState('')
     const [urlav, seturlav] = useState(false)
     const [url, seturl] = useState('')
-
+    const [eye, seteye] = useState(true)
+    const [eye2, seteye2] = useState(true)
+    const [eye3, seteye3] = useState(true)
 
     const handlesubmit = (e) => {
 
@@ -423,17 +428,20 @@ const Update = () => {
 
                             <div class="input-group mb-3">
                                 <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Old  Password</span>
-                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <input type = {eye ? "password" : 'text' } class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <span onClick = {() => {eye ? seteye(false) : seteye(true) }} class="input-group-text" id="basic-addon1"> {eye ? <VisibilityIcon /> : <VisibilityOffIcon />} </span>
                             </div>
 
                             <div class="input-group mb-3">
                                 <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">New Password</span>
-                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <input type = {eye2 ? "password" : 'text' } class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <span onClick = {() => {eye2 ? seteye2(false) : seteye2(true) }} class="input-group-text" id="basic-addon1"> {eye2 ? <VisibilityIcon /> : <VisibilityOffIcon />} </span>
                             </div>
 
                             <div class="input-group mb-3">
                                 <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Retype Password</span>
-                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <input type = {eye3 ? "password" : 'text' } class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <span onClick = {() => {eye3 ? seteye3(false) : seteye3(true) }} class="input-group-text" id="basic-addon1"> {eye3 ? <VisibilityIcon /> : <VisibilityOffIcon />} </span>
                             </div>
 
                             <input id='hid' type='submit' style={{ display: 'none' }} />
