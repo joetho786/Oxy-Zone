@@ -76,6 +76,8 @@ class SellersLoginView(APIView):
                     d = SellersLoginwithimgandpwdSerializer(room).data
                     d['password'] = hashed
 
+                    print(d)
+
                     return Response({'Data': d}, status=status.HTTP_201_CREATED)
 
                     #return Response({'Bad Request': 'it already exists...'}, status=status.HTTP_400_BAD_REQUEST)
@@ -497,7 +499,7 @@ class SellersUpdateView(APIView):
             desc = serializer.data.get('desc')
 
             print('valid inside deatils')
-            print(id)
+            print(photo)
             # host = self.request.session.session_key
 
             if cond == 'yes':
@@ -511,13 +513,48 @@ class SellersUpdateView(APIView):
 
                     if cond2 == 'yes':
 
-                        sellerqueryset.update(name = name, email = email, password = newp, desc = desc, profilephoto = photo)
-                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+                        sellerqueryset = Sellers.objects.get(id = id, name = oldname, email = oldemail, password = oldp)
+
+                        sellerqueryset.name = name
+                        sellerqueryset.email = email
+                        if desc != None and desc != '': 
+                            sellerqueryset.desc = desc
+                        sellerqueryset.password = newp
+                        sellerqueryset.profilephoto = request.FILES['profilephoto']
+                        sellerqueryset.save()
+
+                        pwd = sellerqueryset.password.encode('utf-8')
+                        print('pwd : ', pwd)
+                        hashed = bcrypt.hashpw(pwd, bcrypt.gensalt(16))
+                        print('hased :', hashed)
+
+                        print([str(sellerqueryset.profilephoto), hashed])
+
+                        print(hashed.decode('utf-8'))
+
+                        return Response({'Data': [str(sellerqueryset.profilephoto), hashed]}, status = status.HTTP_200_OK)
 
                     else: 
 
-                        sellerqueryset.update(name = name, email = email, password = newp, desc = desc)
-                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+                        sellerqueryset = Sellers.objects.get(id = id, name = oldname, email = oldemail, password = oldp)
+
+                        sellerqueryset.name = name
+                        sellerqueryset.email = email
+                        if desc != None and desc != '': 
+                            sellerqueryset.desc = desc
+                        sellerqueryset.password = newp
+                        sellerqueryset.save()
+
+                        pwd = sellerqueryset.password.encode('utf-8')
+                        print('pwd : ', pwd)
+                        hashed = bcrypt.hashpw(pwd, bcrypt.gensalt(16))
+                        print('hased :', hashed)
+
+                        print([str(sellerqueryset.profilephoto), hashed])
+
+                        print(hashed.decode('utf-8'))
+
+                        return Response({'Data': [str(sellerqueryset.profilephoto), hashed]}, status = status.HTTP_200_OK)
 
                 else:
                     print('id itself doesnt exists')
@@ -532,17 +569,52 @@ class SellersUpdateView(APIView):
                 print('sellerqueryset : ', sellerqueryset.values())
 
                 if sellerqueryset.exists():
-                    print('cond: no -> exists')
+                    print('cond: no -> exists =>', cond2)
 
                     if cond2 == 'yes':
 
-                        sellerqueryset.update(name = name, email = email, desc = desc, profilephoto = photo)
-                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+                        print(request.FILES['profilephoto'])
+
+                        sellerqueryset = Sellers.objects.get(id = id, name = oldname, email = oldemail)
+
+                        sellerqueryset.name = name
+                        sellerqueryset.email = email
+                        if desc != None and desc != '': 
+                            sellerqueryset.desc = desc
+                        sellerqueryset.profilephoto = request.FILES['profilephoto']
+                        sellerqueryset.save()
+
+                        pwd = sellerqueryset.password.encode('utf-8')
+                        print('pwd : ', pwd)
+                        hashed = bcrypt.hashpw(pwd, bcrypt.gensalt(16))
+                        print('hased :', hashed)
+
+                        print([str(sellerqueryset.profilephoto), hashed])
+
+                        print(hashed.decode('utf-8'))
+
+                        return Response({'Data': [str(sellerqueryset.profilephoto), hashed]}, status = status.HTTP_200_OK)
 
                     else:
 
-                        sellerqueryset.update(name = name, email = email, desc = desc)
-                        return Response({'Data': 'Saved data'}, status = status.HTTP_200_OK)
+                        sellerqueryset = Sellers.objects.get(id = id, name = oldname, email = oldemail)
+
+                        sellerqueryset.name = name
+                        sellerqueryset.email = email
+                        if desc != None and desc != '': 
+                            sellerqueryset.desc = desc
+                        sellerqueryset.save()
+
+                        pwd = sellerqueryset.password.encode('utf-8')
+                        print('pwd : ', pwd)
+                        hashed = bcrypt.hashpw(pwd, bcrypt.gensalt(16))
+                        print('hased :', hashed)
+
+                        print([str(sellerqueryset.profilephoto), hashed])
+
+                        print(hashed.decode('utf-8'))
+
+                        return Response({'Data': [str(sellerqueryset.profilephoto), hashed]}, status = status.HTTP_200_OK)
 
                 else:
                     print('id itself doesnt exists')

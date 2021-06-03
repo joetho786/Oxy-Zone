@@ -5,7 +5,7 @@ class Sellers(models.Model):
     name = models.TextField()
     email = models.TextField()
     password = models.TextField()
-    profilephoto = models.ImageField(upload_to='images/', default = 'images/default.png')
+    profilephoto = models.ImageField(upload_to='media/', default = 'default.png')
     desc = models.TextField(default='')
 
     def _str_(self):

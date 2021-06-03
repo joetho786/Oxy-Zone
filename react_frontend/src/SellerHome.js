@@ -105,11 +105,11 @@ const SellerHome = () => {
     }
 
     const [det, setdet] = useState([])
-    const [prof, setprof] = useState([])
-    const [img, setimg] = useState('')
-    const [textbox, settextbox] = useState('')
-    const [urlav, seturlav] = useState(false)
-    const [url, seturl] = useState('')
+    // const [prof, setprof] = useState([])
+    // const [img, setimg] = useState('')
+    // const [textbox, settextbox] = useState('')
+    // const [urlav, seturlav] = useState(false)
+    // const [url, seturl] = useState('')
 
 
     useEffect(() => {
@@ -128,18 +128,18 @@ const SellerHome = () => {
         setdet([val[0], val[1], val[2], val[3], val[4], val[5]])
 
         //id, name, email, pwd, imgloc, desc, name, email, pwd, imgloc
-        setprof([val[0], val[1], val[2], val[3], val[4], val[5], val[1], val[2], val[3], val[4]]) //here, img and desc is not updated
+        //setprof([val[0], val[1], val[2], val[3], val[4], val[5], val[1], val[2], val[3], val[4]]) //here, img and desc is not updated
 
         console.log('val:', val[1], val[2])
 
-        setimg(val[4]) //this is img
+        //setimg(val[4]) //this is img
 
         // seturl(URL.createObjectURL(val[4]))
         // seturlav(true)
 
         //reftext.current = val[5] //this is desc
 
-        settextbox(val[5])
+        //settextbox(val[5])
 
         // console.log(reftext.current)
 
@@ -430,427 +430,63 @@ const SellerHome = () => {
 
     const handleprofile = () => {
 
-        // hist.push("/update");
-
-        setupdate(true)
+        history.push("seller/update");
 
     }
 
-    // const processwithpwd = () => {
-
-    //     localStorage.removeItem('gid')
-    //     console.log([prof[0], prof[1], prof[2], newp, profilephoto, textbox])
-    //     localStorage.setItem("gid", [prof[0], prof[1], prof[2], newp, profilephoto, textbox]);
-    //     window.location.reload()
-
-    // }
-
-    // const processwithoutpwd = () => {
-
-    //     localStorage.removeItem('gid')
-    //     console.log([prof[0], prof[1], prof[2], prof[3], profilephoto, textbox])
-    //     localStorage.setItem("gid", [prof[0], prof[1], prof[2], prof[3], profilephoto, textbox]);
-    //     window.location.reload()
-
-    // }
-
-    const handlesubmit = (e) => {
-
-        e.preventDefault()
-
-        console.log('in')
-
-        let nam = e.target[0].value
-        let emai = e.target[1].value
-        let oldp = e.target[2].value
-        let newp = e.target[3].value
-        let retp = e.target[4].value
-
-        console.log(prof)
-
-        console.log(prof[0], '||', nam, '||', emai, '||', prof[6], '||', prof[7], '||', oldp, '||', newp, '||', retp, '||', img, '||', textbox)
 
 
-        //id, name, email, pwd, imgloc, desc
-        //setdet([val[0], val[1], val[2], val[3], val[4], val[5]])
-
-        //id, name, email, pwd, imgloc, desc, name, email, pwd, imgloc
-        //setprof([val[0], val[1], val[2], val[3], val[4], val[5], val[1], val[2], val[3], val[4]])
-
-        if (nam === '' || emai === '') {
-
-            alert('Dont Leave the name or email empty!')
-
-        } else if (newp === '' && oldp === '' && retp === '') {
-
-            if (!(nam === prof[6] && emai === prof[7])) {
-
-                const uploadData = new FormData();
-
-                if (urlav) {
-
-                    uploadData.append('id', prof[0])
-                    uploadData.append('name', nam)
-                    uploadData.append('email', emai)
-                    uploadData.append('oldname', prof[6])
-                    uploadData.append('oldemail', prof[7])
-                    uploadData.append('cond', 'no')
-                    uploadData.append('cond2', 'yes')
-                    uploadData.append('oldpassword', '')
-                    uploadData.append('newpassword', '')
-                    uploadData.append('profilephoto', img, img.name)
-                    uploadData.append('desc', textbox)
-
-                } else {
-
-                    uploadData.append('id', prof[0])
-                    uploadData.append('name', nam)
-                    uploadData.append('email', emai)
-                    uploadData.append('oldname', prof[6])
-                    uploadData.append('oldemail', prof[7])
-                    uploadData.append('cond', 'no')
-                    uploadData.append('cond2', 'no')
-                    uploadData.append('oldpassword', '')
-                    uploadData.append('newpassword', '')
-                    uploadData.append('profilephoto', '')
-                    uploadData.append('desc', textbox)
-
-                }
-
-                // axios.post('/api/update/', {
-
-                //     id: prof[0],
-                //     name: nam,
-                //     email: emai,
-                //     oldname: prof[6],
-                //     oldemail: prof[7],
-                //     cond: 'no',
-                //     oldpassword: '',
-                //     newpassword: '',
-                //     profilephoto: img,
-                //     desc: textbox,
-
-                // })
-                //     .then((res) => console.log(res))
-
-                fetch('/api/sellers/update/', {
-                    method: 'POST',
-                    body: uploadData
-                })
-                    .then(res => {
-                        if (res.status === 200) {
-                            localStorage.removeItem('gid')
-                            console.log([prof[0], prof[1], prof[2], prof[3], profilephoto, textbox])
-                            localStorage.setItem("gid", [prof[0], prof[1], prof[2], prof[3], profilephoto, textbox]);
-                            window.location.reload()
-                        } else {
-                            alert('something wrong! try again')
-                        }
-                    })
-                    .catch(error => console.log(error))
-
-
-            } else {
-
-                alert('You didnt change any details')
-
-            }
-
-        } else if (newp === retp) {
-
-            const uploadData = new FormData();
-
-            if (urlav) {
-
-                uploadData.append('id', prof[0])
-                uploadData.append('name', nam)
-                uploadData.append('email', emai)
-                uploadData.append('oldname', prof[6])
-                uploadData.append('oldemail', prof[7])
-                uploadData.append('cond', 'yes')
-                uploadData.append('cond2', 'yes')
-                uploadData.append('oldpassword', oldp)
-                uploadData.append('newpassword', newp)
-                uploadData.append('profilephoto', img, img.name)
-                uploadData.append('desc', textbox)
-
-            } else {
-
-                uploadData.append('id', prof[0])
-                uploadData.append('name', nam)
-                uploadData.append('email', emai)
-                uploadData.append('oldname', prof[6])
-                uploadData.append('oldemail', prof[7])
-                uploadData.append('cond', 'yes')
-                uploadData.append('cond2', 'no')
-                uploadData.append('oldpassword', oldp)
-                uploadData.append('newpassword', newp)
-                uploadData.append('profilephoto', '')
-                uploadData.append('desc', textbox)
-            }
-
-            // axios.post('/api/update/', {
-
-            //     id: prof[0],
-            //     name: nam,
-            //     email: emai,
-            //     oldname: prof[6],
-            //     oldemail: prof[7],
-            //     cond: 'yes',
-            //     oldpassword: oldp,
-            //     newpassword: newp,
-            //     profilephoto: img,
-            //     desc: textbox,
-
-            // })
-            //     .then((res) => console.log(res))
-
-            fetch('/api/sellers/update/', {
-                method: 'POST',
-                body: uploadData
-            })
-                .then(res => {
-                    if (res.status === 200) {
-                        localStorage.removeItem('gid')
-                        console.log([prof[0], prof[1], prof[2], newp, profilephoto, textbox])
-                        localStorage.setItem("gid", [prof[0], prof[1], prof[2], newp, profilephoto, textbox]);
-                        window.location.reload()
-                    } else {
-                        alert('Something wrong.. try again!')
-                    }
-                })
-                .catch(error => console.log(error))
-
-        } else {
-
-            alert("Passwords doesn't match!")
-
-        }
-
-    }
 
     return (
         <Full>
 
             {
-                update ?
 
-                    det ?
+                <>
 
+                    <Styles>
+                        <Navbar expand="lg">
+                            <Navbar.Brand href="/">Ozone</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="ml-auto">
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <Link to="/vaccinationlist">Vaccination List</Link>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <div onClick={handleprofile} >Update Profile</div>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <div onClick={handleclick} >Log Out</div>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Navbar>
+                    </Styles >
+
+                    <Listview>
+
+                        {
+                            console.log(loading, lis.length >= 1, loading && lis.length >= 1)
+                        }
                         <>
 
-                            <Styles>
-                                <Navbar expand="lg">
-                                    <Navbar.Brand href="/">Ozone</Navbar.Brand>
-                                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                                    <Navbar.Collapse id="basic-navbar-nav">
-                                        <Nav className="ml-auto">
-
-                                            <Nav.Item>
-                                                <Nav.Link>
-                                                    <Link to="/vaccinationlist">Vaccination List</Link>
-                                                </Nav.Link>
-                                            </Nav.Item>
-
-                                            <Nav.Item>
-                                                <Nav.Link>
-                                                    <div onClick={handleclick} >Log Out</div>
-                                                </Nav.Link>
-                                            </Nav.Item>
-
-                                            <Nav.Item>
-                                                <Nav.Link>
-                                                    <div onClick={() => { setupdate(false) }} >Go Back</div>
-                                                </Nav.Link>
-                                            </Nav.Item>
-
-                                        </Nav>
-                                    </Navbar.Collapse>
-                                </Navbar>
-                            </Styles >
-
-                            {/* <p>{det[0]}</p> */}
-
-                            <FirstHalf>
-
-                                <LeftHalf>
-
-                                    <Round>
-
-                                        <input type='file' id='imageupload' style={{ display: 'none' }} accept="image/*"
-                                            onChange={(e) => {
-
-                                                console.log('inside change')
-
-                                                console.log(e.target.files[0])
-
-                                                setimg(e.target.files[0])
-
-                                                const file = e.target.files[0]
-
-                                                seturlav(true)
-                                                seturl(URL.createObjectURL(file))
-                                                console.log(URL.createObjectURL(file))
-
-
-                                            }}
-                                        />
-
-                                        {
-                                            console.log(img)
-                                        }
-
-                                        {
-
-                                            urlav ? <Roundimg src={url} onClick={() => {
-
-                                                document.getElementById('imageupload').click()
-
-                                            }} /> :
-
-                                                <Roundimg src={img} onClick={() => {
-
-                                                    document.getElementById('imageupload').click()
-
-                                                }} />
-
-                                        }
-
-                                        {/* <Roundimg src={ img } onClick={() => {
-
-                                            document.getElementById('imageupload').click()
-
-                                        }} /> */}
-
-                                    </Round>
-
-                                </LeftHalf>
-
-                                <RightHalf>
-
-                                    <h5 style={{ textAlign: 'center', marginBottom: '20px' }}>
-                                        Leave the password boxes empty if you dont want to change the password
-                                        </h5>
-
-                                    <form onSubmit={(e) => { handlesubmit(e) }} >
-
-                                        <div class="input-group mb-3">
-                                            <span style={{ width: '65px' }} class="input-group-text" id="inputGroup-sizing-default">Name</span>
-                                            <input value={prof[1]}
-                                                onChange={(e) => {
-                                                    console.log(e.target.value)
-                                                    setprof([prof[0], e.target.value, prof[2], prof[3], prof[4], prof[5], prof[6], prof[7], prof[8]])
-                                                }} type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                                        </div>
-
-                                        <div class="input-group mb-3">
-                                            <span style={{ width: '65px' }} class="input-group-text" id="inputGroup-sizing-default">Email</span>
-                                            <input value={prof[2]}
-                                                onChange={(e) => {
-                                                    console.log(e.target.value)
-                                                    setprof([prof[0], prof[1], e.target.value, prof[3], prof[4], prof[5], prof[6], prof[7], prof[8]])
-                                                }}
-                                                type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                                        </div>
-
-                                        <div class="input-group mb-3">
-                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Old  Password</span>
-                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                                        </div>
-
-                                        <div class="input-group mb-3">
-                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">New Password</span>
-                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                                        </div>
-
-                                        <div class="input-group mb-3">
-                                            <span style={{ width: '145px' }} class="input-group-text" id="inputGroup-sizing-default">Retype Password</span>
-                                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                                        </div>
-
-                                        <input id='hid' type='submit' style={{ display: 'none' }} />
-
-                                        <Save onClick={() => { document.getElementById('hid').click() }} >
-                                            <SaveIcon fontSize="large" style={{ color: 'white' }} />
-                                        </Save>
-
-                                    </form>
-
-                                </RightHalf>
-
-                            </FirstHalf>
-
-                            <SecondHalf>
-
-                                <h2> About You: </h2>
-                                <Textarea value={textbox} onChange={(e) => { settextbox(e.target.value) }} />
-
-                            </SecondHalf>
-
-
-                            {/* <p>{det[3]}</p> */}
-
-                        </>
-
-                        :
-
-                        <p>Please wait till we get the data</p>
-
-                    :
-
-                    <>
-
-                        <Styles>
-                            <Navbar expand="lg">
-                                <Navbar.Brand href="/">Ozone</Navbar.Brand>
-                                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                                <Navbar.Collapse id="basic-navbar-nav">
-                                    <Nav className="ml-auto">
-
-                                        <Nav.Item>
-                                            <Nav.Link>
-                                                <Link to="/vaccinationlist">Vaccination List</Link>
-                                            </Nav.Link>
-                                        </Nav.Item>
-
-                                        <Nav.Item>
-                                            <Nav.Link>
-                                                <div onClick={handleprofile} >Update Profile</div>
-                                            </Nav.Link>
-                                        </Nav.Item>
-
-                                        <Nav.Item>
-                                            <Nav.Link>
-                                                <div onClick={handleclick} >Log Out</div>
-                                            </Nav.Link>
-                                        </Nav.Item>
-
-                                    </Nav>
-                                </Navbar.Collapse>
-                            </Navbar>
-                        </Styles >
-
-                        <Logout >
-
-                            {/* <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button> */}
-                            {/* <button type="button" class="btn btn-warning c1 c" onClick={handleprofile} >Update Profile <EditIcon /> </button> */}
-
-                        </Logout>
-                        {/* <Title >
-                            <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
-                        </Title >
-                        < Hr /> */}
-                        <Listview>
                             <Plus onClick={handleplusclick}>
                                 <AddIcon style={{ color: 'white' }} />
                             </Plus>
-
-                            {
-                                console.log(loading, lis.length >= 1, loading && lis.length >= 1)
-                            }
-
                             {
                                 ((lis.length >= 1) && (loading)) ?
+
 
 
                                     <Grid container spacing={3}>
@@ -1105,6 +741,7 @@ const SellerHome = () => {
                                     </Grid>
 
 
+
                                     : loading ?
 
                                         <p>Loading....</p> :
@@ -1112,9 +749,10 @@ const SellerHome = () => {
                                         <p>No data. Click plus symbol to create one</p>
 
                             }
-                        </Listview>
+                        </>
+                    </Listview>
 
-                    </>
+                </>
 
             }
         </Full>
@@ -1214,93 +852,6 @@ a, .navbar-brand, .navbar-nav .nav-link {
     
     }
 }
-
-`
-
-const FirstHalf = styled.div`
-
-height: 50%;
-width: 100%;
-display: flex;
-flex-direction: row;
-
-`
-
-const LeftHalf = styled.div`
-
-height: 100%;
-width: 50%;
-display: flex;
-justify-content: center;
-align-items: center;
-
-`
-
-const RightHalf = styled.div`
-
-height: 100%;
-width: 400px;
-display: flex;
-flex-direction: column;
-justify-content: center
-
-`
-
-const Round = styled.div`
-
-height: 200px;
-width: 200px;
-border-radius: 50%;
-
-&: hover {
-    cursor: pointer;
-}
-
-`
-
-const Roundimg = styled.img`
-
-width: 100%;
-height: 100%;
-border-radius: 50%;
-border: 1px solid black;
-
-`
-
-const Save = styled.div`
-
-width: 60px;
-height: 60px;
-border-radius: 50%;
-background-color: #1685F1;
-display: flex;
-justify-content: center;
-align-items: center;
-position: absolute;
-bottom: 10px;
-right: 10px;
-
-&: hover {
-    cursor: pointer;
-}
-
-`
-
-const SecondHalf = styled.div`
-
-width: 100%;
-padding: 15px;
-height: ${window.innerHeight / 2 - 56}px;
-display: flex;
-justify-content: center;
-flex-direction: column;
-
-`
-
-const Textarea = styled.textarea`
-
-height: 90%;
-width: 90%;
 
 `
 

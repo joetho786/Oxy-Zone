@@ -9,6 +9,8 @@ import Vaccinationlisting from './vaccinationlist';
 import Mapbox from './react_map'
 import { Layout } from './components/layout';
 
+import { Redirect } from 'react-router'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
@@ -23,7 +25,7 @@ const App = () => {
 
   const val = localStorage.getItem("gid")
   console.log(val)
-  
+
   return (
     <Router>
       <Switch>
@@ -36,7 +38,7 @@ const App = () => {
         <Route exact path="/googlemap">
           <MapContainer />
         </Route>
-        
+
 
         {/* <Route path="/seller/home">
           <SellerHome />
@@ -44,20 +46,22 @@ const App = () => {
         <Route path="/map/:loc">
           <Maplayers />
         </Route>
-        
-        
+
+
         <Route exact path="/vaccinationlist">
-          <Vaccinationlisting/>
+          <Vaccinationlisting />
         </Route>
-        
-        {/* <Route exact path="/seller/update">
-          <Update />
-        </Route> */}
+
 
         <Route exact path="/seller">
-          
-          {val === null ? <Sellerlogin /> : <SellerHome /> }
-        
+
+          {val === null ? <Sellerlogin /> : <SellerHome />}
+
+        </Route>
+
+        <Route exact path="/seller/update">
+          {/* {val === null ? <Sellerlogin /> : <Update />} */}
+          {val === null ? <Redirect to="/seller" /> : <Update />}
         </Route>
 
         {/* <Route path="/mapnew">
