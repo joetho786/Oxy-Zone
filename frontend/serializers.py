@@ -1,9 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
 from .models import Sellers, Places
-from rest_framework.serializers import ModelSerializer
-from rest_framework.serializers import IntegerField
-
 
 class SellersSerializer(serializers.ModelSerializer):
 
@@ -25,7 +22,7 @@ class SellersLoginwithimgandpwdSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email', 'password', 'profilephoto')
+        fields = ('id', 'name', 'email', 'password', 'profilephoto', 'desc')
 
 class SellersSignupSerializer(serializers.ModelSerializer):
     
@@ -46,12 +43,6 @@ class SellersDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sellers
-        fields = ('id', 'name', 'email', 'password', 'profilephoto' )
-
-class SellersupdatedetailsSerializer(serializers. ModelSerializer):
-
-    class Meta:
-        models = Sellers
         fields = ('id', 'name', 'email', 'password', 'profilephoto' )
 
 class PlacessaveoldSerializer(serializers.ModelSerializer):
@@ -105,3 +96,18 @@ class SellersnameemailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sellers
         fields = ('name', 'email')
+
+class SellersupdatedetailsSerializer(serializers. ModelSerializer):
+    
+    id = serializers.IntegerField()
+    cond = serializers.CharField(max_length = 3)
+    cond2 = serializers.CharField(max_length = 3)
+    profilephoto = serializers.FileField(allow_empty_file=True, allow_null=True, required=False)
+    oldname = serializers.CharField()
+    oldemail = serializers.CharField()
+    oldpassword = serializers.CharField(allow_blank=True)
+    newpassword = serializers.CharField(allow_blank=True)
+
+    class Meta:
+        model = Sellers
+        fields = ('id', 'name', 'email', 'oldname', 'oldemail', 'cond', 'cond2', 'oldpassword', 'newpassword', 'profilephoto', 'desc' )

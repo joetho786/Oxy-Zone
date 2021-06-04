@@ -58,12 +58,9 @@ const Sellerlogin = () => {
       console.log('Yay! Login successfull')
       console.log(data.data.Data)
 
-      localStorage.setItem("gid", [data.data.Data.id, data.data.Data.name, data.data.Data.email, data.data.Data.password, data.data.Data.profilephoto]);
+      localStorage.setItem("gid", [data.data.Data.id, data.data.Data.name, data.data.Data.email, data.data.Data.password, data.data.Data.profilephoto, data.data.Data.desc]);
       
       window.location.reload()
-
-      // hist.push("seller/home")
-
       
       return true
 
