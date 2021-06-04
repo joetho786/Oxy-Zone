@@ -24,11 +24,11 @@ import {
     useParams
 } from "react-router-dom";
 
-
+let textInput = React.createRef();
 const Oxosearch =() =>{
     const [place,setplace]=useState(useParams())
     const [sellerdetails,setsellerdetails] = useState([])
-    const [selleridlookup,setselleridlookup]=useState([])
+    //const [selleridlookup,setselleridlookup]=useState([])
     let searchresult =[];
     const [dropdown_name,setdropdown_name]=useState('Filters')
     useEffect(()=>{
@@ -42,19 +42,20 @@ const Oxosearch =() =>{
        console.log(sellerdetails)
     },[])
     console.log(dropdown_name)
-    
+    console.log(sellerdetails)
     //let {place} =useParams();
     sellerdetails.forEach((e)=>{
 
-        
+        console.log('Works')
         if (e.location === place){
+            console.log(e.location)
             let name ='';
             axios
             .post('/api/getseller/',{'id': e.foreign_seller})
             .then((res)=>{
                     name=res.data.name
                     console.log('name:'+name);
-
+                    console.log(res.data)
                     searchresult.push({
                 'name': name,
                 'address':e.addr,
@@ -69,6 +70,8 @@ const Oxosearch =() =>{
         }
     })
     console.log(searchresult)
+    const hist = useHistory();
+    
 
     return (
         <>
@@ -79,9 +82,9 @@ const Oxosearch =() =>{
            <Form >
                <InputGroup >
             
-        <Form.Control type="text" placeholder="Enter location" />
+        <Form.Control type="text" placeholder="Enter location" ref={textInput} />
          <InputGroup.Append >
-        <Button variant="primary" type='submit' onClick={(e)=>setplace(e.target.value)}>Search</Button>
+        <Button variant="primary" type='submit' onClick={(e)=>setplace( textInput.current.value)}>Search</Button>
         </InputGroup.Append>
         <Form.Control.Feedback type="invalid">
             Please enter Location
