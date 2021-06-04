@@ -78,5 +78,4 @@ const NavigationBar = ({ props }) => (
     </Navbar>
   </Styles >
 )
-
-export default NavigationBar
+export default NavigationBar;
