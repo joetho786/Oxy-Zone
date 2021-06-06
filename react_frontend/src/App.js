@@ -19,6 +19,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Oxosearch from './oxosearch'
 
 
 const App = () => {
@@ -47,6 +48,9 @@ const App = () => {
           <Maplayers />
         </Route>
 
+        <Route path="/search">
+          <Oxosearch />
+        </Route>
 
         <Route exact path="/vaccinationlist">
           <Vaccinationlisting />

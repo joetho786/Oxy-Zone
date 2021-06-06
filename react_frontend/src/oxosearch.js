@@ -24,72 +24,135 @@ import {
     useParams
 } from "react-router-dom";
 
-let textInput = React.createRef();
-const Oxosearch =() =>{
-    const [place,setplace]=useState(useParams())
-    const [sellerdetails,setsellerdetails] = useState([])
-    //const [selleridlookup,setselleridlookup]=useState([])
-    let searchresult =[];
-    const [dropdown_name,setdropdown_name]=useState('Filters')
-    useEffect(()=>{
-       console.log(place)
-        axios
-        .get("/details/places/")
-        .then((res) => {console.log(res.data)
-        setsellerdetails(res.data)
-        })
-        .catch((err) => console.log(err));
-       console.log(sellerdetails)
-    },[])
-    console.log(dropdown_name)
-    console.log(sellerdetails)
-    //let {place} =useParams();
-    sellerdetails.forEach((e)=>{
 
-        console.log('Works')
-        if (e.location === place){
-            console.log(e.location)
-            let name ='';
-            axios
-            .post('/api/getseller/',{'id': e.foreign_seller})
-            .then((res)=>{
-                    name=res.data.name
-                    console.log('name:'+name);
-                    console.log(res.data)
-                    searchresult.push({
-                'name': name,
-                'address':e.addr,
-                'phno':e.phno,
-                'oprice':e.oxyprice,
-                'location':e.location
-            }
-            )
 
-            })
-            
-        }
-    })
-    console.log(searchresult)
-    const hist = useHistory();
+const Oxosearch =({props})=>{
+    const [dropdown_name,setdropdown_name]=useState('Filter');
+    const [place,setplace]=useState('');
+    const history=useHistory();
+    const [sellerdetails,setsellerdetails]=useState([])
+    const [dispdata,setdispdata] = useState([])
+    //console.log(props)
+    //searchplace
+    const handleClick=(event)=>{
+        event.preventDefault();
+        getdata()
+        
+    }
+    const location = useLocation();
     
+   const getdata=()=>{
+          let tlist= []
+         sellerdetails.forEach((e)=>{
+            console.log('lloop')
+            if (e.location==place){
+                axios
+                .post('/api/getnamebyid/',{id:e.foreign_seller})
+                .then((res)=>{
 
+                    console.log(res.data)
+                   const temp={
+                        'name': res.data.name,
+                        'address':e.addr,
+                        'location':e.location,
+                        'oxyprice':e.oxyprice
+
+                    }
+                    
+                    tlist.push(temp)
+                })
+
+        }
+setdispdata(tlist)
+setplace('')
+         return(
+             
+             dispdata.map((center,index)=>{
+                 {console.log(center)}
+                    <Card key={index}>
+                <Card.Img variant="top" src={img}/>
+                <Card.ImgOverlay>
+                <Card.Title className="text-white" >{center.name}</Card.Title>
+                </Card.ImgOverlay>
+                <Card.Body>
+                    <Card.Text>
+                        <strong>Address:</strong>  {center.address}
+                        <br/>
+                        <strong>Price/cylinder: </strong> {center.oxyprice}<br/>
+                        
+                    </Card.Text>
+                </Card.Body>
+                
+                <Card.Footer>
+                <small className="text-muted"></small>
+                </Card.Footer>
+        </Card>
+             })
+        )
+
+
+    } )
+
+}
+
+
+    useEffect(() => {
+       // result: 'some_value'
+       setplace(location.state.detail)
+      // console.log(place)
+       axios
+       .get('/details/places/')
+       .then((res)=>{
+           
+           setsellerdetails(res.data)
+          // console.log(sellerdetails)
+       })
+       
+        // sellerdetails.forEach((e)=>{
+            
+        //     if (e.location==place){
+        //         axios
+        //         .post('/api/getnamebyid/',{id:e.foreign_seller})
+        //         .then((res)=>{
+                    
+        //             console.log(res.data)
+        //            const temp={
+        //                 'name': res.data.name,
+        //                 'address':e.addr,
+        //                 'location':e.location,
+        //                 'oxyprice':e.oxyprice
+
+        //             }
+        //            setdispdata(dispdata.concat(temp))
+        //         })
+        
+        //             }
+
+        // })
+        
+   
+
+
+    }, []);
+   
     return (
         <>
-        <NavigationBar/>
+
+         <NavigationBar props = {[['Home', '/'], ['Sell Oxygen', '/seller'], ['Contact', '/contact'] ]} />
         <Layout>
-            
+
 
            <Form >
                <InputGroup >
-            
-        <Form.Control type="text" placeholder="Enter location" ref={textInput} />
+
+        <Form.Control type="text" placeholder="Enter location" value={place} onChange={(e)=>setplace(e.target.value)}/>
          <InputGroup.Append >
-        <Button variant="primary" type='submit' onClick={(e)=>setplace( textInput.current.value)}>Search</Button>
+        <Button variant="primary" type='submit'  block onClick={(e)=>handleClick(e)}>Search</Button>
         </InputGroup.Append>
         <Form.Control.Feedback type="invalid">
             Please enter Location
         </Form.Control.Feedback>
-       
+
         </InputGroup>
             </Form>
             <br/>
@@ -98,11 +161,46 @@ const Oxosearch =() =>{
             <Dropdown.Item onClick={()=>setdropdown_name('Descending')}>Descending</Dropdown.Item>
             <Dropdown.Item onClick={()=>setdropdown_name('Nearest first')}>Nearest first</Dropdown.Item>
             </DropdownButton>
-
+    <Clayout>
         
+        {
+           
+        dispdata.map((center,index)=>{
+            // {console.log(dispdata)}
+            {console.log(center)}
+            return(
+            <div>{center.location}</div>)
+        // return(
+        // <Card key={index}>
+        //         <Card.Img variant="top" src={img}/>
+        //         <Card.ImgOverlay>
+        //         <Card.Title className="text-white" >{center.name}</Card.Title>
+        //         </Card.ImgOverlay>
+        //         <Card.Body>
+        //             <Card.Text>
+        //                 <strong>Address:</strong>  {center.address}
+        //                 <br/>
+        //                 <strong>Price/cylinder: </strong> {center.oxyprice}<br/>
+                        
+        //             </Card.Text>
+        //         </Card.Body>
+                
+        //         <Card.Footer>
+        //         <small className="text-muted"></small>
+        //         </Card.Footer>
+        // </Card>)
 
+         
+      
+        })
+          }
+   
+        </Clayout>
+    
         </Layout>
         </>
     )
+
 }
+
 export default Oxosearch;

@@ -22,21 +22,15 @@ function handleClick(event, hist) {
     if (!(textInput.current.value == '')) {
         console.log('urs: ')
         console.log(textInput.current.value)
-        hist.push("/search/" + textInput.current.value);
+       hist.push({
+           pathname: '/search',
+           state: { detail: textInput.current.value }
+       }); 
 
-        return(
-            <Oxosearch>
-                {textInput.current.value}
-            </Oxosearch>
-        )
-        
+       
     }
 
-    return (
-            <>
-            <Oxosearch/>
-            </>
-        )
+    
 }
 
 function handlesellerClick(event, hist) {
@@ -111,7 +105,7 @@ const Header = () => {
 
                     <form id='form' className='search'>
                         <div id='inmat'>
-                            <input id='inp' placeholder='Search Oxygen Donors' ref={textInput} />
+                            <input id='inp' placeholder='Search Oxygen Donors' ref={ textInput} />
                         </div>
                         <button id='butinp' tabIndex='0' type='submit' aria-label='search' onClick={(e) => handleClick(e, history)}>
                             <span id='span'>

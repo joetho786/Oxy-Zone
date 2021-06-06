@@ -39,9 +39,7 @@ const NavigationBar = ({ props }) => (
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
 
-          {
-            console.log(props)
-          }
+         
 
           {
 
