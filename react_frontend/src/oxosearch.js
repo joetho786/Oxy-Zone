@@ -76,7 +76,7 @@ const Oxosearch =({props})=>{
 
                    console.log(dispdata)
             setplace('')
-            
+            setplace(' ')
             }
                 //     console.log('check');
                 //     console.log(dispdata)
@@ -167,10 +167,7 @@ const Oxosearch =({props})=>{
         {
            
         dispdata.map((center,index)=>{
-            {console.log('ATMEGA')
-                console.log(dispdata)}
-            
-           
+                       
         return(
         <Card key={index}>
                 <Card.Img variant="top" src={img}/>
