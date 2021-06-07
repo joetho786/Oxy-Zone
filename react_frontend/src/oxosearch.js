@@ -28,28 +28,32 @@ import {
 
 const Oxosearch =({props})=>{
     const [dropdown_name,setdropdown_name]=useState('Filter');
+      const [dispdata,setdispdata] = useState([])
     const [place,setplace]=useState('');
     const history=useHistory();
     const [sellerdetails,setsellerdetails]=useState([])
-    const [dispdata,setdispdata] = useState([])
+  
     //console.log(props)
     //searchplace
+    const [placef,setplacef]=useState([])
+    
     const handleClick=(event)=>{
         event.preventDefault();
-        getdata()
-        
-    }
-    const location = useLocation();
-    
-   const getdata=()=>{
-          let tlist= []
-         sellerdetails.forEach((e)=>{
+        console.log('Place:'+place)
+        let p=place
+        var c=0
+        var tlist=[]
+        console.log(sellerdetails)
+         sellerdetails.map((e)=>{
             console.log('lloop')
-            if (e.location==place){
+            console.log(e.foreign_seller)
+            c=c+1;
+            if ((e.location===p)){
+                console.log('Enter')
                 axios
                 .post('/api/getnamebyid/',{id:e.foreign_seller})
                 .then((res)=>{
-
+                    console.log('KUCHI')
                     console.log(res.data)
                    const temp={
                         'name': res.data.name,
@@ -59,46 +63,43 @@ const Oxosearch =({props})=>{
 
                     }
                     
-                    tlist.push(temp)
-                })
-
-        }
-setdispdata(tlist)
-setplace('')
-         return(
-             
-             dispdata.map((center,index)=>{
-                 {console.log(center)}
-                    <Card key={index}>
-                <Card.Img variant="top" src={img}/>
-                <Card.ImgOverlay>
-                <Card.Title className="text-white" >{center.name}</Card.Title>
-                </Card.ImgOverlay>
-                <Card.Body>
-                    <Card.Text>
-                        <strong>Address:</strong>  {center.address}
-                        <br/>
-                        <strong>Price/cylinder: </strong> {center.oxyprice}<br/>
-                        
-                    </Card.Text>
-                </Card.Body>
+                   tlist.push(temp)
                 
-                <Card.Footer>
-                <small className="text-muted"></small>
-                </Card.Footer>
-        </Card>
-             })
-        )
+                //        console.log('tchalla')
+                // console.log(tlist)
+                if(c==sellerdetails.length)
+                
+               { console.log('Count C')
+               console.log(tlist)
+                   console.log(c)
+                   setdispdata(tlist)
+
+                   console.log(dispdata)
+            setplace('')
+            
+            }
+                //     console.log('check');
+                //     console.log(dispdata)
+                })
+            
+        }
 
 
-    } )
+    }
 
-}
+    )
+        
+       
+    
 
+    }
+    //const location = useLocation();
+    
+  
 
     useEffect(() => {
        // result: 'some_value'
-       setplace(location.state.detail)
+       
       // console.log(place)
        axios
        .get('/details/places/')
@@ -147,7 +148,7 @@ setplace('')
 
         <Form.Control type="text" placeholder="Enter location" value={place} onChange={(e)=>setplace(e.target.value)}/>
          <InputGroup.Append >
-        <Button variant="primary" type='submit'  block onClick={(e)=>handleClick(e)}>Search</Button>
+        <Button variant="primary" type='submit'   onClick={(e)=>handleClick(e)}>Search</Button>
         </InputGroup.Append>
         <Form.Control.Feedback type="invalid">
             Please enter Location
@@ -166,29 +167,29 @@ setplace('')
         {
            
         dispdata.map((center,index)=>{
-            // {console.log(dispdata)}
-            {console.log(center)}
-            return(
-            <div>{center.location}</div>)
-        // return(
-        // <Card key={index}>
-        //         <Card.Img variant="top" src={img}/>
-        //         <Card.ImgOverlay>
-        //         <Card.Title className="text-white" >{center.name}</Card.Title>
-        //         </Card.ImgOverlay>
-        //         <Card.Body>
-        //             <Card.Text>
-        //                 <strong>Address:</strong>  {center.address}
-        //                 <br/>
-        //                 <strong>Price/cylinder: </strong> {center.oxyprice}<br/>
+            {console.log('ATMEGA')
+                console.log(dispdata)}
+            
+           
+        return(
+        <Card key={index}>
+                <Card.Img variant="top" src={img}/>
+                <Card.ImgOverlay>
+                <Card.Title className="text-white" >{center.name}</Card.Title>
+                </Card.ImgOverlay>
+                <Card.Body>
+                    <Card.Text>
+                        <strong>Address:</strong>  {center.address}
+                        <br/>
+                        <strong>Price/cylinder: </strong> {center.oxyprice}<br/>
                         
-        //             </Card.Text>
-        //         </Card.Body>
+                    </Card.Text>
+                </Card.Body>
                 
-        //         <Card.Footer>
-        //         <small className="text-muted"></small>
-        //         </Card.Footer>
-        // </Card>)
+                <Card.Footer>
+                <small className="text-muted"></small>
+                </Card.Footer>
+        </Card>)
 
          
       
