@@ -1,15 +1,19 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
+import { Nav, Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 import CancelIcon from '@material-ui/icons/Cancel';
 import SaveIcon from '@material-ui/icons/Save';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { FlashAutoOutlined } from '@material-ui/icons';
+
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -19,6 +23,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { useHistory } from "react-router-dom";
 
+import Update from './Update'
+import NavigationBar from './components/Navigation'
 import './sellerhome.css'
 
 // import { parse, v4 as uuidv4 } from 'uuid';
@@ -41,6 +47,8 @@ const useStyles = makeStyles({
 });
 
 const SellerHome = () => {
+
+    const reftext = useRef('');
 
     const history = useHistory();
 
@@ -68,8 +76,9 @@ const SellerHome = () => {
             console.log('data : ' + data.data.Data)
             let newlist = []
             for (let i = 0; i < data.data.Data.length; i++) {
-                console.log(data.data.Data[i].foreign_seller)
-                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].phno, data.data.Data[i].oxygenpricepercontainer])
+                console.log('this')
+                console.log(data.data.Data[i])
+                newlist.push(['noedit', data.data.Data[i].location, data.data.Data[i].addr, data.data.Data[i].phno, data.data.Data[i].oxyprice, data.data.Data[i].foreign_seller])
             }
             console.log('newlist: ' + newlist)
 
@@ -79,21 +88,34 @@ const SellerHome = () => {
 
         } else {
 
-            console.log('NO DATA')
-            setloading(false)
+            if (data.data.Data === 'No data') {
+                console.log('NO DATA')
+                setloading(false)
+            } else {
+                if (data.data.Data === 'Id itself is wrong') {
+                    localStorage.removeItem('gid')
+                    window.location.reload()
+                } else {
+                    alert('Some error occured.. try again!')
+                }
+            }
 
         }
 
     }
 
     const [det, setdet] = useState([])
+    // const [prof, setprof] = useState([])
+    // const [img, setimg] = useState('')
+    // const [textbox, settextbox] = useState('')
+    // const [urlav, seturlav] = useState(false)
+    // const [url, seturl] = useState('')
+
 
     useEffect(() => {
 
         const val = localStorage.getItem("gid").split(',')
         console.log(val)
-
-        setdet([val[0], val[1], val[2], val[3], val[4]])
 
         axios.post('/api/sellers/details/', {
             id: parseInt(val[0]),
@@ -101,6 +123,25 @@ const SellerHome = () => {
             email: val[2],
             password: val[3]
         }).then((data) => process(data))
+
+        //id, name, email, pwd, imgloc, desc
+        setdet([val[0], val[1], val[2], val[3], val[4], val[5]])
+
+        //id, name, email, pwd, imgloc, desc, name, email, pwd, imgloc
+        //setprof([val[0], val[1], val[2], val[3], val[4], val[5], val[1], val[2], val[3], val[4]]) //here, img and desc is not updated
+
+        console.log('val:', val[1], val[2])
+
+        //setimg(val[4]) //this is img
+
+        // seturl(URL.createObjectURL(val[4]))
+        // seturlav(true)
+
+        //reftext.current = val[5] //this is desc
+
+        //settextbox(val[5])
+
+        // console.log(reftext.current)
 
     }, [])
 
@@ -135,6 +176,13 @@ const SellerHome = () => {
 
                 console.log(listt)
 
+
+                if (listt === []) {
+
+                    setloading(false)
+
+                }
+
                 setlis(listt)
 
                 // refresh()
@@ -167,6 +215,12 @@ const SellerHome = () => {
 
                 console.log(listt)
 
+                if (listt === []) {
+
+                    setloading(false)
+
+                }
+
                 setlis(listt)
 
                 // refresh()
@@ -182,6 +236,9 @@ const SellerHome = () => {
     const deleteclick = (location, addr, phno, oxyprice, id, cond) => {
 
         console.log('posting now')
+
+        console.log(id, cond)
+
         axios.post('/api/sellers/delete/', {
             location: location,
             addr: addr,
@@ -373,57 +430,63 @@ const SellerHome = () => {
 
     const handleprofile = () => {
 
-        // hist.push("/update");
-
-        setupdate(true)
+        history.push("seller/update");
 
     }
 
+
+
+
     return (
-        <>
+        <Full>
 
             {
-                update ?
 
-                    det ?
+                <>
 
+                    <Styles>
+                        <Navbar expand="lg">
+                            <Navbar.Brand href="/">Ozone</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="ml-auto">
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <Link to="/vaccinationlist">Vaccination List</Link>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <div onClick={handleprofile} >Update Profile</div>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                    <Nav.Item>
+                                        <Nav.Link>
+                                            <div onClick={handleclick} >Log Out</div>
+                                        </Nav.Link>
+                                    </Nav.Item>
+
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Navbar>
+                    </Styles >
+
+                    <Listview>
+
+                        {
+                            console.log(loading, lis.length >= 1, loading && lis.length >= 1)
+                        }
                         <>
-                            <button onClick={() => {setupdate(false)} } > Back </button>
-                            <p>{det[0]}</p>
-                            <p>{det[1]}</p>
-                            <p>{det[2]}</p>
-                            <p>{det[3]}</p>
-                            <img src={det[4]} ></img>
-                        </>
 
-                        :
-
-                        <p>Please wait till we get the data</p>
-
-                    :
-
-                    <>
-                        <Logout >
-
-                            <button type="button" class="btn btn-warning c1 c" onClick={handleclick} >Logout <ExitToAppIcon /> </button>
-                            <button type="button" class="btn btn-warning c1 c" onClick={handleprofile} >Update Profile <EditIcon /> </button>
-
-                        </Logout>
-                        <Title >
-                            <p style={{ margin: 0, padding: 0 }} >Seller Page</p>
-                        </Title >
-                        < Hr />
-                        <Listview>
                             <Plus onClick={handleplusclick}>
-                                <AddCircleIcon />
+                                <AddIcon style={{ color: 'white' }} />
                             </Plus>
-
-                            {/* {
-                    console.log(loading, lis.length >= 1, loading && lis.length >= 1)
-                } */}
-
                             {
                                 ((lis.length >= 1) && (loading)) ?
+
 
 
                                     <Grid container spacing={3}>
@@ -678,6 +741,7 @@ const SellerHome = () => {
                                     </Grid>
 
 
+
                                     : loading ?
 
                                         <p>Loading....</p> :
@@ -685,14 +749,21 @@ const SellerHome = () => {
                                         <p>No data. Click plus symbol to create one</p>
 
                             }
-                        </Listview>
+                        </>
+                    </Listview>
 
-                    </>
+                </>
 
             }
-        </>
+        </Full>
     )
 }
+
+const Full = styled.div`
+
+height: 100%;
+
+`
 
 const Bottom = styled.div`
 
@@ -715,10 +786,18 @@ right: 10px;
 
 const Plus = styled.div`
 
-width: 10px;
-margin-left: 20px;
-margin-top: 20px;
-margin-bottom: 20px;
+position: sticky;
+background-color: #1685F1;
+width: 40px;
+height: 40px;
+border-radius: 50%;
+top: 100px;
+// right: 50px;
+left: 95%;
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
 
 $hover: {
     cursor: pointer;
@@ -751,5 +830,29 @@ padding: 0;
 
 `
 
+const Styles = styled.div`
+
+position: sticky;
+top: 0;
+
+.navbar {
+
+    background-color: #222;
+
+}
+
+a, .navbar-brand, .navbar-nav .nav-link {
+
+    color: #bbb !important;
+
+    &:hover {
+
+        color: white !important;
+        text-decoration: none !important;
+    
+    }
+}
+
+`
 
 export default SellerHome
