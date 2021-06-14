@@ -8,7 +8,7 @@ import Update from './Update'
 import Vaccinationlisting from './vaccinationlist';
 import Mapbox from './react_map'
 import { Layout } from './components/layout';
-
+import Contact from './contact';
 import { Redirect } from 'react-router'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,6 +20,7 @@ import {
   Link
 } from "react-router-dom";
 import Oxosearch from './oxosearch'
+
 
 
 const App = () => {
@@ -39,7 +40,9 @@ const App = () => {
         <Route exact path="/googlemap">
           <MapContainer />
         </Route>
-
+        <Route exact path="/contact">
+          <Contact/>
+        </Route>
 
         {/* <Route path="/seller/home">
           <SellerHome />
